@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		72B2C90627C00A7500554C72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B2C90527C00A7500554C72 /* AppDelegate.swift */; };
-		72B2C90827C00A7500554C72 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B2C90727C00A7500554C72 /* SceneDelegate.swift */; };
 		72B2C90A27C00A7500554C72 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B2C90927C00A7500554C72 /* ViewController.swift */; };
-		72B2C90D27C00A7500554C72 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72B2C90B27C00A7500554C72 /* Main.storyboard */; };
 		72B2C91027C00A7500554C72 /* booksta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72B2C90E27C00A7500554C72 /* booksta.xcdatamodeld */; };
 		72B2C91227C00A7D00554C72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72B2C91127C00A7D00554C72 /* Assets.xcassets */; };
 		72B2C91527C00A7D00554C72 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72B2C91327C00A7D00554C72 /* LaunchScreen.storyboard */; };
@@ -21,6 +19,9 @@
 		72B2C93D27C01BB100554C72 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B2C93C27C01BB100554C72 /* LoginViewModel.swift */; };
 		72B2C94027C0215500554C72 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B2C93F27C0215500554C72 /* Color+Extension.swift */; };
 		72B2C94227C0229F00554C72 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72B2C94127C0229F00554C72 /* Colors.xcassets */; };
+		72ED9C7D27C03E3B00EEC6CB /* CustomDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED9C7C27C03E3B00EEC6CB /* CustomDivider.swift */; };
+		72ED9C7F27C0444700EEC6CB /* NewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED9C7E27C0444700EEC6CB /* NewApp.swift */; };
+		72ED9C8127C047CC00EEC6CB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED9C8027C047CC00EEC6CB /* SceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,9 +44,7 @@
 /* Begin PBXFileReference section */
 		72B2C90227C00A7500554C72 /* booksta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = booksta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B2C90527C00A7500554C72 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		72B2C90727C00A7500554C72 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		72B2C90927C00A7500554C72 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		72B2C90C27C00A7500554C72 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		72B2C90F27C00A7500554C72 /* booksta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = booksta.xcdatamodel; sourceTree = "<group>"; };
 		72B2C91127C00A7D00554C72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		72B2C91427C00A7D00554C72 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -59,6 +58,9 @@
 		72B2C93C27C01BB100554C72 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		72B2C93F27C0215500554C72 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		72B2C94127C0229F00554C72 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		72ED9C7C27C03E3B00EEC6CB /* CustomDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDivider.swift; sourceTree = "<group>"; };
+		72ED9C7E27C0444700EEC6CB /* NewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewApp.swift; sourceTree = "<group>"; };
+		72ED9C8027C047CC00EEC6CB /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,13 +113,13 @@
 			children = (
 				72B2C93827C00AA300554C72 /* WelcomePage */,
 				72B2C90527C00A7500554C72 /* AppDelegate.swift */,
-				72B2C90727C00A7500554C72 /* SceneDelegate.swift */,
+				72ED9C8027C047CC00EEC6CB /* SceneDelegate.swift */,
 				72B2C90927C00A7500554C72 /* ViewController.swift */,
-				72B2C90B27C00A7500554C72 /* Main.storyboard */,
 				72B2C93E27C0213700554C72 /* Resources */,
 				72B2C91327C00A7D00554C72 /* LaunchScreen.storyboard */,
 				72B2C91627C00A7D00554C72 /* Info.plist */,
 				72B2C90E27C00A7500554C72 /* booksta.xcdatamodeld */,
+				72ED9C7E27C0444700EEC6CB /* NewApp.swift */,
 			);
 			path = booksta;
 			sourceTree = "<group>";
@@ -142,8 +144,8 @@
 		72B2C93827C00AA300554C72 /* WelcomePage */ = {
 			isa = PBXGroup;
 			children = (
+				72ED9C8227C0489100EEC6CB /* View */,
 				72B2C93B27C01B9D00554C72 /* ViewModel */,
-				72B2C93927C00AC600554C72 /* LoginView.swift */,
 			);
 			path = WelcomePage;
 			sourceTree = "<group>";
@@ -162,8 +164,17 @@
 				72B2C91127C00A7D00554C72 /* Assets.xcassets */,
 				72B2C93F27C0215500554C72 /* Color+Extension.swift */,
 				72B2C94127C0229F00554C72 /* Colors.xcassets */,
+				72ED9C7C27C03E3B00EEC6CB /* CustomDivider.swift */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		72ED9C8227C0489100EEC6CB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				72B2C93927C00AC600554C72 /* LoginView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,7 +284,6 @@
 				72B2C91527C00A7D00554C72 /* LaunchScreen.storyboard in Resources */,
 				72B2C94227C0229F00554C72 /* Colors.xcassets in Resources */,
 				72B2C91227C00A7D00554C72 /* Assets.xcassets in Resources */,
-				72B2C90D27C00A7500554C72 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,11 +308,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				72ED9C7D27C03E3B00EEC6CB /* CustomDivider.swift in Sources */,
+				72ED9C7F27C0444700EEC6CB /* NewApp.swift in Sources */,
+				72ED9C8127C047CC00EEC6CB /* SceneDelegate.swift in Sources */,
 				72B2C90A27C00A7500554C72 /* ViewController.swift in Sources */,
 				72B2C94027C0215500554C72 /* Color+Extension.swift in Sources */,
 				72B2C90627C00A7500554C72 /* AppDelegate.swift in Sources */,
 				72B2C93D27C01BB100554C72 /* LoginViewModel.swift in Sources */,
-				72B2C90827C00A7500554C72 /* SceneDelegate.swift in Sources */,
 				72B2C93A27C00AC600554C72 /* LoginView.swift in Sources */,
 				72B2C91027C00A7500554C72 /* booksta.xcdatamodeld in Sources */,
 			);
@@ -341,14 +353,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		72B2C90B27C00A7500554C72 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				72B2C90C27C00A7500554C72 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		72B2C91327C00A7D00554C72 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -488,7 +492,6 @@
 				INFOPLIST_FILE = booksta/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -517,7 +520,6 @@
 				INFOPLIST_FILE = booksta/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;

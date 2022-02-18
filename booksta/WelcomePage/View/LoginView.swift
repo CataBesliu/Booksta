@@ -10,7 +10,8 @@ import SwiftUI
 struct LoginView: View {
     @State var email: String = ""
     @State var password: String = ""
-    //    @FocusState private var emailFieldIsFocused: Bool
+    @FocusState private var fieldIsFocused: Bool
+
     @ObservedObject var viewModel = LoginViewModel()
     
     var body: some View {
@@ -32,34 +33,44 @@ struct LoginView: View {
             //            Text(email)
             //                .foregroundColor(emailFieldIsFocused ? .red : .blue)
             getFieldToBeCompleted(title: "Email Address", stateText: $email)
-            getFieldToBeCompleted(title: "Password", stateText: $password)
+            getFieldToBeCompleted(title: "Password", stateText: $password, isPassword: true)
             
             Button(action: logIn) {
                 Text("Sign In")
                     .foregroundColor(.bookstaGrey50)
-                    .padding(16)
+                    .padding(.vertical, 16)
+                    .padding(.horizontal, 40)
                     .background(Color.bookstaPink)
-                    .cornerRadius(4)
+                    .cornerRadius(20)
             }
             
             Spacer()
         }
-        .background(Color.bookstaGrey800)
         .padding(30)
     }
     
     ///Function to call for email, password fields
-    private func getFieldToBeCompleted(title: String, stateText: Binding<String>) -> some View {
+    private func getFieldToBeCompleted(title: String, stateText: Binding<String>, isPassword: Bool = false) -> some View {
         return  VStack(alignment: .leading, spacing: 5)  {
-            SecureField(title, text: stateText)
+            VStack {
+                if isPassword {
+                    SecureField(title, text: stateText)
+                        .focused($fieldIsFocused)
+                } else {
+                    TextField(title, text: stateText)
+                        .focused($fieldIsFocused)
+                }
+            }
             .padding(10)
             .onSubmit {
                 //do some validation
             }
             .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
-            .foregroundColor(.bookstaGrey500)
+            .foregroundColor(.bookstaGrey200)
             .cornerRadius(4)
+            
+            CustomDivider()
         }
     }
     

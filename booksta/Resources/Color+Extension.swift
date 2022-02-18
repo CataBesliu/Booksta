@@ -13,6 +13,7 @@ extension Color {
     public static let bookstaBackground = Color("bookstaBackground")
     
     public static let bookstaGrey50 = Color("bookstaGrey50")
+    public static let bookstaGrey200 = Color("bookstaGrey200")
     public static let bookstaGrey500 = Color("bookstaGrey500")
     public static let bookstaGrey800 = Color("bookstaGrey800")
     
