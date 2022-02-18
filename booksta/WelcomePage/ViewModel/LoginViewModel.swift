@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import SwiftUI
 
 class LoginViewModel: ObservableObject {
-    
+
     func logInFunction(email: String, password: String) {
         
     }
