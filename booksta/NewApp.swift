@@ -13,7 +13,7 @@ struct NewApp: App {
 
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            HomeView()
         }
     }
 }

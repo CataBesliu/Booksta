@@ -22,6 +22,8 @@
 		72ED9C7D27C03E3B00EEC6CB /* CustomDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED9C7C27C03E3B00EEC6CB /* CustomDivider.swift */; };
 		72ED9C7F27C0444700EEC6CB /* NewApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED9C7E27C0444700EEC6CB /* NewApp.swift */; };
 		72ED9C8127C047CC00EEC6CB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED9C8027C047CC00EEC6CB /* SceneDelegate.swift */; };
+		72ED9C8627C1CB1A00EEC6CB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED9C8527C1CB1A00EEC6CB /* HomeView.swift */; };
+		72ED9C8927C1CB3E00EEC6CB /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72ED9C8827C1CB3E00EEC6CB /* SignUpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +63,8 @@
 		72ED9C7C27C03E3B00EEC6CB /* CustomDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDivider.swift; sourceTree = "<group>"; };
 		72ED9C7E27C0444700EEC6CB /* NewApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewApp.swift; sourceTree = "<group>"; };
 		72ED9C8027C047CC00EEC6CB /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		72ED9C8527C1CB1A00EEC6CB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		72ED9C8827C1CB3E00EEC6CB /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,8 +148,9 @@
 		72B2C93827C00AA300554C72 /* WelcomePage */ = {
 			isa = PBXGroup;
 			children = (
-				72ED9C8227C0489100EEC6CB /* View */,
-				72B2C93B27C01B9D00554C72 /* ViewModel */,
+				72ED9C8727C1CB3100EEC6CB /* SignUp */,
+				72ED9C8427C1CA8400EEC6CB /* Login */,
+				72ED9C8327C1CA7000EEC6CB /* Home */,
 			);
 			path = WelcomePage;
 			sourceTree = "<group>";
@@ -153,7 +158,6 @@
 		72B2C93B27C01B9D00554C72 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				72B2C93C27C01BB100554C72 /* LoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -172,9 +176,67 @@
 		72ED9C8227C0489100EEC6CB /* View */ = {
 			isa = PBXGroup;
 			children = (
+				72ED9C8527C1CB1A00EEC6CB /* HomeView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		72ED9C8327C1CA7000EEC6CB /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				72B2C93B27C01B9D00554C72 /* ViewModel */,
+				72ED9C8227C0489100EEC6CB /* View */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		72ED9C8427C1CA8400EEC6CB /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				72ED9C8D27C1CB8700EEC6CB /* ViewModel */,
+				72ED9C8C27C1CB7F00EEC6CB /* View */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		72ED9C8727C1CB3100EEC6CB /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				72ED9C8B27C1CB7100EEC6CB /* ViewModel */,
+				72ED9C8A27C1CB6800EEC6CB /* View */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		72ED9C8A27C1CB6800EEC6CB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				72ED9C8827C1CB3E00EEC6CB /* SignUpView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		72ED9C8B27C1CB7100EEC6CB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		72ED9C8C27C1CB7F00EEC6CB /* View */ = {
+			isa = PBXGroup;
+			children = (
 				72B2C93927C00AC600554C72 /* LoginView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		72ED9C8D27C1CB8700EEC6CB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				72B2C93C27C01BB100554C72 /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,7 +373,9 @@
 				72ED9C7D27C03E3B00EEC6CB /* CustomDivider.swift in Sources */,
 				72ED9C7F27C0444700EEC6CB /* NewApp.swift in Sources */,
 				72ED9C8127C047CC00EEC6CB /* SceneDelegate.swift in Sources */,
+				72ED9C8627C1CB1A00EEC6CB /* HomeView.swift in Sources */,
 				72B2C90A27C00A7500554C72 /* ViewController.swift in Sources */,
+				72ED9C8927C1CB3E00EEC6CB /* SignUpView.swift in Sources */,
 				72B2C94027C0215500554C72 /* Color+Extension.swift in Sources */,
 				72B2C90627C00A7500554C72 /* AppDelegate.swift in Sources */,
 				72B2C93D27C01BB100554C72 /* LoginViewModel.swift in Sources */,

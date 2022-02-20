@@ -1,67 +1,72 @@
 //
-//  LoginView.swift
+//  SignUpView.swift
 //  booksta
 //
-//  Created by Catalina Besliu on 18.02.2022.
+//  Created by Catalina Besliu on 20.02.2022.
 //
 
 import SwiftUI
 
-struct LoginView: View {
+struct SignUpView: View {
     @State var email: String = ""
     @State var password: String = ""
-    @State private var isPasswordHidden: Bool = true
+    @State var repeatedPassword: String = ""
     
+    @State private var isPasswordHidden: Bool = true
+    @Binding var ownIndex: Int
+    @Binding var logInIndex: Int
     
     @FocusState private var fieldIsFocused: Bool
     @ObservedObject var viewModel = LoginViewModel()
     
     var body: some View {
-        GeometryReader{_ in
-            VStack {
-                //TODO: logo image
-                Image(systemName: "books.vertical.circle.fill")
-                    .font(.system(size: 50))
-                    .foregroundColor(.bookstaPink)
-                logInView
-                
-            }
-            Spacer()
+        ZStack(alignment: .bottom) {
+            signUpView
         }
-        .background(Color.bookstaBackground)
-//        .edgesIgnoringSafeArea(.all)
-        .preferredColorScheme(.dark)
     }
     
-    private var logInTitle: some View {
+    private var signUpTitle: some View {
         HStack {
-            Text("Login")
+            Spacer(minLength: 0)
+            Text("SignUp")
                 .foregroundColor(.white)
                 .font(.title)
                 .fontWeight(.bold)
-            Spacer(minLength: 0)
         }
         .padding(.top, 40)//top curve
     }
     
-    private var logInView: some View {
+    private var signUpView: some View {
         VStack(spacing: 20) {
-            logInTitle
-            getEmailField(title: "Email address", stateText: $email)
-            getFieldToBeCompleted(title: "Password", stateText: $password)
-            
-            Button(action: logIn) {
-                Text("Sign In")
-                    .foregroundColor(.bookstaGrey50)
-                    .padding(.vertical, 16)
-                    .padding(.horizontal, 40)
-                    .background(Color.bookstaPink)
-                    .cornerRadius(20)
+            signUpTitle
+            VStack {
+                getEmailField(title: "Email address", stateText: $email)
+                getFieldToBeCompleted(title: "Password", stateText: $password)
+                getFieldToBeCompleted(title: "Repeat password", stateText: $repeatedPassword)
+                
+                Button(action: signIn) {
+                    Text("Sign In")
+                        .foregroundColor(.bookstaGrey50)
+                        .padding(.vertical, 16)
+                        .padding(.horizontal, 40)
+                        .background(Color.bookstaPink)
+                        .clipShape(Capsule())
+                        .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
+                }
             }
+            .opacity(self.ownIndex == 1 ? 1 : 0)
             
         }
-        .padding(30)
+        .padding()
+        .padding(.bottom, 65)
         .background(Color.bookstaGrey500)
+        .clipShape(CShapeRightCurve())
+        .contentShape(CShapeRightCurve())
+        .onTapGesture {
+            self.ownIndex = 1
+            self.logInIndex = 0
+        }
+        .cornerRadius(35)
         .padding(.horizontal, 20)
     }
     
@@ -130,21 +135,14 @@ struct LoginView: View {
         }
     }
     
-    private func logIn() {
+    private func signIn() {
         fieldIsFocused = false
-        viewModel.logInFunction(email: email, password: password)
+        //viewModel.logInFunction(email: email, password: password)
     }
 }
 
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
-    }
-}
-
-extension View {
-    func hideKeyboard() {
-        let resign = #selector(UIResponder.resignFirstResponder)
-        UIApplication.shared.sendAction(resign, to: nil, from: nil, for: nil)
-    }
-}
+//struct SignUpView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        SignUpView()
+//    }
+//}
