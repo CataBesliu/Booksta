@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>322437562247-0bol8aqr5f6c15m3nohuhqrl289rpkf3.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.322437562247-0bol8aqr5f6c15m3nohuhqrl289rpkf3</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCam4ID6cqjTfS0jvUqpKVbS5DQtY6n2KI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>322437562247</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.licenta.booksta</string>
+	<key>PROJECT_ID</key>
+	<string>booksta-92688</string>
+	<key>STORAGE_BUCKET</key>
+	<string>booksta-92688.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:322437562247:ios:a817a9fdbb539f0f8e9d22</string>
+</dict>
+</plist>

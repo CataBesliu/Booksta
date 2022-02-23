@@ -11,24 +11,24 @@ struct LoginView: View {
     @State var email: String = ""
     @State var password: String = ""
     @State private var isPasswordHidden: Bool = true
+    @State private var showingAlert = false
     @Binding var ownIndex: Int
     @Binding var signUpIndex: Int
-    
     
     @FocusState private var fieldIsFocused: Bool
     @ObservedObject var viewModel = LoginViewModel()
     
     var body: some View {
-        
-        ZStack(alignment: .bottom) {
-            logInView
-        }      .edgesIgnoringSafeArea(.all)
+        logInView
+            .alert("Make sure that all fields are completed", isPresented: $showingAlert) {
+                Button("OK", role: .none) { }
+            }
     }
     
     private var logInTitle: some View {
         HStack {
-            Text("Login")
-                .foregroundColor(.white)
+            Text("Log In")
+                .foregroundColor(self.ownIndex == 1 ? .white : .gray)
                 .font(.title)
                 .fontWeight(.bold)
             Spacer(minLength: 0)
@@ -43,9 +43,8 @@ struct LoginView: View {
                 getEmailField(title: "Email address", stateText: $email)
                 getFieldToBeCompleted(title: "Password", stateText: $password)
                 forgetPasswordView
-                
-                Button(action: logIn) {
-                    Text("Login")
+                NavigationLink(destination: ProfileView()){
+                    Text("Log In")
                         .foregroundColor(.bookstaGrey50)
                         .padding(.vertical, 16)
                         .padding(.horizontal, 40)
@@ -53,14 +52,20 @@ struct LoginView: View {
                         .clipShape(Capsule())
                         .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
                 }
+                .disabled(showingAlert)
+                .padding(.top, 20)
+                .onTapGesture {
+                    logIn()
+                }
             }
             .opacity(self.ownIndex == 1 ? 1 : 0)
         }
         .padding()
-        .padding(.bottom, 65)
+        .padding(.bottom, 30)
         .background(Color.bookstaGrey500)
         .clipShape(CShapeLeftCurve())
         .contentShape(CShapeLeftCurve())
+        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: -5)
         .onTapGesture {
             self.ownIndex = 1
             self.signUpIndex = 0
@@ -100,7 +105,6 @@ struct LoginView: View {
         HStack {
             Spacer()
             Button(action: {
-                
             }) {
                 Text("Forget password?")
                     .foregroundColor(.bookstaGrey50)
@@ -150,7 +154,8 @@ struct LoginView: View {
     
     private func logIn() {
         fieldIsFocused = false
-        viewModel.logInFunction(email: email, password: password)
+        //TODO: show an alert
+        showingAlert = !viewModel.checkFieldsAreCompleted(email: email, password: password)
     }
 }
 
@@ -160,33 +165,6 @@ struct LoginView: View {
 //            LoginView(, index: 0)
 //        }
 //    }
-
-struct CShapeLeftCurve : Shape {
-    func path(in rect: CGRect) -> Path {
-        return Path{path in
-            //right side curve
-            path.move(to: CGPoint(x: rect.width, y: 120))
-            path.addLine(to: CGPoint(x: rect.width, y: rect.height))
-            path.addLine(to: CGPoint(x: 0, y: rect.height))
-            path.addLine(to: CGPoint(x: 0, y: 0))
-        }
-    }
-}
-
-
-struct CShapeRightCurve : Shape {
-    func path(in rect: CGRect) -> Path {
-        return Path{path in
-            //right side curve
-            path.move(to: CGPoint(x: 0, y: 120))
-            path.addLine(to: CGPoint(x: 0, y: rect.height))
-            path.addLine(to: CGPoint(x: rect.width, y: rect.height))
-            path.addLine(to: CGPoint(x: rect.width, y: 0))
-        }
-    }
-}
-
-
 
 extension View {
     func hideKeyboard() {

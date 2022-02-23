@@ -10,8 +10,8 @@ import SwiftUI
 
 class LoginViewModel: ObservableObject {
 
-    func logInFunction(email: String, password: String) {
-        
+    func checkFieldsAreCompleted(email: String, password: String) -> Bool {
+        return email.isEmpty == false && password.isEmpty == false
     }
 
 }

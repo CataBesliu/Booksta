@@ -6,30 +6,34 @@
 //
 
 import SwiftUI
-
 struct SignUpView: View {
     @State var email: String = ""
     @State var password: String = ""
     @State var repeatedPassword: String = ""
-    
+    @State var showingAlertForPasswordsNotMacthing = false
+    @State var showingAlertForUncompletedFields = false
     @State private var isPasswordHidden: Bool = true
     @Binding var ownIndex: Int
     @Binding var logInIndex: Int
     
     @FocusState private var fieldIsFocused: Bool
-    @ObservedObject var viewModel = LoginViewModel()
+    @ObservedObject var viewModel = SignUpViewModel()
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            signUpView
-        }
+        signUpView
+            .alert("Make sure that all fields are completed", isPresented: $showingAlertForUncompletedFields) {
+                Button("OK", role: .none) { }
+            }
+            .alert("Passwords do not match", isPresented: $showingAlertForPasswordsNotMacthing) {
+                Button("OK", role: .none) { }
+            }
     }
     
     private var signUpTitle: some View {
         HStack {
             Spacer(minLength: 0)
-            Text("SignUp")
-                .foregroundColor(.white)
+            Text("Sign Up")
+                .foregroundColor(self.ownIndex == 1 ? .white : .gray)
                 .font(.title)
                 .fontWeight(.bold)
         }
@@ -44,8 +48,8 @@ struct SignUpView: View {
                 getFieldToBeCompleted(title: "Password", stateText: $password)
                 getFieldToBeCompleted(title: "Repeat password", stateText: $repeatedPassword)
                 
-                Button(action: signIn) {
-                    Text("Sign In")
+                Button(action: signUp) {
+                    Text("Sign Up")
                         .foregroundColor(.bookstaGrey50)
                         .padding(.vertical, 16)
                         .padding(.horizontal, 40)
@@ -53,15 +57,16 @@ struct SignUpView: View {
                         .clipShape(Capsule())
                         .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
                 }
+                .padding(.top, 20)
             }
             .opacity(self.ownIndex == 1 ? 1 : 0)
-            
         }
         .padding()
-        .padding(.bottom, 65)
+        .padding(.bottom, 30)
         .background(Color.bookstaGrey500)
         .clipShape(CShapeRightCurve())
         .contentShape(CShapeRightCurve())
+        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: -5)
         .onTapGesture {
             self.ownIndex = 1
             self.logInIndex = 0
@@ -77,7 +82,6 @@ struct SignUpView: View {
                 Image(systemName: "envelope")
                     .font(.system(size: 20))
                     .foregroundColor(.bookstaPink)
-                
                 TextField(title, text: stateText)
                     .focused($fieldIsFocused)
                     .foregroundColor(.bookstaGrey50)
@@ -135,8 +139,10 @@ struct SignUpView: View {
         }
     }
     
-    private func signIn() {
+    private func signUp() {
         fieldIsFocused = false
+        showingAlertForUncompletedFields = !viewModel.checkFieldsAreCompleted(email: email, password1: password, password2: repeatedPassword)
+        showingAlertForPasswordsNotMacthing = !viewModel.checkPasswordsMatch(password1: password, password2: repeatedPassword)
         //viewModel.logInFunction(email: email, password: password)
     }
 }
