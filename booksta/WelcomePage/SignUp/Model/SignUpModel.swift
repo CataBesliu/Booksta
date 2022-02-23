@@ -7,6 +7,10 @@
 
 import Foundation
 
+
 struct SignUpModel {
+    let email: String
+    let password: String
+    let repeatedPassword: String
     
 }

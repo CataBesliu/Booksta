@@ -47,7 +47,7 @@ struct LoginView: View {
                 getFieldToBeCompleted(title: "Password", stateText: $password)
                 forgetPasswordView
                 NavigationLink(destination: ProfileView(), isActive: $moveToNextPage) { EmptyView() }
-                Button(action: logIn, label: {
+                Button(action: checkFields, label: {
                     loginButtonView
                 })
                 .padding(.top, 20)
@@ -156,7 +156,7 @@ struct LoginView: View {
         }
     }
     
-    private func logIn() {
+    private func checkFields() {
         fieldIsFocused = false
         //TODO: show an alert
         showingAlert = !viewModel.checkFieldsAreCompleted(email: email, password: password)

@@ -52,7 +52,7 @@ struct SignUpView: View {
                 getFieldToBeCompleted(title: "Repeat password", stateText: $repeatedPassword)
                 
                 NavigationLink(destination: ProfileView(), isActive: $moveToNextPage) { EmptyView() }
-                Button(action: signUp, label: {
+                Button(action: checkFields, label: {
                     signUpButtonView
                 })
                 .padding(.top, 20)
@@ -147,11 +147,24 @@ struct SignUpView: View {
         }
     }
     
-    private func signUp() {
+    private func checkFields() {
         fieldIsFocused = false
         showingAlertForUncompletedFields = !viewModel.checkFieldsAreCompleted(email: email, password1: password, password2: repeatedPassword)
         showingAlertForPasswordsNotMacthing = !viewModel.checkPasswordsMatch(password1: password, password2: repeatedPassword)
         moveToNextPage = !(showingAlertForUncompletedFields || showingAlertForPasswordsNotMacthing)
+        if moveToNextPage {
+            //signUp()
+        }
+    }
+    
+    private func signUp() {
+        let credentials = SignUpModel(email: email, password: password, repeatedPassword: repeatedPassword)
+        AuthService.registerUser(withCredential: credentials, completion: { error in
+            if let error = error {
+                print("DEBUG - Failed to register user \(error.localizedDescription) ")
+            }
+            print("DEBUG - Succesfully registered user with firestore...")
+        })
     }
 }
 

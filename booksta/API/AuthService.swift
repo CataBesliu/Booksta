@@ -6,7 +6,27 @@
 //
 
 import Foundation
+import Firebase
+import SwiftUI
 
 struct AuthService {
-   // static func registerUser
+    static func registerUser(withCredential credentials: SignUpModel, completion: @escaping(Error?) -> Void) {
+        print("DEBUG: Credentials are \(credentials)")
+        
+        //image bla bla
+        Auth.auth().createUser(withEmail: credentials.email, password: credentials.password) { (result,error) in
+            if let error = error {
+                print("DEBUG: Failed to register user \(error.localizedDescription) ")
+                return
+            }
+            
+            //Firestore creates the uid
+            guard let uid = result?.user.uid else { return }
+            
+            let data: [String: Any] = ["email": credentials.email,
+                                       "uid":uid]
+            
+            Firestore.firestore().collection("users").document(uid).setData(data, completion: completion)
+        }
+    }
 }
