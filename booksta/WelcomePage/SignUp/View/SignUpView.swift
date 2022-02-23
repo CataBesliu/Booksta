@@ -7,17 +7,20 @@
 
 import SwiftUI
 struct SignUpView: View {
-    @State var email: String = ""
-    @State var password: String = ""
-    @State var repeatedPassword: String = ""
-    @State var showingAlertForPasswordsNotMacthing = false
-    @State var showingAlertForUncompletedFields = false
+    @ObservedObject var viewModel = SignUpViewModel()
+    
+    @State private var email: String = ""
+    @State private var password: String = ""
+    @State private var repeatedPassword: String = ""
+    @State private var showingAlertForPasswordsNotMacthing = false
+    @State private var showingAlertForUncompletedFields = false
+    @State private var moveToNextPage = false
     @State private var isPasswordHidden: Bool = true
+    
     @Binding var ownIndex: Int
     @Binding var logInIndex: Int
     
     @FocusState private var fieldIsFocused: Bool
-    @ObservedObject var viewModel = SignUpViewModel()
     
     var body: some View {
         signUpView
@@ -48,15 +51,10 @@ struct SignUpView: View {
                 getFieldToBeCompleted(title: "Password", stateText: $password)
                 getFieldToBeCompleted(title: "Repeat password", stateText: $repeatedPassword)
                 
-                Button(action: signUp) {
-                    Text("Sign Up")
-                        .foregroundColor(.bookstaGrey50)
-                        .padding(.vertical, 16)
-                        .padding(.horizontal, 40)
-                        .background(Color.bookstaPink)
-                        .clipShape(Capsule())
-                        .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
-                }
+                NavigationLink(destination: ProfileView(), isActive: $moveToNextPage) { EmptyView() }
+                Button(action: signUp, label: {
+                    signUpButtonView
+                })
                 .padding(.top, 20)
             }
             .opacity(self.ownIndex == 1 ? 1 : 0)
@@ -73,6 +71,16 @@ struct SignUpView: View {
         }
         .cornerRadius(35)
         .padding(.horizontal, 20)
+    }
+    
+    private var signUpButtonView: some View {
+        Text("Sign Up")
+            .foregroundColor(.bookstaGrey50)
+            .padding(.vertical, 16)
+            .padding(.horizontal, 40)
+            .background(Color.bookstaPink)
+            .clipShape(Capsule())
+            .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
     }
     
     ///Function to call for email field
@@ -143,7 +151,7 @@ struct SignUpView: View {
         fieldIsFocused = false
         showingAlertForUncompletedFields = !viewModel.checkFieldsAreCompleted(email: email, password1: password, password2: repeatedPassword)
         showingAlertForPasswordsNotMacthing = !viewModel.checkPasswordsMatch(password1: password, password2: repeatedPassword)
-        //viewModel.logInFunction(email: email, password: password)
+        moveToNextPage = !(showingAlertForUncompletedFields || showingAlertForPasswordsNotMacthing)
     }
 }
 

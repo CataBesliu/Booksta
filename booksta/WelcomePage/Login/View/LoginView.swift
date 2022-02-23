@@ -8,15 +8,18 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State var email: String = ""
-    @State var password: String = ""
+    @ObservedObject var viewModel = LoginViewModel()
+    
+    @State private var email: String = ""
+    @State private var password: String = ""
     @State private var isPasswordHidden: Bool = true
     @State private var showingAlert = false
+    @State private var moveToNextPage = false
+    
     @Binding var ownIndex: Int
     @Binding var signUpIndex: Int
     
     @FocusState private var fieldIsFocused: Bool
-    @ObservedObject var viewModel = LoginViewModel()
     
     var body: some View {
         logInView
@@ -43,20 +46,11 @@ struct LoginView: View {
                 getEmailField(title: "Email address", stateText: $email)
                 getFieldToBeCompleted(title: "Password", stateText: $password)
                 forgetPasswordView
-                NavigationLink(destination: ProfileView()){
-                    Text("Log In")
-                        .foregroundColor(.bookstaGrey50)
-                        .padding(.vertical, 16)
-                        .padding(.horizontal, 40)
-                        .background(Color.bookstaPink)
-                        .clipShape(Capsule())
-                        .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
-                }
-                .disabled(showingAlert)
+                NavigationLink(destination: ProfileView(), isActive: $moveToNextPage) { EmptyView() }
+                Button(action: logIn, label: {
+                    loginButtonView
+                })
                 .padding(.top, 20)
-                .onTapGesture {
-                    logIn()
-                }
             }
             .opacity(self.ownIndex == 1 ? 1 : 0)
         }
@@ -73,6 +67,16 @@ struct LoginView: View {
         }
         .cornerRadius(35)
         .padding(.horizontal, 20)
+    }
+    
+    private var loginButtonView: some View {
+        Text("Log In")
+            .foregroundColor(.bookstaGrey50)
+            .padding(.vertical, 16)
+            .padding(.horizontal, 40)
+            .background(Color.bookstaPink)
+            .clipShape(Capsule())
+            .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
     }
     
     ///Function to call for email field
@@ -156,6 +160,7 @@ struct LoginView: View {
         fieldIsFocused = false
         //TODO: show an alert
         showingAlert = !viewModel.checkFieldsAreCompleted(email: email, password: password)
+        moveToNextPage = !showingAlert
     }
 }
 
