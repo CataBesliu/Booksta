@@ -9,5 +9,9 @@ import Foundation
 import Firebase
 
 class ProfileViewModel: ObservableObject {
-    @Published var isUserLogOut: Bool = Auth.auth().currentUser == nil
+    @Published var isUserLoggedIn: Bool?
+    
+    func checkIfUserIsLoggedIn() {
+        isUserLoggedIn = Auth.auth().currentUser != nil
+    }
 }
