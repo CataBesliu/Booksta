@@ -16,6 +16,7 @@ target 'booksta' do
 	pod 'SDWebImage','~>4.4.2'
 	pod 'JGProgressHUD','~>2.0.3'
 	pod 'YPImagePicker'
+	pod 'Resolver'
 
   target 'bookstaTests' do
     inherit! :search_paths

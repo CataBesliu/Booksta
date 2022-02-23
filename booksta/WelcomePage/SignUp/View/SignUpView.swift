@@ -153,7 +153,7 @@ struct SignUpView: View {
         showingAlertForPasswordsNotMacthing = !viewModel.checkPasswordsMatch(password1: password, password2: repeatedPassword)
         moveToNextPage = !(showingAlertForUncompletedFields || showingAlertForPasswordsNotMacthing)
         if moveToNextPage {
-            //signUp()
+            signUp()
         }
     }
     
