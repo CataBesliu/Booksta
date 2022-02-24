@@ -15,6 +15,7 @@ struct LoginView: View {
     @State private var isPasswordHidden: Bool = true
     @State private var showingAlert = false
     @State private var moveToNextPage = false
+    @State private var couldNotLogIn = false
     
     @Binding var ownIndex: Int
     @Binding var signUpIndex: Int
@@ -23,7 +24,12 @@ struct LoginView: View {
     
     var body: some View {
         logInView
-            .alert("Make sure that all fields are completed", isPresented: $showingAlert) {
+            .alert("Make sure that all fields are completed",
+                   isPresented: $showingAlert) {
+                Button("OK", role: .none) { }
+            }
+            .alert("Username or password is invalid",
+                   isPresented: $couldNotLogIn) {
                 Button("OK", role: .none) { }
             }
     }
@@ -160,7 +166,21 @@ struct LoginView: View {
         fieldIsFocused = false
         //TODO: show an alert
         showingAlert = !viewModel.checkFieldsAreCompleted(email: email, password: password)
-        moveToNextPage = !showingAlert
+        if !showingAlert {
+            logIn()
+        }
+    }
+    
+    private func logIn() {
+        AuthService.logUserIn(withEmail: email, password: password) { (result,error) in
+            if let error = error {
+                print("DEBUG - Failed to log in user \(error.localizedDescription) ")
+                couldNotLogIn = true
+                return
+            }
+            moveToNextPage = true
+            print("DEBUG - Succesfully logged in user with firestore...")
+        }
     }
 }
 

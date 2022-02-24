@@ -151,8 +151,7 @@ struct SignUpView: View {
         fieldIsFocused = false
         showingAlertForUncompletedFields = !viewModel.checkFieldsAreCompleted(email: email, password1: password, password2: repeatedPassword)
         showingAlertForPasswordsNotMacthing = !viewModel.checkPasswordsMatch(password1: password, password2: repeatedPassword)
-        moveToNextPage = !(showingAlertForUncompletedFields || showingAlertForPasswordsNotMacthing)
-        if moveToNextPage {
+        if !(showingAlertForUncompletedFields || showingAlertForPasswordsNotMacthing) {
             signUp()
         }
     }
@@ -162,7 +161,9 @@ struct SignUpView: View {
         AuthService.registerUser(withCredential: credentials, completion: { error in
             if let error = error {
                 print("DEBUG - Failed to register user \(error.localizedDescription) ")
+                return
             }
+            moveToNextPage = true
             print("DEBUG - Succesfully registered user with firestore...")
         })
     }

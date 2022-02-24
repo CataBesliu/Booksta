@@ -10,6 +10,11 @@ import Firebase
 import SwiftUI
 
 struct AuthService {
+    
+    static func logUserIn(withEmail email: String, password: String, completion: AuthDataResultCallback? ) {
+        Auth.auth().signIn(withEmail: email, password: password, completion: completion)
+    }
+    
     static func registerUser(withCredential credentials: SignUpModel, completion: @escaping(Error?) -> Void) {
         print("DEBUG: Credentials are \(credentials)")
         
@@ -24,7 +29,8 @@ struct AuthService {
             guard let uid = result?.user.uid else { return }
             
             let data: [String: Any] = ["email": credentials.email,
-                                       "uid":uid]
+                                       "uid":uid,
+                                       "imageURL":"" ]
             
             Firestore.firestore().collection("users").document(uid).setData(data, completion: completion)
         }

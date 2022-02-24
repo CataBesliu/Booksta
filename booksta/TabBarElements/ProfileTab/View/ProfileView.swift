@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 
 struct ProfileView: View {
+    @State private var isUserLoggedOut = false
     private var profileImage: UIImage?
     
     var body: some View {
@@ -19,6 +20,9 @@ struct ProfileView: View {
             Image(systemName: "photo")
                 .font(.system(size: 30))
         }
+            NavigationLink(destination: HomeView()
+                            .navigationBarBackButtonHidden(true),
+                           isActive: $isUserLoggedOut) { EmptyView() }
             Button(action: logOut) {
                 logOutButtonView
             }
@@ -40,6 +44,7 @@ struct ProfileView: View {
     private func logOut() {
         do {
             try Auth.auth().signOut()
+            isUserLoggedOut = true
         } catch {
             print("DEBUG: Failed to sign out")
         }
