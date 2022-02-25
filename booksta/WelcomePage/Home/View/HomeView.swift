@@ -12,13 +12,13 @@ struct HomeView: View {
     @State var indexForSignUpPage = 0
     
     var body: some View {
-        GeometryReader{_ in
+        NavigationView {
             VStack {
+                Spacer()
                 //TODO: logo image
                 Image(systemName: "books.vertical.circle.fill")
                     .font(.system(size: 80))
                     .foregroundColor(.bookstaPink)
-                    .padding(.top, 100)
                 
                 ZStack {
                     LoginView(ownIndex: self.$indexForLoginPage, signUpIndex: self.$indexForSignUpPage)
@@ -27,10 +27,12 @@ struct HomeView: View {
                     SignUpView(ownIndex: self.$indexForSignUpPage, logInIndex: self.$indexForLoginPage)
                         .zIndex(Double(self.indexForSignUpPage))
                 }
+                Spacer()
             }
+            .edgesIgnoringSafeArea(.all)
+            .background(Color.bookstaBackground)
+            .preferredColorScheme(.dark)
         }
-        .background(Color.bookstaBackground)
-        .preferredColorScheme(.dark)
     }
 }
 

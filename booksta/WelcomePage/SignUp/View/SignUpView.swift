@@ -6,30 +6,37 @@
 //
 
 import SwiftUI
-
 struct SignUpView: View {
-    @State var email: String = ""
-    @State var password: String = ""
-    @State var repeatedPassword: String = ""
+    @ObservedObject var viewModel = SignUpViewModel()
     
+    @State private var email: String = ""
+    @State private var password: String = ""
+    @State private var repeatedPassword: String = ""
+    @State private var showingAlertForPasswordsNotMacthing = false
+    @State private var showingAlertForUncompletedFields = false
+    @State private var moveToNextPage = false
     @State private var isPasswordHidden: Bool = true
+    
     @Binding var ownIndex: Int
     @Binding var logInIndex: Int
     
     @FocusState private var fieldIsFocused: Bool
-    @ObservedObject var viewModel = LoginViewModel()
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            signUpView
-        }
+        signUpView
+            .alert("Make sure that all fields are completed", isPresented: $showingAlertForUncompletedFields) {
+                Button("OK", role: .none) { }
+            }
+            .alert("Passwords do not match", isPresented: $showingAlertForPasswordsNotMacthing) {
+                Button("OK", role: .none) { }
+            }
     }
     
     private var signUpTitle: some View {
         HStack {
             Spacer(minLength: 0)
-            Text("SignUp")
-                .foregroundColor(.white)
+            Text("Sign Up")
+                .foregroundColor(self.ownIndex == 1 ? .white : .gray)
                 .font(.title)
                 .fontWeight(.bold)
         }
@@ -44,30 +51,36 @@ struct SignUpView: View {
                 getFieldToBeCompleted(title: "Password", stateText: $password)
                 getFieldToBeCompleted(title: "Repeat password", stateText: $repeatedPassword)
                 
-                Button(action: signIn) {
-                    Text("Sign In")
-                        .foregroundColor(.bookstaGrey50)
-                        .padding(.vertical, 16)
-                        .padding(.horizontal, 40)
-                        .background(Color.bookstaPink)
-                        .clipShape(Capsule())
-                        .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
-                }
+                NavigationLink(destination: ProfileView(), isActive: $moveToNextPage) { EmptyView() }
+                Button(action: checkFields, label: {
+                    signUpButtonView
+                })
+                .padding(.top, 20)
             }
             .opacity(self.ownIndex == 1 ? 1 : 0)
-            
         }
         .padding()
-        .padding(.bottom, 65)
+        .padding(.bottom, 30)
         .background(Color.bookstaGrey500)
         .clipShape(CShapeRightCurve())
         .contentShape(CShapeRightCurve())
+        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: -5)
         .onTapGesture {
             self.ownIndex = 1
             self.logInIndex = 0
         }
         .cornerRadius(35)
         .padding(.horizontal, 20)
+    }
+    
+    private var signUpButtonView: some View {
+        Text("Sign Up")
+            .foregroundColor(.bookstaGrey50)
+            .padding(.vertical, 16)
+            .padding(.horizontal, 40)
+            .background(Color.bookstaPink)
+            .clipShape(Capsule())
+            .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
     }
     
     ///Function to call for email field
@@ -77,7 +90,6 @@ struct SignUpView: View {
                 Image(systemName: "envelope")
                     .font(.system(size: 20))
                     .foregroundColor(.bookstaPink)
-                
                 TextField(title, text: stateText)
                     .focused($fieldIsFocused)
                     .foregroundColor(.bookstaGrey50)
@@ -135,9 +147,25 @@ struct SignUpView: View {
         }
     }
     
-    private func signIn() {
+    private func checkFields() {
         fieldIsFocused = false
-        //viewModel.logInFunction(email: email, password: password)
+        showingAlertForUncompletedFields = !viewModel.checkFieldsAreCompleted(email: email, password1: password, password2: repeatedPassword)
+        showingAlertForPasswordsNotMacthing = !viewModel.checkPasswordsMatch(password1: password, password2: repeatedPassword)
+        if !(showingAlertForUncompletedFields || showingAlertForPasswordsNotMacthing) {
+            signUp()
+        }
+    }
+    
+    private func signUp() {
+        let credentials = SignUpModel(email: email, password: password, repeatedPassword: repeatedPassword)
+        AuthService.registerUser(withCredential: credentials, completion: { error in
+            if let error = error {
+                print("DEBUG - Failed to register user \(error.localizedDescription) ")
+                return
+            }
+            moveToNextPage = true
+            print("DEBUG - Succesfully registered user with firestore...")
+        })
     }
 }
 

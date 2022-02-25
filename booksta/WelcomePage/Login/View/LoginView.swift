@@ -8,27 +8,36 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State var email: String = ""
-    @State var password: String = ""
+    @ObservedObject var viewModel = LoginViewModel()
+    
+    @State private var email: String = ""
+    @State private var password: String = ""
     @State private var isPasswordHidden: Bool = true
+    @State private var showingAlert = false
+    @State private var moveToNextPage = false
+    @State private var couldNotLogIn = false
+    
     @Binding var ownIndex: Int
     @Binding var signUpIndex: Int
     
-    
     @FocusState private var fieldIsFocused: Bool
-    @ObservedObject var viewModel = LoginViewModel()
     
     var body: some View {
-        
-        ZStack(alignment: .bottom) {
-            logInView
-        }      .edgesIgnoringSafeArea(.all)
+        logInView
+            .alert("Make sure that all fields are completed",
+                   isPresented: $showingAlert) {
+                Button("OK", role: .none) { }
+            }
+            .alert("Username or password is invalid",
+                   isPresented: $couldNotLogIn) {
+                Button("OK", role: .none) { }
+            }
     }
     
     private var logInTitle: some View {
         HStack {
-            Text("Login")
-                .foregroundColor(.white)
+            Text("Log In")
+                .foregroundColor(self.ownIndex == 1 ? .white : .gray)
                 .font(.title)
                 .fontWeight(.bold)
             Spacer(minLength: 0)
@@ -43,24 +52,20 @@ struct LoginView: View {
                 getEmailField(title: "Email address", stateText: $email)
                 getFieldToBeCompleted(title: "Password", stateText: $password)
                 forgetPasswordView
-                
-                Button(action: logIn) {
-                    Text("Login")
-                        .foregroundColor(.bookstaGrey50)
-                        .padding(.vertical, 16)
-                        .padding(.horizontal, 40)
-                        .background(Color.bookstaPink)
-                        .clipShape(Capsule())
-                        .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
-                }
+                NavigationLink(destination: ProfileView(), isActive: $moveToNextPage) { EmptyView() }
+                Button(action: checkFields, label: {
+                    loginButtonView
+                })
+                .padding(.top, 20)
             }
             .opacity(self.ownIndex == 1 ? 1 : 0)
         }
         .padding()
-        .padding(.bottom, 65)
+        .padding(.bottom, 30)
         .background(Color.bookstaGrey500)
         .clipShape(CShapeLeftCurve())
         .contentShape(CShapeLeftCurve())
+        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: -5)
         .onTapGesture {
             self.ownIndex = 1
             self.signUpIndex = 0
@@ -68,6 +73,16 @@ struct LoginView: View {
         }
         .cornerRadius(35)
         .padding(.horizontal, 20)
+    }
+    
+    private var loginButtonView: some View {
+        Text("Log In")
+            .foregroundColor(.bookstaGrey50)
+            .padding(.vertical, 16)
+            .padding(.horizontal, 40)
+            .background(Color.bookstaPink)
+            .clipShape(Capsule())
+            .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
     }
     
     ///Function to call for email field
@@ -100,7 +115,6 @@ struct LoginView: View {
         HStack {
             Spacer()
             Button(action: {
-                
             }) {
                 Text("Forget password?")
                     .foregroundColor(.bookstaGrey50)
@@ -148,9 +162,25 @@ struct LoginView: View {
         }
     }
     
-    private func logIn() {
+    private func checkFields() {
         fieldIsFocused = false
-        viewModel.logInFunction(email: email, password: password)
+        //TODO: show an alert
+        showingAlert = !viewModel.checkFieldsAreCompleted(email: email, password: password)
+        if !showingAlert {
+            logIn()
+        }
+    }
+    
+    private func logIn() {
+        AuthService.logUserIn(withEmail: email, password: password) { (result,error) in
+            if let error = error {
+                print("DEBUG - Failed to log in user \(error.localizedDescription) ")
+                couldNotLogIn = true
+                return
+            }
+            moveToNextPage = true
+            print("DEBUG - Succesfully logged in user with firestore...")
+        }
     }
 }
 
@@ -160,33 +190,6 @@ struct LoginView: View {
 //            LoginView(, index: 0)
 //        }
 //    }
-
-struct CShapeLeftCurve : Shape {
-    func path(in rect: CGRect) -> Path {
-        return Path{path in
-            //right side curve
-            path.move(to: CGPoint(x: rect.width, y: 120))
-            path.addLine(to: CGPoint(x: rect.width, y: rect.height))
-            path.addLine(to: CGPoint(x: 0, y: rect.height))
-            path.addLine(to: CGPoint(x: 0, y: 0))
-        }
-    }
-}
-
-
-struct CShapeRightCurve : Shape {
-    func path(in rect: CGRect) -> Path {
-        return Path{path in
-            //right side curve
-            path.move(to: CGPoint(x: 0, y: 120))
-            path.addLine(to: CGPoint(x: 0, y: rect.height))
-            path.addLine(to: CGPoint(x: rect.width, y: rect.height))
-            path.addLine(to: CGPoint(x: rect.width, y: 0))
-        }
-    }
-}
-
-
 
 extension View {
     func hideKeyboard() {

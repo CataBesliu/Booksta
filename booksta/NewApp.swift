@@ -6,14 +6,28 @@
 //
 
 import SwiftUI
+import Firebase
 
 @main
 struct NewApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-
+    
+    
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            checkIfUserIsLoggedIn()
         }
     }
+    
+    func checkIfUserIsLoggedIn() -> some View {
+        //DispatchQueue.main.async {
+        if Auth.auth().currentUser == nil {
+            return HomeView()
+                .eraseToAnyView()
+        } else {
+            return ProfileView()
+                .eraseToAnyView()
+        }
+    }
+
 }

@@ -1,0 +1,6 @@
+framework module Pods_booksta {
+  umbrella header "Pods-booksta-umbrella.h"
+
+  export *
+  module * { export * }
+}
