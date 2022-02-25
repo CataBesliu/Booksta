@@ -52,7 +52,7 @@ struct LoginView: View {
                 getEmailField(title: "Email address", stateText: $email)
                 getFieldToBeCompleted(title: "Password", stateText: $password)
                 forgetPasswordView
-                NavigationLink(destination: ProfileView(), isActive: $moveToNextPage) { EmptyView() }
+                NavigationLink(destination: TabBarView(), isActive: $moveToNextPage) { EmptyView() }
                 Button(action: checkFields, label: {
                     loginButtonView
                 })

@@ -12,23 +12,31 @@ struct ProfileView: View {
     @State private var isUserLoggedOut = false
     private var profileImage: UIImage?
     
+    init(){
+        UINavigationBar.setAnimationsEnabled(false)
+    }
+    
     var body: some View {
-        VStack {
-        Button(action: {
-            
-        }) {
-            Image(systemName: "photo")
-                .font(.system(size: 30))
-        }
-            NavigationLink(destination: HomeView()
-                            .navigationBarBackButtonHidden(true),
-                           isActive: $isUserLoggedOut) { EmptyView() }
-            Button(action: logOut) {
-                logOutButtonView
+        NavigationView {
+            VStack {
+                Button(action: {
+                    
+                }) {
+                    Image(systemName: "photo")
+                        .font(.system(size: 30))
+                }
+                NavigationLink(destination: HomeView()
+                                .navigationBarBackButtonHidden(true),
+                               isActive: $isUserLoggedOut) { EmptyView() }
+                Button(action: logOut) {
+                    logOutButtonView
+                }
+                Spacer()
+                
             }
-
+            .navigationBarBackButtonHidden(true)
+            //.frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .navigationBarBackButtonHidden(true)
     }
     
     private var logOutButtonView: some View {

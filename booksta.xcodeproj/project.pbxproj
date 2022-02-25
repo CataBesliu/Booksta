@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		29AF64A1B4A4203C3BA9A277 /* Pods_booksta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17584B70769625452ABB2174 /* Pods_booksta.framework */; };
+		722883EA27C9795B006EB7A4 /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722883E927C9795B006EB7A4 /* TabBarView.swift */; };
 		7263379927C6738F001D59FE /* ImageUploaderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7263379827C6738F001D59FE /* ImageUploaderService.swift */; };
 		7263379B27C6739C001D59FE /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7263379A27C6739C001D59FE /* AuthService.swift */; };
 		7263379F27C675A6001D59FE /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7263379E27C675A6001D59FE /* LoginModel.swift */; };
@@ -61,6 +62,7 @@
 		13D5265699A2DEC64800924F /* Pods-bookstaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookstaTests.release.xcconfig"; path = "Target Support Files/Pods-bookstaTests/Pods-bookstaTests.release.xcconfig"; sourceTree = "<group>"; };
 		17584B70769625452ABB2174 /* Pods_booksta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_booksta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DBDE22E3F1A34F571EEF9C8 /* Pods-bookstaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookstaTests.debug.xcconfig"; path = "Target Support Files/Pods-bookstaTests/Pods-bookstaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		722883E927C9795B006EB7A4 /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		7263379827C6738F001D59FE /* ImageUploaderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploaderService.swift; sourceTree = "<group>"; };
 		7263379A27C6739C001D59FE /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		7263379E27C675A6001D59FE /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -127,6 +129,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		722883E727C9792B006EB7A4 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				722883E827C97936006EB7A4 /* View */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
+		722883E827C97936006EB7A4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				722883E927C9795B006EB7A4 /* TabBarView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		7263379727C67362001D59FE /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -250,6 +268,7 @@
 		72CDE62227C2ED8700C83327 /* TabBarElements */ = {
 			isa = PBXGroup;
 			children = (
+				722883E727C9792B006EB7A4 /* TabBar */,
 				72CDE62327C2ED9000C83327 /* ProfileTab */,
 			);
 			path = TabBarElements;
@@ -637,6 +656,7 @@
 				72B2C93D27C01BB100554C72 /* LoginViewModel.swift in Sources */,
 				72B2C93A27C00AC600554C72 /* LoginView.swift in Sources */,
 				7263379B27C6739C001D59FE /* AuthService.swift in Sources */,
+				722883EA27C9795B006EB7A4 /* TabBarView.swift in Sources */,
 				72CDE62127C2E61400C83327 /* SignUpViewModel.swift in Sources */,
 				72B2C91027C00A7500554C72 /* booksta.xcdatamodeld in Sources */,
 				72D9563027C6C405006C0D88 /* View+Extension.swift in Sources */,
