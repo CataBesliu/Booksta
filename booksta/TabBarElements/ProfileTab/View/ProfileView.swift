@@ -27,7 +27,7 @@ struct ProfileView: View {
                     Image(systemName: "photo")
                         .font(.system(size: 30))
                 }
-                Button(action: logOut) {
+                Button(action: viewModel.logOut) {
                     logOutButtonView
                 }
                 Spacer()
@@ -46,16 +46,6 @@ struct ProfileView: View {
             .background(Color.bookstaPink)
             .clipShape(Capsule())
             .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
-    }
-    
-    private func logOut() {
-        do {
-            try Auth.auth().signOut()
-            isUserLoggedOut = true
-            viewModel.checkIfUserIsLoggedIn()
-        } catch {
-            print("DEBUG: Failed to sign out")
-        }
     }
     
     func handleProfilePhotoSelect() {

@@ -6,7 +6,10 @@
 //
 
 import SwiftUI
+import Resolver
+
 struct SignUpView: View {
+    @ObservedObject var profileViewModel : ProfileViewModel = Resolver.resolve()
     @ObservedObject var viewModel = SignUpViewModel()
     
     @State private var email: String = ""
@@ -161,6 +164,7 @@ struct SignUpView: View {
                 print("DEBUG - Failed to register user \(error.localizedDescription) ")
                 return
             }
+            //TODO: check if an email was already registered
             print("DEBUG - Succesfully registered user with firestore...")
             profileViewModel.checkIfUserIsLoggedIn()
         })

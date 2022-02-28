@@ -9,8 +9,8 @@ import SwiftUI
 import Resolver
 
 struct LoginView: View {
-    @ObservedObject var viewModel = LoginViewModel()
     @ObservedObject var profileViewModel : ProfileViewModel = Resolver.resolve()
+    @ObservedObject var viewModel = LoginViewModel()
     
     @State private var email: String = ""
     @State private var password: String = ""
@@ -178,7 +178,6 @@ struct LoginView: View {
                 couldNotLogIn = true
                 return
             }
-            moveToNextPage = true
             print("DEBUG - Succesfully logged in user with firestore...")
             profileViewModel.checkIfUserIsLoggedIn()
         }

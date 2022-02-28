@@ -9,20 +9,13 @@ import SwiftUI
 import Firebase
 
 struct TabBarView: View {
-    @State private var isUserLoggedOut = false
     @Environment(\.presentationMode) var presentationMode
-    let strings = ["1","2","3","4","5","6","7","8","5","3","2","1","4","56","7"]
     
     @State private var selection = 0
     var body: some View {
         NavigationView {
             TabView(selection: $selection) {
-                
-                List(strings, id: \.self) { string in
-                    NavigationLink(destination: Text("\(string)")) {
-                        Text("\(string)")
-                    }
-                }
+                Text("Feed")
                 .tabItem {
                     Label("Home", systemImage: "house.circle.fill")
                 }
@@ -59,26 +52,6 @@ struct TabBarView: View {
             .navigationBarHidden(true)
         }
         .edgesIgnoringSafeArea(.all)
-    }
-    
-    private var logOutButtonView: some View {
-        Text("Log out")
-            .foregroundColor(.bookstaGrey50)
-            .padding(.vertical, 16)
-            .padding(.horizontal, 40)
-            .background(Color.bookstaPink)
-            .clipShape(Capsule())
-            .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
-    }
-    
-    private func logOut() {
-        do {
-            try Auth.auth().signOut()
-            isUserLoggedOut = true
-            self.presentationMode.wrappedValue.dismiss()
-        } catch {
-            print("DEBUG: Failed to sign out")
-        }
     }
 }
 
