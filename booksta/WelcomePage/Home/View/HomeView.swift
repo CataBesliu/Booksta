@@ -29,6 +29,7 @@ struct HomeView: View {
                 }
                 Spacer()
             }
+            .navigationBarBackButtonHidden(true)
             .edgesIgnoringSafeArea(.all)
             .background(Color.bookstaBackground)
             .preferredColorScheme(.dark)

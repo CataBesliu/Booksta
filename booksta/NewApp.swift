@@ -7,27 +7,22 @@
 
 import SwiftUI
 import Firebase
+import Resolver
 
 @main
 struct NewApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    
+    @State var isPresentingEditView = false
+    @ObservedObject var viewModel: ProfileViewModel = Resolver.resolve()
     
     var body: some Scene {
         WindowGroup {
-            checkIfUserIsLoggedIn()
+            HomeView()
+                .onAppear(perform: viewModel.checkIfUserIsLoggedIn)
+                .fullScreenCover(isPresented: $isPresentingEditView, content: TabBarView.init)
+                .onReceive(viewModel.$isUserLoggedIn) { result in
+                    self.isPresentingEditView = result
+                }
         }
     }
-    
-    func checkIfUserIsLoggedIn() -> some View {
-        //DispatchQueue.main.async {
-        if Auth.auth().currentUser == nil {
-            return HomeView()
-                .eraseToAnyView()
-        } else {
-            return ProfileView()
-                .eraseToAnyView()
-        }
-    }
-
 }
