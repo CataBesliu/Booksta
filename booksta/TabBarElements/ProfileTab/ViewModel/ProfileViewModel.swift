@@ -13,7 +13,7 @@ class ProfileViewModel: ObservableObject {
     
     func logOut() {
         do {
-            try Auth.auth().signOut()
+            try Auth.auth().signOut() 
             checkIfUserIsLoggedIn()
         } catch {
             print("DEBUG: Failed to sign out")
