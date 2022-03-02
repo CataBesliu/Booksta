@@ -21,6 +21,10 @@ class ProfileViewModel: ObservableObject {
     }
     
     func checkIfUserIsLoggedIn() {
-        isUserLoggedIn = Auth.auth().currentUser != nil
+        let user = Auth.auth().currentUser
+        DispatchQueue.main.async { [weak self] in
+            guard let `self` = self else { return }
+            self.isUserLoggedIn = user != nil
+        }
     }
 }
