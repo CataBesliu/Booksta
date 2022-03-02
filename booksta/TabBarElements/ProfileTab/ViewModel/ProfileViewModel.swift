@@ -10,10 +10,24 @@ import Firebase
 
 class ProfileViewModel: ObservableObject {
     @Published var isUserLoggedIn: Bool = false
+    @Published var user: UserModel? {
+        didSet {
+             
+        }
+    }
+    
+    func getUserInformation() {
+//        user = UserService.getUserInfo()
+        UserService.getUserInfo { [weak self] userModel in
+            guard let `self` = self else { return }
+            self.user = userModel
+        }
+    }
     
     func logOut() {
         do {
-            try Auth.auth().signOut() 
+            try Auth.auth().signOut()
+            self.user = nil
             checkIfUserIsLoggedIn()
         } catch {
             print("DEBUG: Failed to sign out")

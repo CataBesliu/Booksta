@@ -32,7 +32,7 @@ struct AuthService {
                                        "uid":uid,
                                        "imageURL":"" ]
             
-            Firestore.firestore().collection("users").document(uid).setData(data, completion: completion)
+            USERS_COLLECTION.document(uid).setData(data, completion: completion)
         }
     }
 }
