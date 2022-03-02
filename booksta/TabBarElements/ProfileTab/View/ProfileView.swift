@@ -7,28 +7,35 @@
 
 import SwiftUI
 import Firebase
+import Resolver
 
 struct ProfileView: View {
     @State private var isUserLoggedOut = false
+    @ObservedObject var viewModel: ProfileViewModel = Resolver.resolve()
     private var profileImage: UIImage?
     
+    init(){
+        UINavigationBar.setAnimationsEnabled(false)
+    }
+    
     var body: some View {
-        VStack {
-        Button(action: {
-            
-        }) {
-            Image(systemName: "photo")
-                .font(.system(size: 30))
-        }
-            NavigationLink(destination: HomeView()
-                            .navigationBarBackButtonHidden(true),
-                           isActive: $isUserLoggedOut) { EmptyView() }
-            Button(action: logOut) {
-                logOutButtonView
+        NavigationView {
+            VStack {
+                Button(action: {
+                    
+                }) {
+                    Image(systemName: "photo")
+                        .font(.system(size: 30))
+                }
+                Button(action: viewModel.logOut) {
+                    logOutButtonView
+                }
+                Spacer()
+                
             }
-
+            .navigationBarBackButtonHidden(true)
+            //.frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .navigationBarBackButtonHidden(true)
     }
     
     private var logOutButtonView: some View {
@@ -39,15 +46,6 @@ struct ProfileView: View {
             .background(Color.bookstaPink)
             .clipShape(Capsule())
             .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
-    }
-    
-    private func logOut() {
-        do {
-            try Auth.auth().signOut()
-            isUserLoggedOut = true
-        } catch {
-            print("DEBUG: Failed to sign out")
-        }
     }
     
     func handleProfilePhotoSelect() {

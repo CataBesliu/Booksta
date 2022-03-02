@@ -6,7 +6,10 @@
 //
 
 import SwiftUI
+import Resolver
+
 struct SignUpView: View {
+    @ObservedObject var profileViewModel : ProfileViewModel = Resolver.resolve()
     @ObservedObject var viewModel = SignUpViewModel()
     
     @State private var email: String = ""
@@ -14,7 +17,6 @@ struct SignUpView: View {
     @State private var repeatedPassword: String = ""
     @State private var showingAlertForPasswordsNotMacthing = false
     @State private var showingAlertForUncompletedFields = false
-    @State private var moveToNextPage = false
     @State private var isPasswordHidden: Bool = true
     
     @Binding var ownIndex: Int
@@ -51,7 +53,6 @@ struct SignUpView: View {
                 getFieldToBeCompleted(title: "Password", stateText: $password)
                 getFieldToBeCompleted(title: "Repeat password", stateText: $repeatedPassword)
                 
-                NavigationLink(destination: ProfileView(), isActive: $moveToNextPage) { EmptyView() }
                 Button(action: checkFields, label: {
                     signUpButtonView
                 })
@@ -163,8 +164,9 @@ struct SignUpView: View {
                 print("DEBUG - Failed to register user \(error.localizedDescription) ")
                 return
             }
-            moveToNextPage = true
+            //TODO: check if an email was already registered
             print("DEBUG - Succesfully registered user with firestore...")
+            profileViewModel.checkIfUserIsLoggedIn()
         })
     }
 }

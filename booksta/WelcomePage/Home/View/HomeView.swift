@@ -16,7 +16,7 @@ struct HomeView: View {
             VStack {
                 Spacer()
                 //TODO: logo image
-                Image(systemName: "books.vertical.circle.fill")
+                Image(systemName: "book.closed.circle")
                     .font(.system(size: 80))
                     .foregroundColor(.bookstaPink)
                 
@@ -29,6 +29,7 @@ struct HomeView: View {
                 }
                 Spacer()
             }
+            .navigationBarBackButtonHidden(true)
             .edgesIgnoringSafeArea(.all)
             .background(Color.bookstaBackground)
             .preferredColorScheme(.dark)

@@ -6,15 +6,16 @@
 //
 
 import SwiftUI
+import Resolver
 
 struct LoginView: View {
+    @ObservedObject var profileViewModel : ProfileViewModel = Resolver.resolve()
     @ObservedObject var viewModel = LoginViewModel()
     
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPasswordHidden: Bool = true
     @State private var showingAlert = false
-    @State private var moveToNextPage = false
     @State private var couldNotLogIn = false
     
     @Binding var ownIndex: Int
@@ -52,7 +53,6 @@ struct LoginView: View {
                 getEmailField(title: "Email address", stateText: $email)
                 getFieldToBeCompleted(title: "Password", stateText: $password)
                 forgetPasswordView
-                NavigationLink(destination: ProfileView(), isActive: $moveToNextPage) { EmptyView() }
                 Button(action: checkFields, label: {
                     loginButtonView
                 })
@@ -178,8 +178,8 @@ struct LoginView: View {
                 couldNotLogIn = true
                 return
             }
-            moveToNextPage = true
             print("DEBUG - Succesfully logged in user with firestore...")
+            profileViewModel.checkIfUserIsLoggedIn()
         }
     }
 }
