@@ -24,8 +24,13 @@ struct ProfileView: View {
                 Button(action: {
                     
                 }) {
+                    VStack {
                     Image(systemName: "photo")
                         .font(.system(size: 30))
+                        if let user = viewModel.user {
+                            Text("\(user.email)")
+                        }
+                    }
                 }
                 Button(action: viewModel.logOut) {
                     logOutButtonView
@@ -36,6 +41,7 @@ struct ProfileView: View {
             .navigationBarBackButtonHidden(true)
             //.frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .onAppear(perform: viewModel.getUserInformation)
     }
     
     private var logOutButtonView: some View {
