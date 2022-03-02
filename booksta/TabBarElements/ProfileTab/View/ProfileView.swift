@@ -30,7 +30,7 @@ struct ProfileView: View {
                         if let user = viewModel.user {
                             Text("\(user.email)")
                         }
-                    }
+                     }
                 }
                 Button(action: viewModel.logOut) {
                     logOutButtonView
