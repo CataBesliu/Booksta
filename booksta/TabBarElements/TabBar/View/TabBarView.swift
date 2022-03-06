@@ -13,6 +13,7 @@ struct TabBarView: View {
     
     @State private var selection = 0
     var body: some View {
+        GeometryReader { _ in
         TabView(selection: $selection) {
             Text("Feed")
                 .tabItem {
@@ -67,6 +68,7 @@ struct TabBarView: View {
         
         //            .tabViewStyle(PageTabViewStyle())
         //TODO: change tab bar color
+        }
     }
 }
 

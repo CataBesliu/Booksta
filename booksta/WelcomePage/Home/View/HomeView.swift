@@ -33,6 +33,7 @@ struct HomeView: View {
             .edgesIgnoringSafeArea(.all)
             .background(Color.bookstaBackground)
             .preferredColorScheme(.dark)
+            
         }
     }
 }

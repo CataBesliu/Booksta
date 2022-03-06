@@ -10,6 +10,8 @@ import SwiftUI
 struct PeopleSearchView: View {
     @Binding var ownIndex: Int
     @Binding var bookViewIndex: Int
+    @State var searchText = ""
+    var listOfPeople = ["A","Ba","C","DE","E","F","G"]
     
     var body: some View {
         VStack {
@@ -17,24 +19,14 @@ struct PeopleSearchView: View {
                 Spacer()
                 Text("People search")
                     .padding(5)
+            }
+            SearchBar(text: $searchText)
+            ScrollView {
+                ForEach(listOfPeople.filter({ searchText.isEmpty ? true : $0.contains(searchText) }), id: \.self) { item in
+                    Text(item)
+                }
                 
                 //                Spacer()
-            }
-            ScrollView {
-//                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-//                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-//                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-//                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-//                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
-                Text("bfdjbdbvdsvbdbvkdbvksdvbsdkvbsdbvksbvkjdsvsdvdsvsdvsdvsvsd")
             }
             Spacer()
             
