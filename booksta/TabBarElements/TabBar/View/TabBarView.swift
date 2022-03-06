@@ -13,45 +13,60 @@ struct TabBarView: View {
     
     @State private var selection = 0
     var body: some View {
-        NavigationView {
-            TabView(selection: $selection) {
-                Text("Feed")
+        TabView(selection: $selection) {
+            Text("Feed")
                 .tabItem {
                     Label("Home", systemImage: "house.circle.fill")
                 }
                 .font(.system(.headline, design: .rounded))
                 .tag(0)
-                
-                Text("Review books")
-                    .tabItem {
-                        Label("Review", systemImage: "book.closed.circle")
-                    }
-                    .font(.system(.headline, design: .rounded))
-                    .tag(1)
-                Text("Add post")
-                    .tabItem {
-                        Label("Post", systemImage:"photo.circle.fill")
-                    }
-                    .font(.system(.headline, design: .rounded))
-                    .tag(2)
-                ProfileView()
-                    .tabItem {
-                        Label("Profile", systemImage: "person.crop.circle.fill")
-                    }
-                    .tag(3)
-            }
-            .onAppear() {
-                UITabBar.appearance().backgroundColor = .darkGray
-                UITabBar.appearance().barTintColor = .white
-            }
-            .accentColor(.bookstaPink)
-            .background(Color.bookstaGrey500)
-            //TODO: change tab bar color
-            .navigationBarTitle("")
-            .navigationBarBackButtonHidden(true)
-            .navigationBarHidden(true)
+            
+            
+            GeneralSearchView()
+                .frame(maxWidth: .infinity)
+                .tabItem {
+                    Label("Search", systemImage: "magnifyingglass.circle.fill")
+                }
+                .font(.system(.headline, design: .rounded))
+            
+                .tag(1)
+            
+            
+            //            Text("Review books")
+            SecondAttempt()
+                .tabItem {
+                    Label("Review", systemImage: "book.closed.circle")
+                }
+                .font(.system(.headline, design: .rounded))
+                .tag(2)
+            
+            Text("Add post")
+                .tabItem {
+                    Label("Post", systemImage:"photo.circle.fill")
+                }
+                .font(.system(.headline, design: .rounded))
+                .tag(3)
+            
+            ProfileView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.crop.circle.fill")
+                }
+                .tag(4)
         }
+        .onAppear() {
+            UITabBar.appearance().backgroundColor = .darkGray
+            UITabBar.appearance().barTintColor = .white
+        }
+        .accentColor(.bookstaPink)
+        .background(Color.bookstaGrey500)
+        .frame(
+            width: UIScreen.main.bounds.width ,
+            height: UIScreen.main.bounds.height
+        )
         .edgesIgnoringSafeArea(.all)
+        
+        //            .tabViewStyle(PageTabViewStyle())
+        //TODO: change tab bar color
     }
 }
 
