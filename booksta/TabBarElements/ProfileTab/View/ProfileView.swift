@@ -20,17 +20,35 @@ struct ProfileView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
-                Button(action: {
-                    
-                }) {
+            VStack(spacing: 20) {
+                ZStack(alignment: .leading) {
                     VStack {
-                    Image(systemName: "photo")
-                        .font(.system(size: 30))
-                        if let user = viewModel.user {
-                            Text("\(user.email)")
+                        Text("Books read")
+                        Text("")
+                    }
+                    .padding(.leading, 20)
+                    ZStack(alignment: .trailing){
+                        HStack{
+                            Spacer()
+                            Button(action: {
+                                //TODO: Add photo functionality
+                                handleProfilePhotoSelect()
+                            }) {
+                                Image(systemName: "person.crop.circle")
+                                    .resizable()
+                                    .frame(width: 50, height: 50, alignment: .center)
+                            }
+                            Spacer()
                         }
-                     }
+                        VStack {
+                            Text("Following")
+                            Text("")
+                        }
+                        .padding(.trailing, 20)
+                    }
+                }
+                if let user = viewModel.user {
+                    Text("\(user.email)")
                 }
                 Button(action: viewModel.logOut) {
                     logOutButtonView
@@ -39,7 +57,6 @@ struct ProfileView: View {
                 
             }
             .navigationBarBackButtonHidden(true)
-            //.frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .onAppear(perform: viewModel.getUserInformation)
     }
