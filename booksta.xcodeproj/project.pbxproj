@@ -24,9 +24,10 @@
 		726337A627C6938F001D59FE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 726337A527C6938F001D59FE /* GoogleService-Info.plist */; };
 		72667F6527D1608A00EAB2D4 /* GeneralSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72667F6427D1608A00EAB2D4 /* GeneralSearchView.swift */; };
 		72667F6727D168E700EAB2D4 /* SecondAttempt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72667F6627D168E700EAB2D4 /* SecondAttempt.swift */; };
+		726D709127D6370A001EE64F /* PeopleSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726D709027D6370A001EE64F /* PeopleSearchViewModel.swift */; };
+		726D709327D63DE6001EE64F /* DataState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726D709227D63DE6001EE64F /* DataState.swift */; };
+		726D709527D64434001EE64F /* PeopleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726D709427D64434001EE64F /* PeopleListView.swift */; };
 		72A1C93D27D4FE9B0070E344 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A1C93C27D4FE9B0070E344 /* SearchBar.swift */; };
-		72A1C93F27D50AA80070E344 /* KeyboardAdaptive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A1C93E27D50AA80070E344 /* KeyboardAdaptive.swift */; };
-		72A1C94127D50AFB0070E344 /* Publishers+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A1C94027D50AFB0070E344 /* Publishers+Extensions.swift */; };
 		72B2C90627C00A7500554C72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B2C90527C00A7500554C72 /* AppDelegate.swift */; };
 		72B2C91027C00A7500554C72 /* booksta.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 72B2C90E27C00A7500554C72 /* booksta.xcdatamodeld */; };
 		72B2C91227C00A7D00554C72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 72B2C91127C00A7D00554C72 /* Assets.xcassets */; };
@@ -90,9 +91,10 @@
 		726337A527C6938F001D59FE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		72667F6427D1608A00EAB2D4 /* GeneralSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSearchView.swift; sourceTree = "<group>"; };
 		72667F6627D168E700EAB2D4 /* SecondAttempt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondAttempt.swift; sourceTree = "<group>"; };
+		726D709027D6370A001EE64F /* PeopleSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleSearchViewModel.swift; sourceTree = "<group>"; };
+		726D709227D63DE6001EE64F /* DataState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataState.swift; sourceTree = "<group>"; };
+		726D709427D64434001EE64F /* PeopleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleListView.swift; sourceTree = "<group>"; };
 		72A1C93C27D4FE9B0070E344 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
-		72A1C93E27D50AA80070E344 /* KeyboardAdaptive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAdaptive.swift; sourceTree = "<group>"; };
-		72A1C94027D50AFB0070E344 /* Publishers+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publishers+Extensions.swift"; sourceTree = "<group>"; };
 		72B2C90227C00A7500554C72 /* booksta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = booksta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B2C90527C00A7500554C72 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		72B2C90F27C00A7500554C72 /* booksta.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = booksta.xcdatamodel; sourceTree = "<group>"; };
@@ -174,8 +176,7 @@
 			children = (
 				722FCC9B27CFD77100126903 /* Collections.swift */,
 				72A1C93C27D4FE9B0070E344 /* SearchBar.swift */,
-				72A1C93E27D50AA80070E344 /* KeyboardAdaptive.swift */,
-				72A1C94027D50AFB0070E344 /* Publishers+Extensions.swift */,
+				726D709227D63DE6001EE64F /* DataState.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -191,6 +192,8 @@
 		722FCCA227D00A1600126903 /* SearchTabItem */ = {
 			isa = PBXGroup;
 			children = (
+				726D708D27D636CB001EE64F /* BookSearch */,
+				726D708A27D63690001EE64F /* PeopleSearch */,
 				722FCCA427D00A2B00126903 /* ViewModel */,
 				722FCCA327D00A2200126903 /* View */,
 			);
@@ -200,8 +203,6 @@
 		722FCCA327D00A2200126903 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				722FCCA527D00A3B00126903 /* BookSearchView.swift */,
-				722FCCA727D00C6200126903 /* PeopleSearchView.swift */,
 				72667F6427D1608A00EAB2D4 /* GeneralSearchView.swift */,
 				72667F6627D168E700EAB2D4 /* SecondAttempt.swift */,
 			);
@@ -248,6 +249,56 @@
 				722FCCA027D008AD00126903 /* SearchShapes.swift */,
 			);
 			path = Shapes;
+			sourceTree = "<group>";
+		};
+		726D708A27D63690001EE64F /* PeopleSearch */ = {
+			isa = PBXGroup;
+			children = (
+				726D708C27D636B7001EE64F /* ViewModel */,
+				726D708B27D636A8001EE64F /* View */,
+			);
+			path = PeopleSearch;
+			sourceTree = "<group>";
+		};
+		726D708B27D636A8001EE64F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				722FCCA727D00C6200126903 /* PeopleSearchView.swift */,
+				726D709427D64434001EE64F /* PeopleListView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		726D708C27D636B7001EE64F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				726D709027D6370A001EE64F /* PeopleSearchViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		726D708D27D636CB001EE64F /* BookSearch */ = {
+			isa = PBXGroup;
+			children = (
+				726D708F27D636D5001EE64F /* ViewModel */,
+				726D708E27D636D1001EE64F /* View */,
+			);
+			path = BookSearch;
+			sourceTree = "<group>";
+		};
+		726D708E27D636D1001EE64F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				722FCCA527D00A3B00126903 /* BookSearchView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		726D708F27D636D5001EE64F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		72B2C8F927C00A7500554C72 = {
@@ -721,19 +772,18 @@
 				72D9563327C6C829006C0D88 /* ProfileViewModel.swift in Sources */,
 				72CDE62627C2EDD700C83327 /* ProfileView.swift in Sources */,
 				722FCC9C27CFD77100126903 /* Collections.swift in Sources */,
-				72A1C94127D50AFB0070E344 /* Publishers+Extensions.swift in Sources */,
 				726337A127C675B7001D59FE /* SignUpModel.swift in Sources */,
 				72A1C93D27D4FE9B0070E344 /* SearchBar.swift in Sources */,
 				72C0185627C6E6ED0049D04B /* AppDelegate+Injection.swift in Sources */,
 				72ED9C7F27C0444700EEC6CB /* NewApp.swift in Sources */,
 				72ED9C8127C047CC00EEC6CB /* SceneDelegate.swift in Sources */,
 				722FCC9F27CFE66900126903 /* UserModel.swift in Sources */,
+				726D709527D64434001EE64F /* PeopleListView.swift in Sources */,
 				722FCCA627D00A3B00126903 /* BookSearchView.swift in Sources */,
 				72667F6527D1608A00EAB2D4 /* GeneralSearchView.swift in Sources */,
 				722FCCA127D008AD00126903 /* SearchShapes.swift in Sources */,
 				722FCC9927CFD72400126903 /* UserService.swift in Sources */,
 				72ED9C8627C1CB1A00EEC6CB /* HomeView.swift in Sources */,
-				72A1C93F27D50AA80070E344 /* KeyboardAdaptive.swift in Sources */,
 				7263379F27C675A6001D59FE /* LoginModel.swift in Sources */,
 				7263379927C6738F001D59FE /* ImageUploaderService.swift in Sources */,
 				7224499E27CD5C1A002104F7 /* RootView.swift in Sources */,
@@ -742,11 +792,13 @@
 				72B2C90627C00A7500554C72 /* AppDelegate.swift in Sources */,
 				72B2C93D27C01BB100554C72 /* LoginViewModel.swift in Sources */,
 				72B2C93A27C00AC600554C72 /* LoginView.swift in Sources */,
+				726D709327D63DE6001EE64F /* DataState.swift in Sources */,
 				7263379B27C6739C001D59FE /* AuthService.swift in Sources */,
 				722883EA27C9795B006EB7A4 /* TabBarView.swift in Sources */,
 				72CDE62127C2E61400C83327 /* SignUpViewModel.swift in Sources */,
 				72B2C91027C00A7500554C72 /* booksta.xcdatamodeld in Sources */,
 				72D9563027C6C405006C0D88 /* View+Extension.swift in Sources */,
+				726D709127D6370A001EE64F /* PeopleSearchViewModel.swift in Sources */,
 				726337A427C676C0001D59FE /* LoginSignUpShapes.swift in Sources */,
 				722FCCA827D00C6200126903 /* PeopleSearchView.swift in Sources */,
 			);

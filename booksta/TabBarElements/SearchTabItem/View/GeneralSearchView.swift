@@ -12,12 +12,13 @@ struct GeneralSearchView: View {
     @State var indexForPeopleSearch = 0
     var body: some View {
         ZStack {
-            BookSearchView(ownIndex: self.$indexForBookSearch, peopleViewIndex: self.$indexForPeopleSearch)
+            BookSearchView(ownIndex: self.$indexForBookSearch, peopleViewIndex: self.$indexForPeopleSearch, curbeRadius: 30, curbeHeight: 50)
                 .zIndex(Double(self.indexForBookSearch))
             
-            PeopleSearchView(ownIndex: self.$indexForPeopleSearch, bookViewIndex: self.$indexForBookSearch)
+            PeopleSearchView(ownIndex: self.$indexForPeopleSearch, bookViewIndex: self.$indexForBookSearch, curbeRadius: 30, curbeHeight: 50)
                 .zIndex(Double(self.indexForPeopleSearch))
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
     }
 }
 
