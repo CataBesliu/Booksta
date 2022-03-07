@@ -48,7 +48,7 @@ struct TabBarView: View {
                 .font(.system(.headline, design: .rounded))
                 .tag(3)
             
-            ProfileView()
+            MainProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }

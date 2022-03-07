@@ -37,9 +37,7 @@ struct UserService {
                 return
             }
             guard let data = documentSnapshot else { return }
-            data.documents.forEach { document in
-                print("DEBUG: \(document)")
-            }
+        
             let users = data.documents.map ({ UserModel(dictionary: $0.data()) })
             print("DEBUG: Users succesfully retrieved")
             
