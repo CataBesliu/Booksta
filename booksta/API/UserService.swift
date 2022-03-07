@@ -26,4 +26,25 @@ struct UserService {
             
         }
     }
+    
+    static func getUsers(completion: @escaping([UserModel]?,String?) -> Void) {
+        // Gets current user uid
+        USERS_COLLECTION.getDocuments { documentSnapshot, error in
+            // documentSnapshot data returns a nsdictionary
+            if let error = error {
+                print("DEBUG: Error retrieving users - \(error.localizedDescription)")
+                completion(nil, error.localizedDescription)
+                return
+            }
+            guard let data = documentSnapshot else { return }
+            data.documents.forEach { document in
+                print("DEBUG: \(document)")
+            }
+            let users = data.documents.map ({ UserModel(dictionary: $0.data()) })
+            print("DEBUG: Users succesfully retrieved")
+            
+            completion(users, nil)
+            
+        }
+    }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CShapeLeftCurve : Shape {
     func path(in rect: CGRect) -> Path {
-        return Path{path in
+        return Path { path in
             //right side curve
             path.move(to: CGPoint(x: rect.width, y: 120))
             path.addLine(to: CGPoint(x: rect.width, y: rect.height))
@@ -22,7 +22,7 @@ struct CShapeLeftCurve : Shape {
 
 struct CShapeRightCurve : Shape {
     func path(in rect: CGRect) -> Path {
-        return Path{path in
+        return Path { path in
             //right side curve
             path.move(to: CGPoint(x: 0, y: 120))
             path.addLine(to: CGPoint(x: 0, y: rect.height))

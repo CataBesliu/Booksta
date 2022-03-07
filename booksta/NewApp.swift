@@ -17,12 +17,13 @@ struct NewApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeView()
-                .onAppear(perform: viewModel.checkIfUserIsLoggedIn)
-                .fullScreenCover(isPresented: $isPresentingEditView, content: TabBarView.init)
-                .onReceive(viewModel.$isUserLoggedIn) { result in
-                    self.isPresentingEditView = result
-                }
+                HomeView()
+                    .onAppear(perform: viewModel.checkIfUserIsLoggedIn)
+                    .fullScreenCover(isPresented: $isPresentingEditView, content: TabBarView.init)
+                    .onReceive(viewModel.$isUserLoggedIn) { result in
+                        self.isPresentingEditView = result
+                
+            }
         }
     }
 }
