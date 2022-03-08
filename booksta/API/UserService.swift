@@ -9,20 +9,21 @@ import Foundation
 import Firebase
 
 struct UserService {
-    static func getUserInfo(completion: @escaping(UserModel) -> Void) {
+    static func getUserInfo(completion: @escaping(UserModel?, String?) -> Void) {
         // Gets current user uid
         guard let uid = Auth.auth().currentUser?.uid else { return }
         USERS_COLLECTION.document(uid).getDocument { documentSnapshot, error in
             // documentSnapshot data returns a nsdictionary
             if let error = error {
                 print("DEBUG: Error retrieving document - \(error.localizedDescription)")
+                completion(nil,error.localizedDescription)
                 return
             }
             guard let data = documentSnapshot?.data() else { return }
             print("DEBUG: Document succesfully retrieved")
             
             let user = UserModel(dictionary: data)
-            completion(user)
+            completion(user, nil)
             
         }
     }

@@ -31,10 +31,10 @@ class PeopleSearchViewModel: ObservableObject {
                 self.state = .error(error)
             } else if let users = users {
                 if searchTerm.isEmpty {
-                    self.state = .loaded(users)
-                    self.listOfPeople = users
+                    self.listOfPeople = self.getFilteredList(unfilteredList: users, searchText: searchTerm)
+                    self.state = .loaded(self.listOfPeople)
                 } else {
-                    var list = self.getFilteredList(unfilteredList: users, searchText: searchTerm)
+                    let list = self.getFilteredList(unfilteredList: users, searchText: searchTerm)
                     self.state = .loaded(list)
                     self.listOfPeople = list
                 }
@@ -43,7 +43,10 @@ class PeopleSearchViewModel: ObservableObject {
     }
     
     func getFilteredList(unfilteredList: [UserModel], searchText: String) -> [UserModel] {
-        return unfilteredList.filter({ searchText.isEmpty ? true : $0.email.contains(searchText) })
+        let loggedInUserEmail = UserDefaults.standard.string(forKey: "email")
+        return unfilteredList.filter({ searchText.isEmpty ? $0.email != loggedInUserEmail :
+            $0.email.lowercased().contains(searchText.lowercased()) &&
+            $0.email != loggedInUserEmail })
     }
     
 }

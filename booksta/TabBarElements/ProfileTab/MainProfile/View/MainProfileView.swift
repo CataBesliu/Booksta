@@ -21,9 +21,7 @@ struct MainProfileView: View {
     var body: some View {
         NavigationView {
             VStack(spacing: 20) {
-                if let user = viewModel.user {
-                    ProfileView(user: user, isMainProfile: true)
-                }
+                getProfileView()
                 Button(action: viewModel.logOut) {
                     logOutButtonView
                 }
@@ -44,44 +42,51 @@ struct MainProfileView: View {
             .clipShape(Capsule())
             .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
     }
-}
-
-struct ProfileView: View {
-    var user: UserModel
-    var isMainProfile: Bool = false
     
-    var body: some View {
+    private func getProfileView() -> some View {
         VStack(spacing: 20) {
-            ZStack(alignment: .leading) {
-                VStack {
-                    Text("Books read")
-                    Text("")
-                }
-                .padding(.leading, 20)
-                ZStack(alignment: .trailing){
-                    HStack{
-                        Spacer()
-                        Button(action: {
-                            //TODO: Add photo functionality
-                            handleProfilePhotoSelect()
-                        }) {
-                            Image(systemName: "person.crop.circle")
-                                .resizable()
-                                .frame(width: 50, height: 50, alignment: .center)
-                        }
-                        .disabled(!isMainProfile)
-                        Spacer()
-                    }
-                    VStack {
-                        Text("Following")
-                        Text("")
-                    }
-                    .padding(.trailing, 20)
-                }
+            getProfileHeaderView()
+            switch viewModel.state {
+            case .idle,.loading:
+                Text("Loading...")
+            case let .loaded(user):
+                Text("\(user.email)")
+            case let .error(error):
+                Text("\(error)")
             }
-            Text("\(user.email)")
+            Spacer()
         }
     }
+    
+    private func getProfileHeaderView() -> some View {
+        ZStack(alignment: .leading) {
+            VStack {
+                Text("Books read")
+                Text("")
+            }
+            .padding(.leading, 20)
+            ZStack(alignment: .trailing){
+                HStack{
+                    Spacer()
+                    Button(action: {
+                        //TODO: Add photo functionality
+                        handleProfilePhotoSelect()
+                    }) {
+                        Image(systemName: "person.crop.circle")
+                            .resizable()
+                            .frame(width: 50, height: 50, alignment: .center)
+                    }
+                    Spacer()
+                }
+                VStack {
+                    Text("Following")
+                    Text("")
+                }
+                .padding(.trailing, 20)
+            }
+        }
+    }
+    
     func handleProfilePhotoSelect() {
         print("print")
     }

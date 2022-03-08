@@ -9,24 +9,38 @@ import Foundation
 import Firebase
 
 class ProfileViewModel: ObservableObject {
+    @Published var state = DataState<UserModel>.idle
     @Published var isUserLoggedIn: Bool = false
     @Published var user: UserModel? {
         didSet {
-             
+            
         }
     }
     
     func getUserInformation() {
-//        user = UserService.getUserInfo()
-        UserService.getUserInfo { [weak self] userModel in
+        //        user = UserService.getUserInfo()
+        guard state == .idle else {
+            return
+        }
+        
+        state = .loading
+        
+        UserService.getUserInfo { [weak self] user,error in
             guard let `self` = self else { return }
-            self.user = userModel
+            if let error = error {
+                self.state = .error(error)
+            } else if let user = user {
+                self.state = .loaded(user)
+                UserDefaults.standard.set(user.email, forKey: "email")
+                self.user = user
+            }
         }
     }
     
     func logOut() {
         do {
             try Auth.auth().signOut()
+            self.state = .idle
             self.user = nil
             checkIfUserIsLoggedIn()
         } catch {

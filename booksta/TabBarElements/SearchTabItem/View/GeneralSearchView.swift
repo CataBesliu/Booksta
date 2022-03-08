@@ -22,7 +22,9 @@ struct GeneralSearchView: View {
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarHidden(true)
+        .transition(.move(edge: .bottom))
         }
+        .transition(.move(edge: .bottom))
     }
 }
 
