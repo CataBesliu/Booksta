@@ -11,6 +11,7 @@ struct GeneralSearchView: View {
     @State var indexForBookSearch = 1
     @State var indexForPeopleSearch = 0
     var body: some View {
+        NavigationView {
         ZStack {
             BookSearchView(ownIndex: self.$indexForBookSearch, peopleViewIndex: self.$indexForPeopleSearch, curbeRadius: 30, curbeHeight: 50)
                 .zIndex(Double(self.indexForBookSearch))
@@ -19,6 +20,11 @@ struct GeneralSearchView: View {
                 .zIndex(Double(self.indexForPeopleSearch))
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
+        .navigationBarTitle("", displayMode: .inline)
+        .navigationBarHidden(true)
+        .transition(.move(edge: .bottom))
+        }
+        .transition(.move(edge: .bottom))
     }
 }
 

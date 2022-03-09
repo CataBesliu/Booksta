@@ -37,7 +37,10 @@ struct PeopleSearchView: View {
         case let .loaded(users) :
             return ScrollView {
                 ForEach(users, id: \.self) { user in
-                    getUserCell(user: user)
+                    NavigationLink(destination: UserProfileView(user: user)
+                                    .transition(.move(edge: .bottom))) {
+                        getUserCell(user: user)
+                    }
                 }
             }
             .eraseToAnyView()

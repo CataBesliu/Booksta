@@ -7,10 +7,10 @@
 
 import SwiftUI
 import Firebase
-
+import Resolver
 struct TabBarView: View {
     @Environment(\.presentationMode) var presentationMode
-    
+    @ObservedObject var viewModel: ProfileViewModel = Resolver.resolve()
     @State private var selection = 0
     var body: some View {
         GeometryReader { _ in
@@ -48,7 +48,7 @@ struct TabBarView: View {
                 .font(.system(.headline, design: .rounded))
                 .tag(3)
             
-            ProfileView()
+            MainProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }
@@ -57,6 +57,7 @@ struct TabBarView: View {
         .onAppear() {
             UITabBar.appearance().backgroundColor = .darkGray
             UITabBar.appearance().barTintColor = .white
+            viewModel.getUserInformation()
         }
         .accentColor(.bookstaPink)
         .background(Color.bookstaGrey500)
