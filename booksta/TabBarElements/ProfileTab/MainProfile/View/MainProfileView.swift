@@ -29,6 +29,7 @@ struct MainProfileView: View {
                 
             }
             .navigationBarBackButtonHidden(true)
+            .navigationBarHidden(true)
         }
         .onAppear(perform: viewModel.getUserInformation)
     }
@@ -45,20 +46,22 @@ struct MainProfileView: View {
     
     private func getProfileView() -> some View {
         VStack(spacing: 20) {
-            getProfileHeaderView()
             switch viewModel.state {
             case .idle,.loading:
+                getProfileHeaderView(mainUser: nil)
                 Text("Loading...")
             case let .loaded(user):
+                getProfileHeaderView(mainUser: user)
                 Text("\(user.email)")
             case let .error(error):
+                getProfileHeaderView(mainUser: nil)
                 Text("\(error)")
             }
             Spacer()
         }
     }
     
-    private func getProfileHeaderView() -> some View {
+    private func getProfileHeaderView(mainUser: UserModel?) -> some View {
         ZStack(alignment: .leading) {
             VStack {
                 Text("Books read")
@@ -72,9 +75,16 @@ struct MainProfileView: View {
                         //TODO: Add photo functionality
                         handleProfilePhotoSelect()
                     }) {
+                        if let user = mainUser, !user.imageURL.isEmpty{
+                            //TODO: add image uploader
+//                                Image()
+//                                    .resizable()
+//                                    .frame(width: 50, height: 50, alignment: .center)
+                        } else {
                         Image(systemName: "person.crop.circle")
                             .resizable()
                             .frame(width: 50, height: 50, alignment: .center)
+                        }
                     }
                     Spacer()
                 }
