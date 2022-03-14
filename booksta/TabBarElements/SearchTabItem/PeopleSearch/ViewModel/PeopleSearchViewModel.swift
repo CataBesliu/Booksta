@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import Firebase
 
 class PeopleSearchViewModel: ObservableObject {
     @Published var state = DataState<[UserModel]>.idle
@@ -43,6 +44,7 @@ class PeopleSearchViewModel: ObservableObject {
     }
     
     func getFilteredList(unfilteredList: [UserModel], searchText: String) -> [UserModel] {
+//        let loggedInUserEmail = Auth.auth().currentUser?.email
         let loggedInUserEmail = UserDefaults.standard.string(forKey: "email")
         return unfilteredList.filter({ searchText.isEmpty ? $0.email != loggedInUserEmail :
             $0.email.lowercased().contains(searchText.lowercased()) &&

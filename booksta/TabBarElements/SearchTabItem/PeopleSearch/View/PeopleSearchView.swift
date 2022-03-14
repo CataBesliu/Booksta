@@ -21,13 +21,14 @@ struct PeopleSearchView: View {
     var body: some View {
         content
             .onAppear(perform: {
+                viewModel.searchText = ""
                 viewModel.fetchUsers(searchTerm: viewModel.searchText)
             })
     }
     
     private func getStateView(state: DataState<[UserModel]>) -> some View {
         switch state {
-        case .idle,.loading :
+        case .idle, .loading :
             return VStack {
                 Spacer()
                 Text("Loading...")
@@ -37,8 +38,7 @@ struct PeopleSearchView: View {
         case let .loaded(users) :
             return ScrollView {
                 ForEach(users, id: \.self) { user in
-                    NavigationLink(destination: UserProfileView(user: user)
-                                    .transition(.move(edge: .bottom))) {
+                    NavigationLink(destination: UserProfileView(viewModel: UserProfileViewModel(user: user))) {
                         getUserCell(user: user)
                     }
                 }
