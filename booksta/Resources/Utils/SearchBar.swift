@@ -60,7 +60,7 @@ struct SearchBar: View {
         }
         .onTapGesture {
             self.isEditing = true
-            self.text = ""
+//            self.text = ""
         }
         //TODO: animatioon
     }

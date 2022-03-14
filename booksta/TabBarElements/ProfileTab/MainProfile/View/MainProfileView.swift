@@ -35,13 +35,8 @@ struct MainProfileView: View {
     }
     
     private var logOutButtonView: some View {
-        Text("Log out")
-            .foregroundColor(.bookstaGrey50)
-            .padding(.vertical, 16)
-            .padding(.horizontal, 40)
-            .background(Color.bookstaPink)
+        BookstaButton(title: "Log out")
             .clipShape(Capsule())
-            .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
     }
     
     private func getProfileView() -> some View {

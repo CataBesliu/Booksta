@@ -76,13 +76,7 @@ struct LoginView: View {
     }
     
     private var loginButtonView: some View {
-        Text("Log In")
-            .foregroundColor(.bookstaGrey50)
-            .padding(.vertical, 16)
-            .padding(.horizontal, 40)
-            .background(Color.bookstaPink)
-            .clipShape(Capsule())
-            .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
+        BookstaButton(title: "Log In")
     }
     
     ///Function to call for email field
@@ -179,6 +173,7 @@ struct LoginView: View {
                 return
             }
             print("DEBUG - Succesfully logged in user with firestore...")
+    
             profileViewModel.checkIfUserIsLoggedIn()
         }
     }

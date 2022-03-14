@@ -7,6 +7,8 @@
 
 import Foundation
 import Firebase
+//A completion handler received from Firestore
+typealias FirestoreTypeCompletion = (Error?) -> Void
 
 struct UserService {
     static func getUserInfo(completion: @escaping(UserModel?, String?) -> Void) {
@@ -44,6 +46,44 @@ struct UserService {
             
             completion(users, nil)
             
+        }
+    }
+    //TODO: add time of following?
+    static func followUser(userToBeFollowedUID: String, completion: @escaping(FirestoreTypeCompletion)) {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        FOLLOWING_COLLECTION.document(currentUserUID).collection(USER_FOLLOWING_COLLECTION).document(userToBeFollowedUID).setData([:]) { error  in
+            FOLLOWERS_COLLECTION.document(userToBeFollowedUID).collection(USER_FOLLOWERS_COLLECTION).document(currentUserUID).setData([:], completion: completion )
+        }
+        
+    }
+    
+    static func unfollowUser(userToBeUnfollowedUID: String, completion: @escaping(FirestoreTypeCompletion)) {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        FOLLOWING_COLLECTION.document(currentUserUID).collection(USER_FOLLOWING_COLLECTION).document(userToBeUnfollowedUID).delete { error in
+            FOLLOWERS_COLLECTION.document(userToBeUnfollowedUID).collection(USER_FOLLOWERS_COLLECTION).document(currentUserUID).delete(completion: completion)
+        }
+    }
+    
+    static func getIsUserFollowed(userCheckedUID: String, completion: @escaping(Bool) -> Void) {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        FOLLOWING_COLLECTION.document(currentUserUID).collection(USER_FOLLOWING_COLLECTION).document(userCheckedUID).getDocument { documentSnapshot, error in
+            guard let isUserFollowed = documentSnapshot?.exists else { return }
+            completion(isUserFollowed)
+        }
+    }
+    
+    static func getUserProperties(uid: String, completion: @escaping(UserProperties) -> Void) {
+        FOLLOWING_COLLECTION.document(uid).collection(USER_FOLLOWING_COLLECTION).getDocuments { documentSnapshot, _ in
+            let nrFollowing = documentSnapshot?.documents.count ?? 0
+            BOOKS_READ_COLLECTION.document(uid).collection(USER_READ_BOOKS_COLLECTION).getDocuments { documentSnapshot, _  in
+                let nrBooksRead = documentSnapshot?.documents.count ?? 0
+                completion(UserProperties(following: nrFollowing, booksRead: nrBooksRead, review: 0, filters: []))
+                //TODO: review and filters
+//                REVIEWS_COLLECTION.document(uid).collection(USER_REVIEWS_COLLECTION).getDocuments { documentSnapshot, _  in
+//                    let reviews = documentSnapshot?.documents.count ?? 0
+//
+//                }
+            }
         }
     }
 }

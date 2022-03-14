@@ -18,7 +18,6 @@ class ProfileViewModel: ObservableObject {
     }
     
     func getUserInformation() {
-        //        user = UserService.getUserInfo()
         guard state == .idle else {
             return
         }
@@ -31,7 +30,6 @@ class ProfileViewModel: ObservableObject {
                 self.state = .error(error)
             } else if let user = user {
                 self.state = .loaded(user)
-                UserDefaults.standard.set(user.email, forKey: "email")
                 self.user = user
             }
         }
@@ -53,6 +51,7 @@ class ProfileViewModel: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
             self.isUserLoggedIn = user != nil
+            UserDefaults.standard.set(user?.email, forKey: "email") 
         }
     }
 }
