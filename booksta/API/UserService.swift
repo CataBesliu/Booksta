@@ -11,6 +11,24 @@ import Firebase
 typealias FirestoreTypeCompletion = (Error?) -> Void
 
 struct UserService {
+    
+    static func uploadPhoto(uid: String, image: UIImage, completion: @escaping(String) -> String) {
+        guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
+        let filename = NSUUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/user_image/\(filename)")
+        ref.putData(imageData, metadata: nil) { metadata, error in
+            if let error = error {
+                print("DEBUG: Failed to upload image \(error.localizedDescription)")
+                return
+            }
+            ref.downloadURL { url, error in
+                guard let imageUrl = url?.absoluteString else { return }
+                USERS_COLLECTION.document(uid).updateData(["imageURL" : imageUrl])
+                completion(imageUrl)
+            }
+        }
+    }
+    
     static func getUserInfo(completion: @escaping(UserModel?, String?) -> Void) {
         // Gets current user uid
         guard let uid = Auth.auth().currentUser?.uid else { return }

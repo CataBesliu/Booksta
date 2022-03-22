@@ -8,11 +8,13 @@
 import SwiftUI
 import Firebase
 import Resolver
+import SDWebImageSwiftUI
 
 struct MainProfileView: View {
     @State private var isUserLoggedOut = false
     @ObservedObject var viewModel: ProfileViewModel = Resolver.resolve()
-    private var profileImage: UIImage?
+    @State private var profileImage: UIImage?
+    @State private var isLibrarySheetPresented = false
     
     init(){
         UINavigationBar.setAnimationsEnabled(false)
@@ -32,6 +34,9 @@ struct MainProfileView: View {
             .navigationBarHidden(true)
         }
         .onAppear(perform: viewModel.getUserInformation)
+        .sheet(isPresented: $isLibrarySheetPresented) {
+            ImagePicker(selectedImage: $profileImage)
+        }
     }
     
     private var logOutButtonView: some View {
@@ -68,18 +73,9 @@ struct MainProfileView: View {
                     Spacer()
                     Button(action: {
                         //TODO: Add photo functionality
-                        handleProfilePhotoSelect()
+                        isLibrarySheetPresented = true
                     }) {
-                        if let user = mainUser, !user.imageURL.isEmpty{
-                            //TODO: add image uploader
-//                                Image()
-//                                    .resizable()
-//                                    .frame(width: 50, height: 50, alignment: .center)
-                        } else {
-                        Image(systemName: "person.crop.circle")
-                            .resizable()
-                            .frame(width: 50, height: 50, alignment: .center)
-                        }
+                        getProfileImageView(mainUser: mainUser)
                     }
                     Spacer()
                 }
@@ -92,8 +88,43 @@ struct MainProfileView: View {
         }
     }
     
+    func getProfileImageView(mainUser: UserModel?) -> some View {
+        if let image = profileImage, let user = viewModel.user {
+            UserService.uploadPhoto(uid: user.uid, image: image) { imageURL in
+                return WebImage(url: URL(string: imageURL))
+                    .resizable()
+                    .frame(width: 100, height: 100, alignment: .center)
+                    .clipShape(Circle())
+                    .shadow(radius: 10)
+                    .overlay(Circle().stroke(Color.bookstaPink, lineWidth: 2))
+            }
+            return EmptyView()
+                .eraseToAnyView()
+        }
+        else if let user = mainUser, !user.imageURL.isEmpty{
+            //TODO: add image uploader
+            return EmptyView()
+                .eraseToAnyView()
+            //                                Image()
+            //                                    .resizable()
+            //                                    .frame(width: 50, height: 50, alignment: .center)
+        } else {
+            return getImageResized(image: Image(systemName: "person.crop.circle"))
+                .eraseToAnyView()
+        }
+    }
+    
+    func getImageResized(image: Image) -> some View {
+        return image
+            .resizable()
+            .frame(width: 100, height: 100, alignment: .center)
+            .clipShape(Circle())
+            .shadow(radius: 10)
+            .overlay(Circle().stroke(Color.bookstaPink, lineWidth: 2))
+    }
+    
     func handleProfilePhotoSelect() {
-        print("print")
+        isLibrarySheetPresented = true
     }
 }
 

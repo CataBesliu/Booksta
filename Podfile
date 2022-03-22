@@ -13,7 +13,7 @@ target 'booksta' do
 	pod 'Firebase/Messaging'
 	pod 'Firebase/Auth'
 	pod 'ActiveLabel'
-	pod 'SDWebImage','~>4.4.2'
+	pod 'SDWebImageSwiftUI'
 	pod 'JGProgressHUD','~>2.0.3'
 	pod 'YPImagePicker'
 	pod 'Resolver'
