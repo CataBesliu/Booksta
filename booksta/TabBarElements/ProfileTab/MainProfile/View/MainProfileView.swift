@@ -33,7 +33,14 @@ struct MainProfileView: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
         }
-        .onAppear(perform: viewModel.getUserInformation)
+        .onAppear(perform: {
+            viewModel.getUserInformation()
+        })
+        .onChange(of: profileImage, perform: { newImage in
+            viewModel.resetImageState()
+            viewModel.uploadPhoto(image: newImage)
+            viewModel.getUserInformation()
+        })
         .sheet(isPresented: $isLibrarySheetPresented) {
             ImagePicker(selectedImage: $profileImage)
         }
@@ -89,28 +96,27 @@ struct MainProfileView: View {
     }
     
     func getProfileImageView(mainUser: UserModel?) -> some View {
-        if let image = profileImage, let user = viewModel.user {
-            UserService.uploadPhoto(uid: user.uid, image: image) { imageURL in
-                return WebImage(url: URL(string: imageURL))
+        return VStack {
+            switch viewModel.imageState {
+            case .idle,.loading:
+                Text("Loading...")
+                    .frame(width: 100, height: 100, alignment: .center)
+                    .clipShape(Circle())
+                    .shadow(radius: 10)
+                    .overlay(Circle().stroke(Color.bookstaPink, lineWidth: 2))
+            case let .loaded(imageURL):
+                WebImage(url: URL(string: imageURL))
                     .resizable()
                     .frame(width: 100, height: 100, alignment: .center)
                     .clipShape(Circle())
                     .shadow(radius: 10)
                     .overlay(Circle().stroke(Color.bookstaPink, lineWidth: 2))
+                    .eraseToAnyView()
+            case let .error(error):
+                //TODO: implement error
+                getImageResized(image: Image(systemName: "person.crop.circle"))
+                    .eraseToAnyView()
             }
-            return EmptyView()
-                .eraseToAnyView()
-        }
-        else if let user = mainUser, !user.imageURL.isEmpty{
-            //TODO: add image uploader
-            return EmptyView()
-                .eraseToAnyView()
-            //                                Image()
-            //                                    .resizable()
-            //                                    .frame(width: 50, height: 50, alignment: .center)
-        } else {
-            return getImageResized(image: Image(systemName: "person.crop.circle"))
-                .eraseToAnyView()
         }
     }
     
