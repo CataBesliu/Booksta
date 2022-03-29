@@ -17,6 +17,9 @@ class ProfileViewModel: ObservableObject {
         }
     }
     
+    @Published var imageState = DataState<String>.idle
+    
+    
     func getUserInformation() {
         guard state == .idle else {
             return
@@ -30,9 +33,31 @@ class ProfileViewModel: ObservableObject {
                 self.state = .error(error)
             } else if let user = user {
                 self.state = .loaded(user)
+                self.imageState = .loaded(user.imageURL)
                 self.user = user
             }
         }
+    }
+    
+    func uploadPhoto(image: UIImage?) {
+        guard imageState == .idle else {
+            return
+        }
+        
+        imageState = .loading
+        
+        if let image = image, let user = user {
+            UserService.uploadPhoto(uid: user.uid, image: image, completion: { [weak self] urlImage in
+                guard let `self` = self else { return }
+                self.imageState = .loaded(urlImage)
+            })
+        } else {
+            self.state = .error("Unable to load image")
+        }
+    }
+    
+    func resetImageState() {
+        self.imageState = .idle
     }
     
     func logOut() {
@@ -51,7 +76,7 @@ class ProfileViewModel: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
             self.isUserLoggedIn = user != nil
-            UserDefaults.standard.set(user?.email, forKey: "email") 
+            UserDefaults.standard.set(user?.email, forKey: "email")
         }
     }
 }

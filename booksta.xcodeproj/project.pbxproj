@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		29AF64A1B4A4203C3BA9A277 /* Pods_booksta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17584B70769625452ABB2174 /* Pods_booksta.framework */; };
+		7218E96527E0D9FA00BDE6B2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218E96427E0D9FA00BDE6B2 /* ImagePicker.swift */; };
 		7224499E27CD5C1A002104F7 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7224499D27CD5C1A002104F7 /* RootView.swift */; };
 		722452D727D92EC7008B215B /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722452D627D92EC7008B215B /* Buttons.swift */; };
 		722452D927D947AA008B215B /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 722452D827D947AA008B215B /* UserProfileViewModel.swift */; };
@@ -78,6 +79,7 @@
 		13D5265699A2DEC64800924F /* Pods-bookstaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookstaTests.release.xcconfig"; path = "Target Support Files/Pods-bookstaTests/Pods-bookstaTests.release.xcconfig"; sourceTree = "<group>"; };
 		17584B70769625452ABB2174 /* Pods_booksta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_booksta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DBDE22E3F1A34F571EEF9C8 /* Pods-bookstaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookstaTests.debug.xcconfig"; path = "Target Support Files/Pods-bookstaTests/Pods-bookstaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7218E96427E0D9FA00BDE6B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		7224499D27CD5C1A002104F7 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		722452D627D92EC7008B215B /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		722452D827D947AA008B215B /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				72A1C93C27D4FE9B0070E344 /* SearchBar.swift */,
 				726D709227D63DE6001EE64F /* DataState.swift */,
 				722452D627D92EC7008B215B /* Buttons.swift */,
+				7218E96427E0D9FA00BDE6B2 /* ImagePicker.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -799,6 +802,7 @@
 				72CDE62627C2EDD700C83327 /* MainProfileView.swift in Sources */,
 				722FCC9C27CFD77100126903 /* Collections.swift in Sources */,
 				726337A127C675B7001D59FE /* SignUpModel.swift in Sources */,
+				7218E96527E0D9FA00BDE6B2 /* ImagePicker.swift in Sources */,
 				72A1C93D27D4FE9B0070E344 /* SearchBar.swift in Sources */,
 				72C0185627C6E6ED0049D04B /* AppDelegate+Injection.swift in Sources */,
 				72ED9C7F27C0444700EEC6CB /* NewApp.swift in Sources */,
