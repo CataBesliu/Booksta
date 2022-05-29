@@ -12,5 +12,6 @@ extension Resolver: ResolverRegistering {
     public static func registerAllServices() {
         register{ ProfileViewModel() }.scope(.application)
         register{ PeopleSearchViewModel() }.scope(.application)
+        register{ BookSearchViewModel() }.scope(.application)
     }
 }

@@ -9,8 +9,6 @@ import SwiftUI
 
 struct UserProfileView: View {
     @ObservedObject var viewModel: UserProfileViewModel
-    //    var user: UserModel
-    //    @State var isFollowed: Bool = false
     
     var body: some View {
         VStack(spacing: 20) {

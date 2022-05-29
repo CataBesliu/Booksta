@@ -30,7 +30,8 @@ struct AuthService {
             
             let data: [String: Any] = ["email": credentials.email,
                                        "uid":uid,
-                                       "imageURL":"" ]
+                                       "imageURL":"",
+                                       "admin": false ]
             
             USERS_COLLECTION.document(uid).setData(data, completion: completion)
         }

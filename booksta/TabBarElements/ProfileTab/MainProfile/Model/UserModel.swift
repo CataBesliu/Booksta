@@ -12,11 +12,13 @@ struct UserModel: Hashable {
     let email: String
     //    TODO: let username: String
     let imageURL: String
+    let admin: Bool
     var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == uid }
     
     init(dictionary: [String: Any]) {
         self.uid = dictionary["uid"] as? String ?? ""
         self.email = dictionary["email"] as? String ?? ""
         self.imageURL = dictionary["imageURL"] as? String ?? ""
+        self.admin = dictionary["admin"] as? Bool ?? false
     }
 }

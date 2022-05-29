@@ -23,7 +23,6 @@ class PeopleSearchViewModel: ObservableObject {
         guard state == .idle else {
             return
         }
-        
         state = .loading
         
         UserService.getUsers { [weak self] users,error in
