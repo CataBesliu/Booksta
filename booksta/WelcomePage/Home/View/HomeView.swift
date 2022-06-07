@@ -18,9 +18,9 @@ struct HomeView: View {
                 //TODO: logo image
                 Image(systemName: "book.closed.circle")
                     .font(.system(size: 80))
-                    .foregroundColor(.bookstaPink)
+                    .foregroundColor(.bookstaPurple800)
                 
-                ZStack {
+                ZStack(alignment: .center) {
                     LoginView(ownIndex: self.$indexForLoginPage, signUpIndex: self.$indexForSignUpPage)
                         .zIndex(Double(self.indexForLoginPage))
                     
@@ -31,7 +31,7 @@ struct HomeView: View {
             }
             .navigationBarBackButtonHidden(true)
             .edgesIgnoringSafeArea(.all)
-            .background(Color.bookstaBackground)
+            .background(Color.white)
             .preferredColorScheme(.dark)
             
         }

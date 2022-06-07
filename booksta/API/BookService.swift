@@ -19,7 +19,7 @@ struct BookService {
                 return
             }
             guard let data = documentSnapshot else { return }
-            let books = data.documents.map ({ BookModel(dictionary: $0.data()) })
+            let books = data.documents.map ({ BookModel(dictionary: $0.data(), id: $0.documentID) })
             completion(books, nil)
             
         }
@@ -38,17 +38,5 @@ struct BookService {
     //            let users = data.documents.map ({ UserModel(dictionary: $0.data()) })
     //
     //    }
-    
-}
-
-struct Content: Decodable {
-    let title: String
-    let subtitle: String
-    let authors: String
-    let categories: String
-    let thumbnail: String
-    let description: String
-    let published_year: String
-    
     
 }

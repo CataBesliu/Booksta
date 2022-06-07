@@ -9,13 +9,20 @@ import SwiftUI
 
 struct BookstaButton: View {
     var title: String
+    var bgColor: Color = Color.bookstaPurple
+    var paddingV: CGFloat = 16
+    var paddingH: CGFloat = 40
+    var titleSize: CGFloat = 20
+    var titleColor: Color = Color.bookstaGrey50
+    var titleWeight: Font.Weight = .regular
     
     var body: some View {
         Text("\(title)")
-            .foregroundColor(.bookstaGrey50)
-            .padding(.vertical, 16)
-            .padding(.horizontal, 40)
-            .background(Color.bookstaPink)
+            .font(.system(size: titleSize, weight: titleWeight))
+            .foregroundColor(titleColor)
+            .padding(.vertical, paddingV)
+            .padding(.horizontal, paddingH)
+            .background(bgColor)
             .clipShape(Capsule())
             .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
     }

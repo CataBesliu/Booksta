@@ -30,6 +30,7 @@ struct MainProfileView: View {
                 Spacer()
                 
             }
+            .background(Color.white)
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
         }
@@ -57,12 +58,15 @@ struct MainProfileView: View {
             case .idle,.loading:
                 getProfileHeaderView(mainUser: nil)
                 Text("Loading...")
+                    .foregroundColor(.bookstaPurple800)
             case let .loaded(user):
                 getProfileHeaderView(mainUser: user)
                 Text("\(user.email)")
+                    .foregroundColor(.bookstaPurple800)
             case let .error(error):
                 getProfileHeaderView(mainUser: nil)
                 Text("\(error)")
+                    .foregroundColor(.bookstaPurple800)
             }
             Spacer()
         }
@@ -72,6 +76,7 @@ struct MainProfileView: View {
         ZStack(alignment: .leading) {
             VStack {
                 Text("Books read")
+                    .foregroundColor(.bookstaPurple800)
                 Text("")
             }
             .padding(.leading, 20)
@@ -88,6 +93,7 @@ struct MainProfileView: View {
                 }
                 VStack {
                     Text("Following")
+                        .foregroundColor(.bookstaPurple800)
                     Text("")
                 }
                 .padding(.trailing, 20)
@@ -100,10 +106,11 @@ struct MainProfileView: View {
             switch viewModel.imageState {
             case .idle,.loading:
                 Text("Loading...")
+                    .foregroundColor(.bookstaPurple800)
                     .frame(width: 100, height: 100, alignment: .center)
                     .clipShape(Circle())
                     .shadow(radius: 10)
-                    .overlay(Circle().stroke(Color.bookstaPink, lineWidth: 2))
+                    .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
             case let .loaded(imageURL):
                 if !imageURL.isEmpty {
                 WebImage(url: URL(string: imageURL))
@@ -111,7 +118,7 @@ struct MainProfileView: View {
                     .frame(width: 100, height: 100, alignment: .center)
                     .clipShape(Circle())
                     .shadow(radius: 10)
-                    .overlay(Circle().stroke(Color.bookstaPink, lineWidth: 2))
+                    .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
                     .eraseToAnyView()
                 } else {
                     getImageResized(image: Image(systemName: "person.crop.circle"))
@@ -129,9 +136,10 @@ struct MainProfileView: View {
         return image
             .resizable()
             .frame(width: 100, height: 100, alignment: .center)
+            .foregroundColor(.bookstaPurple800)
             .clipShape(Circle())
             .shadow(radius: 10)
-            .overlay(Circle().stroke(Color.bookstaPink, lineWidth: 2))
+            .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
     }
     
     func handleProfilePhotoSelect() {

@@ -15,7 +15,7 @@ struct TabBarView: View {
     var body: some View {
         GeometryReader { _ in
         TabView(selection: $selection) {
-            Text("Feed")
+            FeedView()
                 .tabItem {
                     Label("Home", systemImage: "house.circle.fill")
                 }
@@ -29,38 +29,37 @@ struct TabBarView: View {
                     Label("Search", systemImage: "magnifyingglass.circle.fill")
                 }
                 .font(.system(.headline, design: .rounded))
-            
                 .tag(1)
             
             
             //            Text("Review books")
-            SecondAttempt()
-                .tabItem {
-                    Label("Review", systemImage: "book.closed.circle")
-                }
-                .font(.system(.headline, design: .rounded))
-                .tag(2)
+//            SecondAttempt()
+//                .tabItem {
+//                    Label("Review", systemImage: "book.closed.circle")
+//                }
+//                .font(.system(.headline, design: .rounded))
+//                .tag(2)
             
-            Text("Add post")
-                .tabItem {
-                    Label("Post", systemImage:"photo.circle.fill")
-                }
-                .font(.system(.headline, design: .rounded))
-                .tag(3)
+//            Text("Add post")
+//                .tabItem {
+//                    Label("Post", systemImage:"photo.circle.fill")
+//                }
+//                .font(.system(.headline, design: .rounded))
+//                .tag(3)
             
             MainProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }
-                .tag(4)
+                .tag(2)
         }
         .onAppear() {
-            UITabBar.appearance().backgroundColor = .darkGray
-            UITabBar.appearance().barTintColor = .white
+            UITabBar.appearance().backgroundColor = UIColor(named: "bookstaPurple800")
+            UITabBar.appearance().barTintColor = UIColor(named: "bookstaPurple800")
             viewModel.getUserInformation()
         }
-        .accentColor(.bookstaPink)
-        .background(Color.bookstaGrey500)
+        .accentColor(.bookstaGrey50)
+        .background(Color.bookstaPurple)
         .frame(
             width: UIScreen.main.bounds.width ,
             height: UIScreen.main.bounds.height

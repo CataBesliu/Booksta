@@ -9,6 +9,7 @@ import Foundation
 
 
 struct BookModel: Hashable {
+    let id: String
     let name: String
     let authors: [String]
     let genres: [String]
@@ -20,12 +21,13 @@ struct BookModel: Hashable {
     
     let genre: BookGenre
     
-    init(dictionary: [String: Any]) {
+    init(dictionary: [String: Any],id: String?) {
+        self.id = id ?? ""
         self.name = dictionary["title"] as? String ?? ""
         self.authors = dictionary["authors"] as? [String] ?? []
         self.genres = dictionary["categories"] as? [String] ?? []
         self.description = dictionary["description"] as? String ?? ""
-        self.isbn13 = dictionary["description"] as? Int ?? 0
+        self.isbn13 = dictionary["isbn13"] as? Int ?? 0
         self.publishYear = dictionary["publish_year"] as? Int ?? 0
         self.subtitle = dictionary["subtitle"] as? String ?? ""
         self.thumbnail = dictionary["thumbnail"] as? String ?? ""

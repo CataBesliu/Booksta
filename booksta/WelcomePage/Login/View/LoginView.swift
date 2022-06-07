@@ -29,16 +29,16 @@ struct LoginView: View {
                    isPresented: $showingAlert) {
                 Button("OK", role: .none) { }
             }
-            .alert("Username or password is invalid",
-                   isPresented: $couldNotLogIn) {
-                Button("OK", role: .none) { }
-            }
+                   .alert("Username or password is invalid",
+                          isPresented: $couldNotLogIn) {
+                       Button("OK", role: .none) { }
+                   }
     }
     
     private var logInTitle: some View {
         HStack {
             Text("Log In")
-                .foregroundColor(self.ownIndex == 1 ? .white : .gray)
+                .foregroundColor(self.ownIndex == 1 ? .bookstaPurple800 : .bookstaPurple900)
                 .font(.title)
                 .fontWeight(.bold)
             Spacer(minLength: 0)
@@ -61,17 +61,18 @@ struct LoginView: View {
             .opacity(self.ownIndex == 1 ? 1 : 0)
         }
         .padding()
-        .padding(.bottom, 30)
-        .background(Color.bookstaGrey500)
+        .padding(.bottom, 37)
+        .background(Color.bookstaGrey100)
         .clipShape(CShapeLeftCurve())
         .contentShape(CShapeLeftCurve())
-        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: -5)
+//        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: -5)
         .onTapGesture {
             self.ownIndex = 1
             self.signUpIndex = 0
             
         }
         .cornerRadius(35)
+        .shadow(color: .bookstaPurple800, radius: 10)
         .padding(.horizontal, 20)
     }
     
@@ -85,11 +86,17 @@ struct LoginView: View {
             HStack(spacing: 5) {
                 Image(systemName: "envelope")
                     .font(.system(size: 20))
-                    .foregroundColor(.bookstaPink)
-                
-                TextField(title, text: stateText)
-                    .focused($fieldIsFocused)
-                    .foregroundColor(.bookstaGrey50)
+                    .foregroundColor(.bookstaPurple800)
+                ZStack(alignment: .leading) {
+                    if stateText.wrappedValue.isEmpty {
+                        placeholder(title)
+                    }
+                    TextField(title, text: stateText)
+                        .focused($fieldIsFocused)
+                        .foregroundColor(.bookstaPurple800)
+                    placeholder(stateText.wrappedValue)
+
+                }
                 
                 Spacer()
             }
@@ -111,7 +118,7 @@ struct LoginView: View {
             Button(action: {
             }) {
                 Text("Forget password?")
-                    .foregroundColor(.bookstaGrey50)
+                    .foregroundColor(.bookstaPurple800)
                     .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
             }
         }
@@ -124,12 +131,24 @@ struct LoginView: View {
             HStack(spacing: 5) {
                 Image(systemName: "lock")
                     .font(.system(size: 20))
-                    .foregroundColor(.bookstaPink)
+                    .foregroundColor(.bookstaPurple800)
                 VStack {
                     if isPasswordHidden {
-                        SecureField(title, text: stateText)
+                        ZStack(alignment: .leading) {
+                            if stateText.wrappedValue.isEmpty {
+                                placeholder(title)
+                            }
+                            SecureField(title, text: stateText)
+                                .foregroundColor(.bookstaPurple800)
+                        }
                     } else {
-                        TextField(title, text: stateText)
+                        ZStack(alignment: .leading) {
+                            if stateText.wrappedValue.isEmpty {
+                                placeholder(title)
+                            }
+                            TextField(title, text: stateText)
+                                .foregroundColor(.bookstaPurple800)
+                        }
                     }
                 }
                 .focused($fieldIsFocused)
@@ -140,7 +159,7 @@ struct LoginView: View {
                 }) {
                     Image(systemName: self.isPasswordHidden ? "eye.slash" : "eye")
                         .font(.system(size: 16))
-                        .foregroundColor(.bookstaPink)
+                        .foregroundColor(.bookstaPurple800)
                 }
             }
             .padding(10)
@@ -154,6 +173,11 @@ struct LoginView: View {
             
             CustomDivider()
         }
+    }
+    
+    private func placeholder(_ title: String) -> some View {
+        Text(title)
+            .foregroundColor(.bookstaPurple800)
     }
     
     private func checkFields() {
@@ -173,7 +197,7 @@ struct LoginView: View {
                 return
             }
             print("DEBUG - Succesfully logged in user with firestore...")
-    
+            
             profileViewModel.checkIfUserIsLoggedIn()
         }
     }

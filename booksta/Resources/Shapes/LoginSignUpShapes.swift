@@ -15,8 +15,16 @@ struct CShapeLeftCurve : Shape {
             path.addLine(to: CGPoint(x: rect.width, y: rect.height))
             path.addLine(to: CGPoint(x: 0, y: rect.height))
             path.addLine(to: CGPoint(x: 0, y: 0))
+            path.closeSubpath()
         }
     }
+    
+    func stroked() -> some View {
+           ZStack {
+               self.stroke(Color.red, style: StrokeStyle(lineWidth: 20, lineCap: .round, lineJoin: .round))
+               self.stroke(Color.white, style: StrokeStyle(lineWidth: 10, lineCap: .round, lineJoin: .round))
+           }
+       }
 }
 
 

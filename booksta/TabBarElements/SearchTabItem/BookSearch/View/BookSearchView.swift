@@ -29,6 +29,7 @@ struct BookSearchView: View {
             HStack(alignment: .top){
                 Text("Book search")
                     .font(.system(size: 15, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
                     .padding(.leading, 15)
                     .padding(.top, 5)
                     .frame(height: curbeHeight, alignment: .top)
@@ -40,8 +41,7 @@ struct BookSearchView: View {
             }
             
         }
-        .padding()
-        .padding(.bottom, 30)
+        .padding([.horizontal, .top])
         .background(Color.bookstaBackground)
         .clipShape(BookSearchShape(radius: curbeRadius, height: curbeHeight))
         .contentShape(BookSearchShape(radius: curbeRadius, height: curbeHeight))
@@ -86,29 +86,30 @@ struct BookSearchView: View {
     
     private func getBookCell(book: BookModel) -> some View {
         HStack(spacing: 20) {
-//            AsyncImage(url: URL(string: book.thumbnail)) { image in
-//                image.resizable()
-//            } placeholder: {
-//                Image(systemName: "book.circle")
-//                    .resizable()
-//            }
+            //            AsyncImage(url: URL(string: book.thumbnail)) { image in
+            //                image.resizable()
+            //            } placeholder: {
+            //                Image(systemName: "book.circle")
+            //                    .resizable()
+            //            }
             Image(systemName: "book.circle")
-            .resizable()
-            .frame(width: 50, height: 50)
-            .clipShape(RoundedRectangle(cornerRadius: 25))
+                .resizable()
+                .foregroundColor(.bookstaPurple800)
+                .frame(width: 50, height: 50)
+                .clipShape(RoundedRectangle(cornerRadius: 25))
             Text("\(book.name)")
-                .font(.system(size: 20))
+                .font(.system(size: 20,weight: .bold))
+                .foregroundColor(.bookstaPurple800)
             Spacer()
         }
         .padding()
-        .background(Color.bookstaGrey500)
+        .background(Color.bookstaGrey100)
         .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.bookstaPurple800, lineWidth: 1)
+        )
         .padding(.vertical, 4)
     }
 }
 
-//struct BookSearchView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        BookSearchView()
-//    }
-//}

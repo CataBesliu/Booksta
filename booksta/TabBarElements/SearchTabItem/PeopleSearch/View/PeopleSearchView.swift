@@ -60,6 +60,7 @@ struct PeopleSearchView: View {
                 Spacer()
                 Text("People search")
                     .font(.system(size: 15, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
                     .padding(.trailing, 15)
                     .padding(.top, 5)
                     .frame(height: curbeHeight, alignment: .top)
@@ -72,8 +73,7 @@ struct PeopleSearchView: View {
             Spacer()
             
         }
-        .padding()
-        .padding(.bottom, 30)
+        .padding([.horizontal, .top])
         .background(Color.bookstaBackground)
         .clipShape(PeopleSearchShape(radius: curbeRadius, height: curbeHeight))
         .contentShape(PeopleSearchShape(radius: curbeRadius, height: curbeHeight))
@@ -91,13 +91,19 @@ struct PeopleSearchView: View {
             Image(systemName: "person.crop.circle")
                 .resizable()
                 .frame(width: 50, height: 50)
+                .foregroundColor(Color.bookstaPurple800)
             Text("\(user.email)")
                 .font(.system(size: 20))
+                .foregroundColor(Color.bookstaPurple800)
             Spacer()
         }
         .padding()
-        .background(Color.bookstaGrey500)
+        .background(Color.bookstaGrey100)
         .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.bookstaPurple800, lineWidth: 1)
+        )
         .padding(.vertical, 4)
     }
 }
