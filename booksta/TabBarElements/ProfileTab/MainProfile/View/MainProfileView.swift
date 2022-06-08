@@ -87,7 +87,7 @@ struct MainProfileView: View {
                         //TODO: Add photo functionality
                         isLibrarySheetPresented = true
                     }) {
-                        getProfileImageView(mainUser: mainUser)
+                        getProfileImageView()
                     }
                     Spacer()
                 }
@@ -101,7 +101,7 @@ struct MainProfileView: View {
         }
     }
     
-    func getProfileImageView(mainUser: UserModel?) -> some View {
+    func getProfileImageView() -> some View {
         return VStack {
             switch viewModel.imageState {
             case .idle,.loading:
@@ -112,18 +112,11 @@ struct MainProfileView: View {
                     .shadow(radius: 10)
                     .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
             case let .loaded(imageURL):
-                if !imageURL.isEmpty {
-                WebImage(url: URL(string: imageURL))
-                    .resizable()
-                    .frame(width: 100, height: 100, alignment: .center)
+                BookstaImage(url: imageURL, height: 100, width: 100, isPerson: true)
                     .clipShape(Circle())
                     .shadow(radius: 10)
                     .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
                     .eraseToAnyView()
-                } else {
-                    getImageResized(image: Image(systemName: "person.crop.circle"))
-                        .eraseToAnyView()
-                }
             case let .error(_):
                 //TODO: implement error
                 getImageResized(image: Image(systemName: "person.crop.circle"))

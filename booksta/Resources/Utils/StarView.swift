@@ -9,34 +9,36 @@ import SwiftUI
 
 struct StarView: View {
     @Binding var rating: Int
-    
+    var isActive = true
     var maxReviewRating = 5
-    var label = ""
-    
-    var emptyColor = Color.bookstaGrey50
     var fullColor = Color.bookstaPurple800
     
+    var width: CGFloat = 35
+    var height: CGFloat = 30
+    
     var body: some View {
-            HStack {
-                ForEach(1..<maxReviewRating + 1, id: \.self) { number in
-                    image(for: number)
-                        .onTapGesture {
+        HStack {
+            ForEach(1..<maxReviewRating + 1, id: \.self) { number in
+                image(for: number)
+                    .onTapGesture {
+                        if isActive {
                             rating = number
                         }
-                }
+                    }
             }
+        }
     }
     
     private var emptyImage: some View {
         Image(systemName: "book")
             .resizable()
-            .frame(width: 35, height: 30)
+            .frame(width: width, height: height)
             .foregroundColor(.bookstaPurple800)
     }
     private var fullImage: some View {
         Image(systemName: "book.fill")
             .resizable()
-            .frame(width: 35, height: 30)
+            .frame(width: width, height: height)
             .foregroundColor(.bookstaPurple800)
     }
     

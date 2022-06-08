@@ -10,10 +10,43 @@ import Firebase
 
 struct ReviewService {
     
+    static func getReviews(bookID: String, completion: @escaping([ReviewerModel]?,String?) -> Void) {
+        var returnList: [ReviewerModel] = []
+        REVIEWS_COLLECTION.document(bookID).collection(USER_REVIEWS_COLLECTION).getDocuments { documentSnapshot, error in
+            if let error = error {
+                print("DEBUG: Error retrieving reviews - \(error.localizedDescription)")
+                completion(nil, error.localizedDescription)
+                return
+            }
+            guard let data = documentSnapshot else { return }
+            let reviews = data.documents.map ({ ReviewModel(dictionary: $0.data(), id: $0.documentID) })
+            
+            var count = 0
+            for review in reviews {
+                UserService.getUserInfo(uid: review.id) { user, error in
+                    if let error = error {
+                        print("DEBUG: Error retrieving reviewers - \(error)")
+                        completion(nil, error)
+                        return
+                    }
+                    guard let user = user else {
+                        return
+                    }
+                    count += 1
+                    returnList.append(ReviewerModel(user: user, review: review))
+                    
+                    if count == reviews.count {
+                        completion(returnList, nil)
+                    }
+                }
+            }
+        }
+    }
+    
     static func sendReview(bookID: String, reviewGrade: Int, reviewDescription: String = "", completion: @escaping(FirestoreTypeCompletion)) {
         guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
         REVIEWS_COLLECTION.document(bookID).collection(USER_REVIEWS_COLLECTION).document(currentUserUID).setData(
-            ["reviewGrade": reviewGrade, "reviewDescription": reviewDescription, "timestamp": ServerValue.timestamp()]) { error in
+            ["reviewGrade": reviewGrade, "reviewDescription": reviewDescription, "timestamp": getDate()]) { error in
                 if let error = error {
                     print("DEBUG: Error retrieving books - \(error.localizedDescription)")
                     return
@@ -34,10 +67,18 @@ struct ReviewService {
             guard let doc = documentSnapshot else { return }
             if doc.exists, let data = doc.data() {
                 let review = ReviewModel(dictionary: data, id: doc.documentID)
+//                let review = ReviewModel(dictionary: data, id: doc.documentID)
                 completion((review, doc.exists),nil)
             } else {
                 completion((nil, doc.exists),nil)
             }
         }
+    }
+    
+    static func getDate() -> String {
+        let date = Date()
+        let dateFormatter = ISO8601DateFormatter()
+        dateFormatter.timeZone = TimeZone.current
+        return dateFormatter.string(from: date)
     }
 }

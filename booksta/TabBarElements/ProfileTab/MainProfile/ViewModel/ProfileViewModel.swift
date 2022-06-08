@@ -27,7 +27,7 @@ class ProfileViewModel: ObservableObject {
         
         state = .loading
         
-        UserService.getUserInfo { [weak self] user,error in
+        UserService.getCurrentUserInfo { [weak self] user,error in
             guard let `self` = self else { return }
             if let error = error {
                 self.state = .error(error)

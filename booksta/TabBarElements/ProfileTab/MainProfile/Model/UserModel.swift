@@ -7,7 +7,7 @@
 import Firebase
 import Foundation
 
-struct UserModel: Hashable {
+struct UserModel: Hashable, Equatable {
     let uid: String
     let email: String
     //    TODO: let username: String

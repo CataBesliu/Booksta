@@ -37,3 +37,17 @@ struct BookstaPasswordField: View {
     }
 }
 
+struct LeadingAlignment: ViewModifier {
+    func body(content: Content) -> some View {
+        HStack {
+            content
+            Spacer()
+        }
+    }
+}
+
+extension View {
+    func leadingStyle() -> some View {
+        modifier(LeadingAlignment())
+    }
+}

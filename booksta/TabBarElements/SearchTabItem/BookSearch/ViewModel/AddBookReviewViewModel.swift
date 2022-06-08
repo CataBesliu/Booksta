@@ -9,10 +9,11 @@ import SwiftUI
 import Firebase
 
 class AddBookReviewViewModel: ObservableObject {
-    @Published var state = DataState<[BookModel]>.idle
-    var book: BookModel
+    @Published var state = DataState<[ReviewerModel]>.idle
     @Published var hasUserSentReview = false
     @Published var bookReview: ReviewModel?
+    
+    var book: BookModel
     
     init(book: BookModel) {
         self.book = book
@@ -41,11 +42,31 @@ class AddBookReviewViewModel: ObservableObject {
                                  reviewDescription: reviewDescription) { [weak self] error in
             guard let `self` = self else { return }
             if let error = error {
-//                self.state = .error(error)
+                //                self.state = .error(error)
             } else {
             }
         }
         hasUserSentReviewFunction(bookID:"\(book.id)")
+        state = .idle
+        getReviews()
+    }
+    
+    
+    func getReviews() {
+        guard state == .idle else {
+            return
+        }
+//        state = .loading
+        
+        ReviewService.getReviews(bookID: book.id) { [weak self] data, error in
+            guard let `self` = self else { return }
+            self.state = .loading
+            if let error = error {
+                self.state = .error(error)
+            } else if let reviewers = data {
+                self.state = .loaded(reviewers)
+            }
+        }
     }
     
 }

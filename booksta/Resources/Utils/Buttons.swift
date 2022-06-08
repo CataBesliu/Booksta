@@ -15,6 +15,7 @@ struct BookstaButton: View {
     var titleSize: CGFloat = 20
     var titleColor: Color = Color.bookstaGrey50
     var titleWeight: Font.Weight = .regular
+    var isMaxWidth = false
     
     var body: some View {
         Text("\(title)")
@@ -22,8 +23,9 @@ struct BookstaButton: View {
             .foregroundColor(titleColor)
             .padding(.vertical, paddingV)
             .padding(.horizontal, paddingH)
+            .frame(maxWidth: isMaxWidth ? .infinity : nil)
             .background(bgColor)
-            .clipShape(Capsule())
+            .clipShape(RoundedRectangle(cornerRadius: 10))
             .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
     }
 }

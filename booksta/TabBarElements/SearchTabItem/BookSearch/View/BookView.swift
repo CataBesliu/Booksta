@@ -9,10 +9,10 @@ import SwiftUI
 import SDWebImageSwiftUI
 
 struct BookView: View {
+    @ObservedObject var reviewViewModel: AddBookReviewViewModel
     @State var showAddReview = false
     
     var book: BookModel
-    @ObservedObject var reviewViewModel: AddBookReviewViewModel
     var imageWidth: CGFloat = 70
     
     init(book: BookModel) {
@@ -31,9 +31,11 @@ struct BookView: View {
                     VStack(spacing: 30) {
                         addReviewButton
                         descriptionView
+                        reviewContent
                     }
                 }
                 .padding(.horizontal, 16)
+                .padding(.bottom, 20)
             }
         }
         .background(Color.white)
@@ -41,6 +43,7 @@ struct BookView: View {
         .edgesIgnoringSafeArea(.top)
         .onAppear {
             reviewViewModel.hasUserSentReviewFunction(bookID: "\(book.id)")
+            reviewViewModel.getReviews()
         }
     }
     
@@ -53,7 +56,8 @@ struct BookView: View {
                                   paddingV: 7,
                                   paddingH: 20,
                                   titleSize: 12,
-                                  titleColor: .bookstaPurple800)
+                                  titleColor: .bookstaPurple800,
+                                  titleWeight: .bold)
                 }
             }
             .padding(.top, 20)
@@ -69,7 +73,8 @@ struct BookView: View {
                           paddingH: 120,
                           titleSize: 17,
                           titleColor: .bookstaGrey50,
-                          titleWeight: .bold)
+                          titleWeight: .bold,
+                          isMaxWidth: true)
         }
     }
     
@@ -78,14 +83,83 @@ struct BookView: View {
             HStack {
                 Text("Description")
                     .foregroundColor(.bookstaPurple800)
-                    .font(.system(size: 20))
+                    .font(.system(size: 20, weight: .bold))
                 Spacer()
             }
             Text("\(book.description)")
                 .foregroundColor(.bookstaPurple800)
-                .font(.system(size: 13))
+                .font(.system(size: 15))
         }
     }
+    
+    private var reviewContent: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Reviews")
+                .foregroundColor(.bookstaPurple800)
+                .font(.system(size: 20, weight: .bold))
+                .leadingStyle()
+            switch reviewViewModel.state {
+            case .idle:
+                Text("No reviews available")
+                    .foregroundColor(.bookstaPurple800)
+                    .font(.system(size: 15))
+                    .leadingStyle()
+            case .loading:
+                Text("Loading reviews...")
+                    .foregroundColor(.bookstaPurple800)
+                    .font(.system(size: 15))
+                    .leadingStyle()
+            case .error:
+                Text("An error occured")
+                    .foregroundColor(.red)
+                    .font(.system(size: 15))
+                    .leadingStyle()
+                
+            case .loaded(let reviewers):
+                VStack {
+                    ForEach(reviewers, id: \.self) { reviewer in
+                        reviewCell(reviewerModel: reviewer)
+                    }
+                }
+                .animation(.default, value: reviewViewModel.state)
+            }
+        }
+    }
+    
+    private func reviewCell(reviewerModel: ReviewerModel) -> some View{
+        VStack(spacing: 5) {
+            HStack(spacing: 10) {
+                BookstaImage(url: reviewerModel.user.imageURL, height: 34, width: 34, isPerson: true)
+                    .clipShape(Circle())
+                    .overlay(
+                        Circle()
+                            .stroke(Color.bookstaPurple800, lineWidth: 1))
+                VStack {
+                    Text(reviewerModel.user.email)
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(.bookstaPurple800)
+                }
+                Spacer()
+            }
+            VStack(spacing: 8) {
+                Divider()
+                    .frame(height: 2)
+                    VStack(alignment: .leading, spacing: 5) {
+                        Text(reviewerModel.review.reviewDescription)
+                            .font(.system(size: 19, weight: .bold))
+                            .foregroundColor(.bookstaPurple800)
+                            .leadingStyle()
+                        StarView(rating: .constant(reviewerModel.review.reviewGrade), isActive: false, width: 20, height: 15)
+                            .padding(.leading, 3)
+                        
+                    }
+                }
+        }
+        //        } else {
+        //            return EmptyView()
+        //        }
+    }
+    
     
     private func addReview() {
         showAddReview = true
@@ -120,20 +194,16 @@ struct BookHeaderView: View {
                 .offset(x: 16, y: 40)
                 .shadow(color: Color.bookstaPurple800, radius: 5)
             
-            if URL.isValid(urlString: book.thumbnail) {
-                WebImage(url: URL(string: book.thumbnail))
-                    .resizable()
-                    .frame(width: imageWidth, height: 80)
-                    .clipShape(Rectangle())
-                    .border(.white, width: 3)
-                    .cornerRadius(4)
-                    .offset(x: 16, y: 40)
-                    .shadow(color: Color.bookstaPurple800, radius: 5)
-            }
+            BookstaImage(url: book.thumbnail)
+                .clipShape(Rectangle())
+                .border(.white, width: 3)
+                .cornerRadius(4)
+                .offset(x: 16, y: 40)
+                .shadow(color: Color.bookstaPurple800, radius: 5)
             
             HStack {
                 Text("\(book.name)")
-                    .font(.system(size: 18))
+                    .font(.system(size: 18, weight: .bold))
                     .lineLimit(1)
                     .padding(.trailing, 92)
                     .padding(.bottom, 10)

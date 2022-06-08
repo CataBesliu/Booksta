@@ -29,7 +29,7 @@ struct UserService {
         }
     }
     
-    static func getUserInfo(completion: @escaping(UserModel?, String?) -> Void) {
+    static func getCurrentUserInfo(completion: @escaping(UserModel?, String?) -> Void) {
         // Gets current user uid
         guard let uid = Auth.auth().currentUser?.uid else { return }
         USERS_COLLECTION.document(uid).getDocument { documentSnapshot, error in
@@ -48,6 +48,45 @@ struct UserService {
         }
     }
     
+    //    static func getUserReviewsInfo(listOfUIDs: [String], completion: @escaping([UserModel]?, String?) -> Void) {
+    //        var users: [UserModel] = []
+    //        for uid in listOfUIDs {
+    //            USERS_COLLECTION.document(uid).getDocument { documentSnapshot, error in
+    //                // documentSnapshot data returns a nsdictionary
+    //                if let error = error {
+    //                    print("DEBUG: Error retrieving document - \(error.localizedDescription)")
+    //                    completion(nil, error.localizedDescription)
+    //                    return
+    //                }
+    //                guard let data = documentSnapshot?.data() else { return }
+    //                print("DEBUG: Document succesfully retrieved")
+    //
+    //                let user = UserModel(dictionary: data)
+    //                users.append(user)
+    //
+    //            }
+    //        }
+    //        completion(users, nil)
+    //    }
+    
+    static func getUserInfo(uid: String, completion: @escaping(UserModel?, String?) -> Void) {
+        USERS_COLLECTION.document(uid).getDocument { documentSnapshot, error in
+            // documentSnapshot data returns a nsdictionary
+            if let error = error {
+                print("DEBUG: Error retrieving document - \(error.localizedDescription)")
+                completion(nil, error.localizedDescription)
+                return
+            }
+            guard let data = documentSnapshot?.data() else { return }
+            print("DEBUG: Document succesfully retrieved")
+            
+            let user = UserModel(dictionary: data)
+            completion(user, nil)
+        }
+    }
+    
+    
+    
     static func getUsers(completion: @escaping([UserModel]?,String?) -> Void) {
         // Gets current user uid
         USERS_COLLECTION.getDocuments { documentSnapshot, error in
@@ -58,7 +97,7 @@ struct UserService {
                 return
             }
             guard let data = documentSnapshot else { return }
-        
+            
             let users = data.documents.map ({ UserModel(dictionary: $0.data()) })
             print("DEBUG: Users succesfully retrieved")
             
@@ -97,10 +136,10 @@ struct UserService {
                 let nrBooksRead = documentSnapshot?.documents.count ?? 0
                 completion(UserProperties(following: nrFollowing, booksRead: nrBooksRead, review: 0, filters: []))
                 //TODO: review and filters
-//                REVIEWS_COLLECTION.document(uid).collection(USER_REVIEWS_COLLECTION).getDocuments { documentSnapshot, _  in
-//                    let reviews = documentSnapshot?.documents.count ?? 0
-//
-//                }
+                //                REVIEWS_COLLECTION.document(uid).collection(USER_REVIEWS_COLLECTION).getDocuments { documentSnapshot, _  in
+                //                    let reviews = documentSnapshot?.documents.count ?? 0
+                //
+                //                }
             }
         }
     }
