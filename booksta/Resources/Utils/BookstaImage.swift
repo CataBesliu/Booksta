@@ -12,14 +12,14 @@ struct BookstaImage: View {
     var url: String
     var height: CGFloat = 80
     var width: CGFloat = 70
-    var isPerson = false
+    var placeholderImage: String?
     
     var body: some View {
         ZStack(alignment: .center) {
             Color.bookstaGrey100
                 .frame(width: width, height: height)
-            if isPerson {
-                Image(systemName: "person.crop.circle")
+            if let placeholderImage = placeholderImage {
+                Image(systemName: placeholderImage)
                     .resizable()
                     .frame(width: width, height: height)
                     .foregroundColor(.bookstaPurple)

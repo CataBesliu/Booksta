@@ -13,6 +13,7 @@ struct AddReviewView: View {
     @ObservedObject var viewModel: AddBookReviewViewModel
     @State var bookReview: Int
     @State var bookReviewDescription: String
+    @State private var showingAlert = false
     
     
     init(viewModel: AddBookReviewViewModel) {
@@ -24,6 +25,7 @@ struct AddReviewView: View {
     }
     
     var body: some View {
+        ScrollView {
         VStack(spacing: 30) {
             VStack(spacing: 30) {
             BookHeaderView(book: viewModel.book)
@@ -35,8 +37,11 @@ struct AddReviewView: View {
                 reviewCommentView
                 
                 Button {
+                    showingAlert = !viewModel.checkFieldsAreCompleted(reviewGrade: bookReviewDescription)
+                    if !showingAlert {
                     viewModel.sendReview(reviewGrade: bookReview, reviewDescription: bookReviewDescription)
                     presentationMode.wrappedValue.dismiss()
+                    }
                 } label: {
                     BookstaButton(title: viewModel.hasUserSentReview ? "Edit review" : "Send review",
                                   bgColor: .bookstaPurple,
@@ -53,6 +58,11 @@ struct AddReviewView: View {
         .background(Color.white)
         .navigationTitle("")
         .edgesIgnoringSafeArea(.top)
+        }
+        .alert("Make sure that all fields are completed",
+               isPresented: $showingAlert) {
+            Button("OK", role: .none) { }
+        }
     }
     
     private var rateView: some View {
@@ -86,6 +96,7 @@ struct AddReviewView: View {
                     RoundedRectangle(cornerRadius: 2)
                         .stroke(Color.bookstaPurple800, lineWidth: 1))
                 .frame(height: 150)
+            
         }
         .padding()
         .background(Color.white)

@@ -129,11 +129,12 @@ struct BookView: View {
     private func reviewCell(reviewerModel: ReviewerModel) -> some View{
         VStack(spacing: 5) {
             HStack(spacing: 10) {
-                BookstaImage(url: reviewerModel.user.imageURL, height: 34, width: 34, isPerson: true)
+                BookstaImage(url: reviewerModel.user.imageURL,
+                             height: 34,
+                             width: 34,
+                             placeholderImage: "person.crop.circle")
                     .clipShape(Circle())
-                    .overlay(
-                        Circle()
-                            .stroke(Color.bookstaPurple800, lineWidth: 1))
+                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
                 VStack {
                     Text(reviewerModel.user.email)
                         .font(.system(size: 13, weight: .bold))
@@ -185,16 +186,7 @@ struct BookHeaderView: View {
                 .frame(height: 150)
                 .frame(maxWidth: .infinity)
             
-            Image("iconBookBackground")
-                .resizable()
-                .frame(width: imageWidth, height: 80)
-                .clipShape(Rectangle())
-                .border(.white, width: 3)
-                .cornerRadius(4)
-                .offset(x: 16, y: 40)
-                .shadow(color: Color.bookstaPurple800, radius: 5)
-            
-            BookstaImage(url: book.thumbnail)
+            BookstaImage(url: book.thumbnail, placeholderImage: "iconBookBackground")
                 .clipShape(Rectangle())
                 .border(.white, width: 3)
                 .cornerRadius(4)

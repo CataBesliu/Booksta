@@ -69,4 +69,8 @@ class AddBookReviewViewModel: ObservableObject {
         }
     }
     
+    func checkFieldsAreCompleted(reviewGrade: String) -> Bool {
+        return reviewGrade.isEmpty == false
+    }
+    
 }

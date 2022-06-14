@@ -112,7 +112,10 @@ struct MainProfileView: View {
                     .shadow(radius: 10)
                     .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
             case let .loaded(imageURL):
-                BookstaImage(url: imageURL, height: 100, width: 100, isPerson: true)
+                BookstaImage(url: imageURL,
+                             height: 100,
+                             width: 100,
+                             placeholderImage: "person.crop.circle")
                     .clipShape(Circle())
                     .shadow(radius: 10)
                     .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))

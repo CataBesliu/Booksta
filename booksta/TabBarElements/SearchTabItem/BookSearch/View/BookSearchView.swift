@@ -86,17 +86,12 @@ struct BookSearchView: View {
     
     private func getBookCell(book: BookModel) -> some View {
         HStack(spacing: 20) {
-            //            AsyncImage(url: URL(string: book.thumbnail)) { image in
-            //                image.resizable()
-            //            } placeholder: {
-            //                Image(systemName: "book.circle")
-            //                    .resizable()
-            //            }
-            Image(systemName: "book.circle")
-                .resizable()
-                .foregroundColor(.bookstaPurple800)
-                .frame(width: 50, height: 50)
-                .clipShape(RoundedRectangle(cornerRadius: 25))
+            BookstaImage(url: book.thumbnail,
+                         height: 50,
+                         width: 50,
+                         placeholderImage: "book.circle")
+                .clipShape(Circle())
+                .overlay(Circle().stroke(lineWidth: 2))
             Text("\(book.name)")
                 .font(.system(size: 20,weight: .bold))
                 .foregroundColor(.bookstaPurple800)
