@@ -87,23 +87,24 @@ struct UserService {
     
     
     
-    static func getUsers(completion: @escaping([UserModel]?,String?) -> Void) {
+    static func getUsers(limit: Int = 20, completion: @escaping([UserModel]?,String?) -> Void) {
         // Gets current user uid
-        USERS_COLLECTION.getDocuments { documentSnapshot, error in
-            // documentSnapshot data returns a nsdictionary
-            if let error = error {
-                print("DEBUG: Error retrieving users - \(error.localizedDescription)")
-                completion(nil, error.localizedDescription)
-                return
+        USERS_COLLECTION.limit(to: limit)
+            .getDocuments { documentSnapshot, error in
+                // documentSnapshot data returns a nsdictionary
+                if let error = error {
+                    print("DEBUG: Error retrieving users - \(error.localizedDescription)")
+                    completion(nil, error.localizedDescription)
+                    return
+                }
+                guard let data = documentSnapshot else { return }
+                
+                let users = data.documents.map ({ UserModel(dictionary: $0.data()) })
+                print("DEBUG: Users succesfully retrieved")
+                
+                completion(users, nil)
+                
             }
-            guard let data = documentSnapshot else { return }
-            
-            let users = data.documents.map ({ UserModel(dictionary: $0.data()) })
-            print("DEBUG: Users succesfully retrieved")
-            
-            completion(users, nil)
-            
-        }
     }
     //TODO: add time of following?
     static func followUser(userToBeFollowedUID: String, completion: @escaping(FirestoreTypeCompletion)) {
@@ -140,6 +141,81 @@ struct UserService {
                 //                    let reviews = documentSnapshot?.documents.count ?? 0
                 //
                 //                }
+            }
+        }
+    }
+    
+    static func hasUserRead(_ bookID: String, completion: @escaping(Bool?, String?) -> Void) {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        USERS_COLLECTION
+            .whereField("uid", isEqualTo: currentUserUID)
+            .whereField("booksRead", arrayContains: bookID)
+            .getDocuments { documentSnapshot, error in
+                if let error = error {
+                    completion(nil, error.localizedDescription)
+                }
+                else {
+                    if documentSnapshot!.documents.count == 0 {
+                        completion(false, nil)
+                    }
+                    for _ in documentSnapshot!.documents {
+                        completion(true, nil)
+                    }
+                    
+                }
+            }
+    }
+    
+    static func addRemoveBooksRead(_ bookID: String, hasRead: Bool, completion: @escaping(Bool?, String?) -> Void) {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        if hasRead {
+            USERS_COLLECTION
+                .document(currentUserUID)
+                .updateData([
+                    "booksRead": FieldValue.arrayUnion([bookID])
+                ]) { error in
+                    if let err = error {
+                        completion(nil, err.localizedDescription)
+                    } else {
+                        completion(true,nil)
+                    }
+                }
+        } else {
+            USERS_COLLECTION
+                .document(currentUserUID)
+                .updateData([
+                    "booksRead": FieldValue.arrayRemove([bookID])
+                ]) { error in
+                    if let err = error {
+                        completion(nil, err.localizedDescription)
+                    } else {
+                        completion(true,nil)
+                    }
+                }
+        }
+    }
+    
+    static func getBooksRead(_ user: UserModel?, completion: @escaping([BookModel]?, String?) -> Void) {
+        if let user = user {
+            var books: [BookModel] = []
+            var count = 0
+            var max = user.booksRead.count
+            for book in user.booksRead {
+                count += 1
+                BOOKS_COLLECTION.document(book).getDocument { documentSnapshot, error in
+                    if let error = error {
+                        completion(nil, error.localizedDescription)
+                    } else {
+                        guard let doc = documentSnapshot else { return }
+                        if doc.exists, let data = doc.data() {
+                            let bookModel = BookModel(dictionary: data, id: doc.documentID)
+                            books.append(bookModel)
+                        }
+                        if count == max {
+                            completion(books, nil)
+                        }
+                    }
+                }
             }
         }
     }

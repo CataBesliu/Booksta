@@ -18,6 +18,8 @@ struct AddReviewView: View {
     
     init(viewModel: AddBookReviewViewModel) {
         UITextView.appearance().backgroundColor = .clear
+        UITextView.appearance().tintColor = UIColor(named: "bookstaPurple800")
+
 
         self.viewModel = viewModel
         _bookReview = State(initialValue: viewModel.bookReview?.reviewGrade ?? 0 )

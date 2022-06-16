@@ -12,6 +12,15 @@ class AddBookReviewViewModel: ObservableObject {
     @Published var state = DataState<[ReviewerModel]>.idle
     @Published var hasUserSentReview = false
     @Published var bookReview: ReviewModel?
+    @Published var isRead: Bool = false {
+        didSet {
+            UserService.addRemoveBooksRead(book.id, hasRead: isRead) { result, error in
+                if let error = error {
+                    print(error)
+                }
+            }
+        }
+    }
     
     var book: BookModel
     
@@ -19,8 +28,18 @@ class AddBookReviewViewModel: ObservableObject {
         self.book = book
     }
     
-    func hasUserSentReviewFunction(bookID: String) {
-        ReviewService.hasUserSentReview(bookID: bookID) { data, error in
+    func hasUserReadBook() {
+        UserService.hasUserRead(book.id) { [weak self] result, error in
+            guard let `self` = self else { return }
+            if let result = result {
+                self.isRead = result
+            }
+        }
+    }
+    
+    func hasUserSentReviewFunction() {
+        ReviewService.hasUserSentReview(bookID: book.id) { [weak self] data, error in
+            guard let `self` = self else { return }
             if let review = data.0 {
                 self.bookReview = review
             }
@@ -46,7 +65,7 @@ class AddBookReviewViewModel: ObservableObject {
             } else {
             }
         }
-        hasUserSentReviewFunction(bookID:"\(book.id)")
+        hasUserSentReviewFunction()
         state = .idle
         getReviews()
     }
@@ -56,7 +75,7 @@ class AddBookReviewViewModel: ObservableObject {
         guard state == .idle else {
             return
         }
-//        state = .loading
+        //        state = .loading
         
         ReviewService.getReviews(bookID: book.id) { [weak self] data, error in
             guard let `self` = self else { return }

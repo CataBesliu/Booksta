@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		29AF64A1B4A4203C3BA9A277 /* Pods_booksta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17584B70769625452ABB2174 /* Pods_booksta.framework */; };
+		7204037D285BEE2C0022F6E1 /* AddPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7204037C285BEE2C0022F6E1 /* AddPostView.swift */; };
 		720AAC9A284AC6FC0007BDA9 /* TextFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 720AAC99284AC6FC0007BDA9 /* TextFields.swift */; };
 		7218E96527E0D9FA00BDE6B2 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218E96427E0D9FA00BDE6B2 /* ImagePicker.swift */; };
 		7224499E27CD5C1A002104F7 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7224499D27CD5C1A002104F7 /* RootView.swift */; };
@@ -75,7 +76,7 @@
 		72CDE62127C2E61400C83327 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CDE62027C2E61400C83327 /* SignUpViewModel.swift */; };
 		72CDE62627C2EDD700C83327 /* MainProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72CDE62527C2EDD700C83327 /* MainProfileView.swift */; };
 		72D9563027C6C405006C0D88 /* View+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D9562F27C6C405006C0D88 /* View+Extension.swift */; };
-		72D9563327C6C829006C0D88 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D9563227C6C829006C0D88 /* ProfileViewModel.swift */; };
+		72D9563327C6C829006C0D88 /* MainProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D9563227C6C829006C0D88 /* MainProfileViewModel.swift */; };
 		72E5DE5E27F3900600818DC0 /* BookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E5DE5D27F3900600818DC0 /* BookService.swift */; };
 		72E5DE6127F393B600818DC0 /* BookModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E5DE6027F393B600818DC0 /* BookModel.swift */; };
 		72E5DE6427F3959300818DC0 /* AuthorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E5DE6327F3959300818DC0 /* AuthorModel.swift */; };
@@ -113,6 +114,7 @@
 		13D5265699A2DEC64800924F /* Pods-bookstaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookstaTests.release.xcconfig"; path = "Target Support Files/Pods-bookstaTests/Pods-bookstaTests.release.xcconfig"; sourceTree = "<group>"; };
 		17584B70769625452ABB2174 /* Pods_booksta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_booksta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DBDE22E3F1A34F571EEF9C8 /* Pods-bookstaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bookstaTests.debug.xcconfig"; path = "Target Support Files/Pods-bookstaTests/Pods-bookstaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7204037C285BEE2C0022F6E1 /* AddPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostView.swift; sourceTree = "<group>"; };
 		720AAC99284AC6FC0007BDA9 /* TextFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFields.swift; sourceTree = "<group>"; };
 		7218E96427E0D9FA00BDE6B2 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		7224499D27CD5C1A002104F7 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -184,7 +186,7 @@
 		72CDE62027C2E61400C83327 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		72CDE62527C2EDD700C83327 /* MainProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileView.swift; sourceTree = "<group>"; };
 		72D9562F27C6C405006C0D88 /* View+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extension.swift"; sourceTree = "<group>"; };
-		72D9563227C6C829006C0D88 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		72D9563227C6C829006C0D88 /* MainProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainProfileViewModel.swift; sourceTree = "<group>"; };
 		72E5DE5D27F3900600818DC0 /* BookService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookService.swift; sourceTree = "<group>"; };
 		72E5DE6027F393B600818DC0 /* BookModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookModel.swift; sourceTree = "<group>"; };
 		72E5DE6327F3959300818DC0 /* AuthorModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorModel.swift; sourceTree = "<group>"; };
@@ -231,6 +233,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		72040379285BEE080022F6E1 /* AddPost */ = {
+			isa = PBXGroup;
+			children = (
+				7204037B285BEE190022F6E1 /* ViewModel */,
+				7204037A285BEE100022F6E1 /* View */,
+			);
+			path = AddPost;
+			sourceTree = "<group>";
+		};
+		7204037A285BEE100022F6E1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7204037C285BEE2C0022F6E1 /* AddPostView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		7204037B285BEE190022F6E1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		722883E727C9792B006EB7A4 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -510,6 +536,7 @@
 		72BCE285284F687000434F9F /* FeedTabItem */ = {
 			isa = PBXGroup;
 			children = (
+				72040379285BEE080022F6E1 /* AddPost */,
 				72BCE287284F688100434F9F /* ViewModel */,
 				72BCE286284F687C00434F9F /* View */,
 			);
@@ -581,7 +608,7 @@
 		72D9563127C6C81C006C0D88 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				72D9563227C6C829006C0D88 /* ProfileViewModel.swift */,
+				72D9563227C6C829006C0D88 /* MainProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -976,12 +1003,13 @@
 				72ED9C7D27C03E3B00EEC6CB /* CustomDivider.swift in Sources */,
 				72667F6727D168E700EAB2D4 /* SecondAttempt.swift in Sources */,
 				728A70EC2844111D00E95B0D /* AddBookReviewViewModel.swift in Sources */,
-				72D9563327C6C829006C0D88 /* ProfileViewModel.swift in Sources */,
+				72D9563327C6C829006C0D88 /* MainProfileViewModel.swift in Sources */,
 				72CDE62627C2EDD700C83327 /* MainProfileView.swift in Sources */,
 				722FCC9C27CFD77100126903 /* Collections.swift in Sources */,
 				726337A127C675B7001D59FE /* SignUpModel.swift in Sources */,
 				7218E96527E0D9FA00BDE6B2 /* ImagePicker.swift in Sources */,
 				72A1C93D27D4FE9B0070E344 /* SearchBar.swift in Sources */,
+				7204037D285BEE2C0022F6E1 /* AddPostView.swift in Sources */,
 				72C0185627C6E6ED0049D04B /* AppDelegate+Injection.swift in Sources */,
 				72BCE292284FC03F00434F9F /* ReviewModel.swift in Sources */,
 				72ED9C7F27C0444700EEC6CB /* NewApp.swift in Sources */,

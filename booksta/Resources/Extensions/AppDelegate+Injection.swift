@@ -10,7 +10,7 @@ import Resolver
 
 extension Resolver: ResolverRegistering {
     public static func registerAllServices() {
-        register{ ProfileViewModel() }.scope(.application)
+        register{ MainProfileViewModel() }.scope(.application)
         register{ PeopleSearchViewModel() }.scope(.application)
         register{ BookSearchViewModel() }.scope(.application)
     }

@@ -17,6 +17,12 @@ class BookSearchViewModel: ObservableObject {
             fetchBooks(searchTerm: searchText)
         }
     }
+    var countOfBooks = 20 {
+            didSet {
+                state = .idle
+                fetchBooks(searchTerm: searchText)
+            }
+    }
     
     func fetchBooks(searchTerm: String) {
         guard state == .idle else {
@@ -25,23 +31,26 @@ class BookSearchViewModel: ObservableObject {
         state = .loading
         
         if searchTerm.isEmpty {
-            self.listOfBooks = []
-            self.state = .loaded(self.listOfBooks)
-        } else {
-            BookService.getBooks { [weak self] books, error in
+            BookService.getBooks(limit: countOfBooks) { [weak self] books, error in
                 guard let `self` = self else { return }
                 if let error = error {
                     self.state = .error(error)
                 } else if let books = books {
-                    if searchTerm.isEmpty {
-                        self.listOfBooks = self.getFilteredList(unfilteredList: books, searchText: searchTerm)
-                        //                    self.listOfBooks = []
-                        self.state = .loaded(self.listOfBooks)
-                    } else {
-                        let list = self.getFilteredList(unfilteredList: books, searchText: searchTerm)
-                        self.state = .loaded(list)
-                        self.listOfBooks = list
-                    }
+                    self.listOfBooks = self.getFilteredList(unfilteredList: books, searchText: searchTerm)
+                    //                    self.listOfBooks = []
+                    self.state = .loaded(self.listOfBooks)
+                }
+            }
+        } else {
+            BookService.getBooks(searchField: searchTerm, limit: countOfBooks) { [weak self] books, error in
+                guard let `self` = self else { return }
+                if let error = error {
+                    self.state = .error(error)
+                } else if let books = books {
+//                    let list = self.getFilteredList(unfilteredList: books, searchText: searchTerm)
+                    self.state = .loaded(books)
+                    self.listOfBooks = books
+                    
                 }
             }
         }

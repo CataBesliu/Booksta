@@ -20,6 +20,7 @@ extension Color {
     
     public static let bookstaPink = Color("bookstaPink")
     public static let bookstaPurple = Color("bookstaPurple")
+    public static let bookstaPurple400 = Color("bookstaPurple400")
     public static let bookstaPurple600 = Color("bookstaPurple600")
     public static let bookstaPurple800 = Color("bookstaPurple800")
     public static let bookstaPurple900 = Color("bookstaPurple900")

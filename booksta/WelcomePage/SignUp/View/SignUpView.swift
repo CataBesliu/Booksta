@@ -9,7 +9,7 @@ import SwiftUI
 import Resolver
 
 struct SignUpView: View {
-    @ObservedObject var profileViewModel : ProfileViewModel = Resolver.resolve()
+    @ObservedObject var profileViewModel : MainProfileViewModel = Resolver.resolve()
     @ObservedObject var viewModel = SignUpViewModel()
     
     @State private var email: String = ""

@@ -10,7 +10,7 @@ import Firebase
 import Resolver
 struct TabBarView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: ProfileViewModel = Resolver.resolve()
+    @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     @State private var selection = 0
     var body: some View {
         GeometryReader { _ in

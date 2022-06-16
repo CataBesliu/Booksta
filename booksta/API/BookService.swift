@@ -10,18 +10,36 @@ import Firebase
 
 struct BookService {
     
-    static func getBooks(completion: @escaping([BookModel]?,String?) -> Void) {
-        BOOKS_COLLECTION.getDocuments { documentSnapshot, error in
-            // documentSnapshot data returns a nsdictionary
-            if let error = error {
-                print("DEBUG: Error retrieving books - \(error.localizedDescription)")
-                completion(nil, error.localizedDescription)
-                return
+    static func getBooks(searchField: String = "", limit: Int = 20, completion: @escaping([BookModel]?,String?) -> Void) {
+        if searchField.isEmpty {
+            BOOKS_COLLECTION
+                .limit(to: limit)
+                .getDocuments { documentSnapshot, error in
+                // documentSnapshot data returns a nsdictionary
+                if let error = error {
+                    print("DEBUG: Error retrieving books - \(error.localizedDescription)")
+                    completion(nil, error.localizedDescription)
+                    return
+                }
+                guard let data = documentSnapshot else { return }
+                let books = data.documents.map ({ BookModel(dictionary: $0.data(), id: $0.documentID) })
+                completion(books, nil)
             }
-            guard let data = documentSnapshot else { return }
-            let books = data.documents.map ({ BookModel(dictionary: $0.data(), id: $0.documentID) })
-            completion(books, nil)
-            
+        } else {
+            BOOKS_COLLECTION
+                .whereField("title", isGreaterThanOrEqualTo: searchField)
+                .limit(to: limit)
+                .getDocuments { documentSnapshot, error in
+                // documentSnapshot data returns a nsdictionary
+                if let error = error {
+                    print("DEBUG: Error retrieving books - \(error.localizedDescription)")
+                    completion(nil, error.localizedDescription)
+                    return
+                }
+                guard let data = documentSnapshot else { return }
+                let books = data.documents.map ({ BookModel(dictionary: $0.data(), id: $0.documentID) })
+                completion(books, nil)
+            }
         }
     }
     

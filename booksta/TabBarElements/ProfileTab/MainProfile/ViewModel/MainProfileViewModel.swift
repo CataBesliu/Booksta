@@ -7,17 +7,19 @@
 
 import Foundation
 import Firebase
+import Resolver
 
-class ProfileViewModel: ObservableObject {
+class MainProfileViewModel: ObservableObject {
     @Published var state = DataState<UserModel>.idle
     @Published var isUserLoggedIn: Bool = false
     @Published var user: UserModel? {
         didSet {
-            
+            getUserBooks()
         }
     }
     
     @Published var imageState = DataState<String>.idle
+    @Published var books: [BookModel]?
     
     
     func getUserInformation() {
@@ -35,6 +37,17 @@ class ProfileViewModel: ObservableObject {
                 self.state = .loaded(user)
                 self.imageState = .loaded(user.imageURL)
                 self.user = user
+            }
+        }
+    }
+    
+    func getUserBooks() {
+        UserService.getBooksRead(user) { [weak self] books,error in
+            guard let `self` = self else { return }
+            if let error = error {
+                self.books = nil
+            } else if let books = books {
+                self.books = books
             }
         }
     }
@@ -63,6 +76,7 @@ class ProfileViewModel: ObservableObject {
     func logOut() {
         do {
             try Auth.auth().signOut()
+            Resolver.reset()
             self.state = .idle
             self.user = nil
             checkIfUserIsLoggedIn()
@@ -80,3 +94,4 @@ class ProfileViewModel: ObservableObject {
         }
     }
 }
+//        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }

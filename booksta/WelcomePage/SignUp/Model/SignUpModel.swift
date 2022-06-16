@@ -12,5 +12,6 @@ struct SignUpModel {
     let email: String
     let password: String
     let repeatedPassword: String
-    
+    let booksRead: [String] = []
+    let username: String = ""
 }

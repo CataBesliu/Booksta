@@ -16,6 +16,7 @@ struct BookSearchView: View {
     @State var curbeRadius: CGFloat
     @State var curbeHeight: CGFloat
     
+    
     var body: some View {
         content
             .onAppear(perform: {
@@ -38,10 +39,19 @@ struct BookSearchView: View {
             VStack(spacing: 10) {
                 SearchBar(text: $viewModel.searchText, placeholder: "Search for a book")
                 getStateView(state: viewModel.state)
+//                HStack {
+//                    Spacer()
+//                    Button {
+//                        viewModel.countOfBooks += 10
+//                    } label: {
+//                        BookstaButton(title: "Show more", paddingV: 5, paddingH: 10, titleSize: 15)
+//                    }
+//                    Spacer()
+//                }
             }
             
         }
-        .padding([.horizontal, .top])
+        .padding([.horizontal, .vertical])
         .background(Color.bookstaBackground)
         .clipShape(BookSearchShape(radius: curbeRadius, height: curbeHeight))
         .contentShape(BookSearchShape(radius: curbeRadius, height: curbeHeight))

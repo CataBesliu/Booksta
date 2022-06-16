@@ -13,7 +13,7 @@ import Resolver
 struct NewApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @State var isPresentingEditView = false
-    @ObservedObject var viewModel: ProfileViewModel = Resolver.resolve()
+    @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     
     var body: some Scene {
         WindowGroup {

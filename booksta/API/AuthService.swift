@@ -27,11 +27,15 @@ struct AuthService {
             
             //Firestore creates the uid
             guard let uid = result?.user.uid else { return }
+            let categories: [String] = []
             
             let data: [String: Any] = ["email": credentials.email,
                                        "uid":uid,
                                        "imageURL":"",
-                                       "admin": false ]
+                                       "admin": false,
+                                       "booksRead": credentials.booksRead,
+                                       "username": credentials.username,
+                                       "categories": categories]
             
             USERS_COLLECTION.document(uid).setData(data, completion: completion)
         }

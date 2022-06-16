@@ -12,7 +12,7 @@ import SDWebImageSwiftUI
 
 struct MainProfileView: View {
     @State private var isUserLoggedOut = false
-    @ObservedObject var viewModel: ProfileViewModel = Resolver.resolve()
+    @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     @State private var profileImage: UIImage?
     @State private var isLibrarySheetPresented = false
     
@@ -61,42 +61,70 @@ struct MainProfileView: View {
                     .foregroundColor(.bookstaPurple800)
             case let .loaded(user):
                 getProfileHeaderView(mainUser: user)
-                Text("\(user.email)")
-                    .foregroundColor(.bookstaPurple800)
             case let .error(error):
                 getProfileHeaderView(mainUser: nil)
                 Text("\(error)")
                     .foregroundColor(.bookstaPurple800)
             }
-            Spacer()
         }
     }
     
     private func getProfileHeaderView(mainUser: UserModel?) -> some View {
-        ZStack(alignment: .leading) {
-            VStack {
-                Text("Books read")
+        VStack(spacing: 30) {
+            HStack(spacing: 13){
+                Button(action: {
+                    //TODO: Add photo functionality
+                    isLibrarySheetPresented = true
+                }) {
+                    getProfileImageView()
+                }
+                Text("@\(viewModel.user?.username ?? "-")")
+                    .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.bookstaPurple800)
-                Text("")
+                    .padding(.bottom, 10)
+                Spacer()
             }
-            .padding(.leading, 20)
-            ZStack(alignment: .trailing){
-                HStack{
-                    Spacer()
-                    Button(action: {
-                        //TODO: Add photo functionality
-                        isLibrarySheetPresented = true
-                    }) {
-                        getProfileImageView()
-                    }
-                    Spacer()
-                }
-                VStack {
-                    Text("Following")
-                        .foregroundColor(.bookstaPurple800)
-                    Text("")
-                }
-                .padding(.trailing, 20)
+            profileProperties
+            Spacer()
+            
+        }
+        .padding(.vertical)
+        .padding(.horizontal, 20)
+    }
+    
+    private var profileProperties: some View {
+        HStack(spacing: 20) {
+            VStack(spacing: 5) {
+                Text("234")
+                    .font(.system(size: 19, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
+                Text("following")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.bookstaPurple800)
+            }
+            
+            Divider().frame(width: 2, height: 20)
+                .foregroundColor(.bookstaPurple)
+            
+            VStack(spacing: 5) {
+                Text("\(viewModel.books?.count ?? 0)")
+                    .font(.system(size: 19, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
+                Text("books read")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.bookstaPurple800)
+            }
+            
+            Divider().frame(width: 2, height: 20)
+                .foregroundColor(.bookstaPurple)
+            
+            VStack(spacing: 5) {
+                Text("234")
+                    .font(.system(size: 19, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
+                Text("reviews")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.bookstaPurple800)
             }
         }
     }
@@ -107,19 +135,18 @@ struct MainProfileView: View {
             case .idle,.loading:
                 Text("Loading...")
                     .foregroundColor(.bookstaPurple800)
-                    .frame(width: 100, height: 100, alignment: .center)
+                    .frame(width: 60, height: 60, alignment: .center)
                     .clipShape(Circle())
-                    .shadow(radius: 10)
                     .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
             case let .loaded(imageURL):
                 BookstaImage(url: imageURL,
-                             height: 100,
-                             width: 100,
+                             height: 60,
+                             width: 60,
                              placeholderImage: "person.crop.circle")
-                    .clipShape(Circle())
-                    .shadow(radius: 10)
-                    .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
-                    .eraseToAnyView()
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
+                .eraseToAnyView()
+                
             case let .error(_):
                 //TODO: implement error
                 getImageResized(image: Image(systemName: "person.crop.circle"))
@@ -131,10 +158,9 @@ struct MainProfileView: View {
     func getImageResized(image: Image) -> some View {
         return image
             .resizable()
-            .frame(width: 100, height: 100, alignment: .center)
+            .frame(width: 60, height: 60, alignment: .center)
             .foregroundColor(.bookstaPurple800)
             .clipShape(Circle())
-            .shadow(radius: 10)
             .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
     }
     

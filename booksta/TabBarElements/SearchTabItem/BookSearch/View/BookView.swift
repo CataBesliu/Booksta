@@ -12,24 +12,33 @@ struct BookView: View {
     @ObservedObject var reviewViewModel: AddBookReviewViewModel
     @State var showAddReview = false
     
-    var book: BookModel
     var imageWidth: CGFloat = 70
     
     init(book: BookModel) {
-        self.book = book
         self.reviewViewModel = AddBookReviewViewModel(book: book)
     }
     
     var body: some View {
         ScrollView {
             VStack {
-                BookHeaderView(book: book, imageWidth: imageWidth)
+                BookHeaderView(book: reviewViewModel.book, imageWidth: imageWidth)
                 VStack(spacing: 20) {
                     genreScrollView
                     Divider()
                         .frame(height: 2)
                     VStack(spacing: 30) {
-                        addReviewButton
+                        Toggle(isOn: $reviewViewModel.isRead) {
+                            HStack {
+                                Text("Have you read this book?")
+                                    .font(.system(size: 15))
+                                    .foregroundColor(.bookstaPurple800)
+                                Spacer()
+                            }
+                        }
+                        .foregroundColor(.bookstaPurple)
+                        if reviewViewModel.isRead {
+                            addReviewButton
+                        }
                         descriptionView
                         reviewContent
                     }
@@ -42,16 +51,17 @@ struct BookView: View {
         .navigationTitle("")
         .edgesIgnoringSafeArea(.top)
         .onAppear {
-            reviewViewModel.hasUserSentReviewFunction(bookID: "\(book.id)")
+            reviewViewModel.hasUserSentReviewFunction()
             reviewViewModel.getReviews()
+            reviewViewModel.hasUserReadBook()
         }
     }
     
     private var genreScrollView: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {
-                ForEach(0 ..< book.genres.count) {index in
-                    BookstaButton(title: "\(book.genres[index])",
+                ForEach(0 ..< reviewViewModel.book.genres.count) {index in
+                    BookstaButton(title: "\(reviewViewModel.book.genres[index])",
                                   bgColor: Color.bookstaGrey100,
                                   paddingV: 7,
                                   paddingH: 20,
@@ -86,7 +96,7 @@ struct BookView: View {
                     .font(.system(size: 20, weight: .bold))
                 Spacer()
             }
-            Text("\(book.description)")
+            Text("\(reviewViewModel.book.description)")
                 .foregroundColor(.bookstaPurple800)
                 .font(.system(size: 15))
         }
@@ -116,7 +126,7 @@ struct BookView: View {
                     .leadingStyle()
                 
             case .loaded(let reviewers):
-                VStack {
+                VStack(spacing: 10) {
                     ForEach(reviewers, id: \.self) { reviewer in
                         reviewCell(reviewerModel: reviewer)
                     }
@@ -133,8 +143,8 @@ struct BookView: View {
                              height: 34,
                              width: 34,
                              placeholderImage: "person.crop.circle")
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.white, lineWidth: 4))
                 VStack {
                     Text(reviewerModel.user.email)
                         .font(.system(size: 13, weight: .bold))
@@ -145,20 +155,20 @@ struct BookView: View {
             VStack(spacing: 8) {
                 Divider()
                     .frame(height: 2)
-                    VStack(alignment: .leading, spacing: 5) {
-                        Text(reviewerModel.review.reviewDescription)
-                            .font(.system(size: 19, weight: .bold))
-                            .foregroundColor(.bookstaPurple800)
-                            .leadingStyle()
-                        StarView(rating: .constant(reviewerModel.review.reviewGrade), isActive: false, width: 20, height: 15)
-                            .padding(.leading, 3)
-                        
-                    }
+                VStack(alignment: .leading, spacing: 5) {
+                    Text(reviewerModel.review.reviewDescription)
+                        .font(.system(size: 19, weight: .bold))
+                        .foregroundColor(.bookstaPurple800)
+                        .leadingStyle()
+                    StarView(rating: .constant(reviewerModel.review.reviewGrade), isActive: false, width: 20, height: 15)
+                        .padding(.leading, 3)
+                    
                 }
+            }
         }
-        //        } else {
-        //            return EmptyView()
-        //        }
+        .padding()
+        .background(Color.bookstaPurple.opacity(0.3))
+        .cornerRadius(10)
     }
     
     

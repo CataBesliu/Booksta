@@ -9,16 +9,21 @@ import Foundation
 
 struct UserModel: Hashable, Equatable {
     let uid: String
+    let username: String
     let email: String
-    //    TODO: let username: String
     let imageURL: String
+    let booksRead: [String]
+    let categories: [String]
     let admin: Bool
     var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == uid }
     
     init(dictionary: [String: Any]) {
         self.uid = dictionary["uid"] as? String ?? ""
+        self.username = dictionary["username"] as? String ?? ""
         self.email = dictionary["email"] as? String ?? ""
         self.imageURL = dictionary["imageURL"] as? String ?? ""
         self.admin = dictionary["admin"] as? Bool ?? false
+        self.booksRead = dictionary["booksRead"] as? [String] ?? []
+        self.categories = dictionary["categories"] as? [String] ?? []
     }
 }
