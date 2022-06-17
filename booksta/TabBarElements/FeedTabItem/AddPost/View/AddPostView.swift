@@ -8,68 +8,86 @@
 import SwiftUI
 
 struct AddPostView: View {
+    @Environment(\.presentationMode) var presentationMode
+    @ObservedObject var viewModel: AddPostViewModel
+    
     @State var postDescription: String = ""
     @State private var showingAlert = false
+    @State private var showBooks = true
+    
+    
     
     init() {
         UITextView.appearance().backgroundColor = .clear
         UITextView.appearance().tintColor = UIColor(named: "bookstaPurple800")
-
+        self.viewModel = AddPostViewModel()
     }
     
     var body: some View {
         VStack {
-            addPhotoView
-            
-            VStack(spacing: 20) {
-                VStack(spacing: 10) {
-                    HStack {
-                        Text("Description")
-                            .font(.system(size: 20, weight: .bold))
+            header
+                .zIndex(1)
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 20) {
+                    addPhotoView
+                    VStack(spacing: 10) {
+                        HStack {
+                            Text("Description")
+                                .font(.system(size: 20, weight: .bold))
+                                .foregroundColor(.bookstaPurple800)
+                            Spacer()
+                        }
+                        TextEditor(text: $postDescription)
                             .foregroundColor(.bookstaPurple800)
-                        Spacer()
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(Color.bookstaPurple800, lineWidth: 2))
+                            .frame(height: 150)
                     }
-                    TextEditor(text: $postDescription)
-                        .foregroundColor(.bookstaPurple800)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 2)
-                                .stroke(Color.bookstaPurple800, lineWidth: 1))
-                        .frame(height: 150)
-                }
-                
-                VStack(spacing: 10) {
-                    HStack {
-                        Text("Reading")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(.bookstaPurple800)
-                        Spacer()
+                    bookReadingView
+                    if let book = viewModel.selectedBook,
+                       !postDescription.isEmpty {
+                        withAnimation(.easeIn(duration: 2)) {
+                            Button {
+                                viewModel.sendPost(postDescription: postDescription)
+                                //TODO: add completion
+                                presentationMode.wrappedValue.dismiss()
+                            } label: {
+                                BookstaButton(title: "Send post", paddingV: 10, titleSize: 15, titleWeight: .bold, isMaxWidth: true)
+                            }
+                        }
                     }
-                    
                 }
+                Spacer()
             }
-            Spacer()
+            .clipped()
+            .onTapGesture {
+                UIApplication.shared.endEditing()
+            }
+            .padding()
         }
-        .padding()
-        .background(.white)
         .navigationTitle("")
-        .navigationBarHidden(true)
-        .clipped()
-        .onTapGesture {
-            UIApplication.shared.endEditing()
-        }
+        .edgesIgnoringSafeArea(.top)
+        .background(Color.white)
     }
     
-    //    private var header: some View  {
-    //        HStack {
-    //            Spacer()
-    //            Text("Add new post")
-    //                .font(.system(size: 20, weight: .bold))
-    //                .foregroundColor(.bookstaPurple800)
-    //            Spacer()
-    //        }
-    //        .padding([.horizontal, .top])
-    //        .padding(.bottom, 10)
-    //    }
+    private var header: some View  {
+        VStack {
+            HStack {
+                Spacer()
+                Text("Add new post")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 10)
+            .padding(.top, 25)
+            
+            Divider().frame(height: 2)
+        }
+        .background(Color.white)
+    }
     
     private var addPhotoView: some View {
         Button {
@@ -85,6 +103,49 @@ struct AddPostView: View {
                     .resizable()
                     .frame(width: 30, height: 30)
                     .foregroundColor(.white)
+            }
+        }
+    }
+    
+    private var bookReadingView: some View {
+        VStack(spacing: 10) {
+            HStack {
+                Text("Reading")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
+                Spacer()
+            }
+            VStack(spacing: 0) {
+                SimpleSearchBar(text: $viewModel.searchText, placeholder: "What are you reading?")
+                
+                if viewModel.listOfBooks.count > 0,
+                   !viewModel.searchText.isEmpty,
+                   viewModel.showBooks {
+                    
+                    ForEach(viewModel.listOfBooks, id: \.self) { book in
+                        HStack {
+                            Spacer()
+                                .frame(width: 10)
+                            HStack {
+                                Text(book.name)
+                                    .foregroundColor(.bookstaPurple800)
+                                    .font(.system(size: 15))
+                                Spacer()
+                            }
+                            .padding(7)
+                            .background(Color.bookstaPurple.opacity(0.2))
+                            .border(Color.bookstaPurple800, width: 1)
+                            
+                            Spacer()
+                                .frame(width: 40)
+                        }
+                        .clipped()
+                        .onTapGesture {
+                            viewModel.searchText = book.name
+                            viewModel.selectBook(book: book)
+                        }
+                    }
+                }
             }
         }
     }

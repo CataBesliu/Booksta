@@ -54,6 +54,7 @@ struct FeedView: View {
             .navigationTitle("")
             .navigationBarHidden(true)
         }
+        .accentColor(.bookstaPurple800)
     }
     
     private var bookstaLogo: some View  {

@@ -57,10 +57,10 @@ struct AddReviewView: View {
             .padding()
             Spacer(minLength: 2)
         }
-        .background(Color.white)
+        }
         .navigationTitle("")
         .edgesIgnoringSafeArea(.top)
-        }
+        .background(Color.white)
         .alert("Make sure that all fields are completed",
                isPresented: $showingAlert) {
             Button("OK", role: .none) { }
