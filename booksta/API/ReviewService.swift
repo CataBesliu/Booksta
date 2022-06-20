@@ -10,6 +10,44 @@ import Firebase
 
 struct ReviewService {
     
+    static func getReviewsForUser(userID: String, completion: @escaping([ReviewModel]?,String?) -> Void) {
+        var returnList: [ReviewModel] = []
+        var count = 0
+        // Gets current user uid
+        USERS_COLLECTION.document(userID).getDocument { documentSnapshot, error in
+            if let error = error {
+                print("DEBUG: Error retrieving reviews - \(error.localizedDescription)")
+                completion(nil, error.localizedDescription)
+                return
+            }
+            guard let doc = documentSnapshot else { return }
+            if let data = doc.data(),
+               let booksRead = data["booksRead"] as? [String] {
+                let max = booksRead.count
+                for book in booksRead {
+                    count += 1
+                    REVIEWS_COLLECTION.document(book).collection(USER_REVIEWS_COLLECTION).document(userID).getDocument { documentSnapshot2, error2 in
+                        if let error = error2 {
+                            print("DEBUG: Error retrieving reviews - \(error.localizedDescription)")
+                            completion(nil, error.localizedDescription)
+                            return
+                        }
+                        guard let doc = documentSnapshot2 else { return }
+                        if doc.exists, let data = doc.data() {
+                            let review = ReviewModel(dictionary: data, id: doc.documentID)
+                            returnList.append(review)
+                            
+                        }
+                        if count == max {
+                            completion(returnList, nil)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
     static func getReviews(bookID: String, completion: @escaping([ReviewerModel]?,String?) -> Void) {
         var returnList: [ReviewerModel] = []
         REVIEWS_COLLECTION.document(bookID).collection(USER_REVIEWS_COLLECTION).getDocuments { documentSnapshot, error in
@@ -67,7 +105,7 @@ struct ReviewService {
             guard let doc = documentSnapshot else { return }
             if doc.exists, let data = doc.data() {
                 let review = ReviewModel(dictionary: data, id: doc.documentID)
-//                let review = ReviewModel(dictionary: data, id: doc.documentID)
+                //                let review = ReviewModel(dictionary: data, id: doc.documentID)
                 completion((review, doc.exists),nil)
             } else {
                 completion((nil, doc.exists),nil)

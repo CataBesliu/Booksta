@@ -9,7 +9,7 @@ import SwiftUI
 import Resolver
 
 struct FeedView: View {
-    
+    @ObservedObject var postsViewModel: FeedViewModel = Resolver.resolve()
     @ObservedObject var profileViewModel: MainProfileViewModel = Resolver.resolve()
     @State var showSheet = false
     
@@ -53,6 +53,7 @@ struct FeedView: View {
             }
             .navigationTitle("")
             .navigationBarHidden(true)
+            .onAppear(perform: postsViewModel.fetchPosts)
         }
         .accentColor(.bookstaPurple800)
     }
@@ -83,9 +84,7 @@ struct FeedView: View {
         ScrollView {
             VStack {
                 iconFeedView
-                
-                Text("Feed")
-                    .foregroundColor(.bookstaPurple800)
+                postsView
                 
                 Spacer()
                 Spacer()
@@ -94,6 +93,31 @@ struct FeedView: View {
         .frame(maxWidth: .infinity)
         .padding(.horizontal)
         .background(Color.white)
+    }
+    
+    private var postsView: some View {
+        VStack {
+            switch postsViewModel.allPosts {
+            case .idle, .loading :
+                HStack {
+                Text("No new posts")
+                    .font(.system(size: 20))
+                    .foregroundColor(.bookstaPurple800)
+                    Spacer()
+                }
+            case .error(_):
+                HStack {
+                Text("Error fetching posts")
+                    .font(.system(size: 20))
+                    .foregroundColor(.bookstaPurple800)
+                    Spacer()
+                }
+            case .loaded(let posts):
+                ForEach(posts, id: \.self) { post in
+                    PostView(userPostModel: post)
+                }
+            }
+        }
     }
     
     private var iconFeedView: some View {
@@ -105,7 +129,7 @@ struct FeedView: View {
                     .frame(width: 111, height: 96)
                 
                 if let user = profileViewModel.user {
-                    Text("Welcome back, \(user.email)!")
+                    Text("Welcome back, \(user.username)!")
                         .font(.system(size: 20, weight: .bold))
                         .foregroundColor(.white)
                 } else {

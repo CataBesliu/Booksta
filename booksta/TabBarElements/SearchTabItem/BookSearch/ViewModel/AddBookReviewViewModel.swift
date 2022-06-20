@@ -7,8 +7,10 @@
 
 import SwiftUI
 import Firebase
+import Resolver
 
 class AddBookReviewViewModel: ObservableObject {
+    @ObservedObject var profileViewModel: MainProfileViewModel = Resolver.resolve()
     @Published var state = DataState<[ReviewerModel]>.idle
     @Published var hasUserSentReview = false
     @Published var bookReview: ReviewModel?

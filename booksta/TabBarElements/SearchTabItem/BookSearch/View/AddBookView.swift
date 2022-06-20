@@ -34,7 +34,6 @@ struct AddBookView: View {
         }
         .padding()
         .navigationTitle("Add a book")
-//        .navigationBarTitleDisplayMode(.inline)
     }
     
     private var genreView: some View {

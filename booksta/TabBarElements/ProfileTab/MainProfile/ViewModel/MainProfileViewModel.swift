@@ -15,11 +15,13 @@ class MainProfileViewModel: ObservableObject {
     @Published var user: UserModel? {
         didSet {
             getUserBooks()
+            getUserReviews()
         }
     }
     
     @Published var imageState = DataState<String>.idle
     @Published var books: [BookModel]?
+    @Published var reviews: [ReviewModel]?
     
     
     func getUserInformation() {
@@ -45,9 +47,22 @@ class MainProfileViewModel: ObservableObject {
         UserService.getBooksRead(user) { [weak self] books,error in
             guard let `self` = self else { return }
             if let error = error {
-                self.books = nil
+                print(error)
             } else if let books = books {
                 self.books = books
+            }
+        }
+    }
+    
+    func getUserReviews() {
+        if let uid = user?.uid {
+            ReviewService.getReviewsForUser(userID: uid) { [weak self] reviews,error in
+                guard let `self` = self else { return }
+                if let error = error {
+                    print(error)
+                } else if let reviews = reviews {
+                    self.reviews = reviews
+                }
             }
         }
     }

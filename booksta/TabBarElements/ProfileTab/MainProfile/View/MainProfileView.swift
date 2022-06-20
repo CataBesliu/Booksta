@@ -15,6 +15,8 @@ struct MainProfileView: View {
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     @State private var profileImage: UIImage?
     @State private var isLibrarySheetPresented = false
+    @State private var showReadBooks = false
+    @State private var showReviews = false
     
     init(){
         UINavigationBar.setAnimationsEnabled(false)
@@ -22,28 +24,66 @@ struct MainProfileView: View {
     
     var body: some View {
         NavigationView {
-            VStack(spacing: 20) {
-                getProfileView()
-                Button(action: viewModel.logOut) {
-                    logOutButtonView
+            GeometryReader { geometry in
+                ZStack(alignment: .bottom) {
+                    VStack {
+                        bookstaLogo
+                            .zIndex(1)
+                        Divider()
+                            .frame(height: 1)
+                            .foregroundColor(.bookstaPurple800)
+                        profileContent
+                    }
+                    if showReadBooks {
+                        BooksScrollView(books: viewModel.books)
+                            .modalPresenter(title: "Books read", onDismiss: {
+                                withAnimation(.easeIn(duration: 0.5)) {
+                                    showReadBooks = false
+                                }
+                            })
+                            .transition(.bottomslide)
+                            .frame(height: geometry.size.height - 200)
+                            .zIndex(1)
+                    }
                 }
-                Spacer()
-                
+                .background(Color.white)
+                .navigationBarBackButtonHidden(true)
+                .navigationBarHidden(true)
+                .onAppear(perform: {
+                    viewModel.getUserBooks()
+                    viewModel.getUserReviews()
+                })
+                .onChange(of: profileImage, perform: { newImage in
+                    viewModel.resetImageState()
+                    viewModel.uploadPhoto(image: newImage)
+                    viewModel.getUserInformation()
+                })
+                .sheet(isPresented: $isLibrarySheetPresented) {
+                    ImagePicker(selectedImage: $profileImage)
+                }
             }
-            .background(Color.white)
-            .navigationBarBackButtonHidden(true)
-            .navigationBarHidden(true)
         }
-        .onAppear(perform: {
-            viewModel.getUserInformation()
-        })
-        .onChange(of: profileImage, perform: { newImage in
-            viewModel.resetImageState()
-            viewModel.uploadPhoto(image: newImage)
-            viewModel.getUserInformation()
-        })
-        .sheet(isPresented: $isLibrarySheetPresented) {
-            ImagePicker(selectedImage: $profileImage)
+    }
+    
+    private var bookstaLogo: some View  {
+        HStack {
+            Image("iconLogo")
+                .resizable()
+                .frame(width: 100, height: 20)
+            Spacer()
+        }
+        .padding(.horizontal)
+        .padding(.bottom, 10)
+    }
+    
+    private var profileContent: some View {
+        VStack(spacing: 20) {
+            getProfileView()
+            Button(action: viewModel.logOut) {
+                logOutButtonView
+            }
+            Spacer()
+            
         }
     }
     
@@ -83,6 +123,14 @@ struct MainProfileView: View {
                     .foregroundColor(.bookstaPurple800)
                     .padding(.bottom, 10)
                 Spacer()
+                NavigationLink {
+                    withAnimation(.spring(response: 1, dampingFraction: 1, blendDuration: 0.2)) { EditProfileView()}
+                } label: {
+                    Image(systemName: "gear")
+                        .resizable()
+                        .frame(width: 22, height: 22)
+                        .foregroundColor(.bookstaPurple800)
+                }
             }
             profileProperties
             Spacer()
@@ -91,6 +139,7 @@ struct MainProfileView: View {
         .padding(.vertical)
         .padding(.horizontal, 20)
     }
+    
     
     private var profileProperties: some View {
         HStack(spacing: 20) {
@@ -106,25 +155,37 @@ struct MainProfileView: View {
             Divider().frame(width: 2, height: 20)
                 .foregroundColor(.bookstaPurple)
             
-            VStack(spacing: 5) {
-                Text("\(viewModel.books?.count ?? 0)")
-                    .font(.system(size: 19, weight: .bold))
-                    .foregroundColor(.bookstaPurple800)
-                Text("books read")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.bookstaPurple800)
+            Button {
+                withAnimation(.easeIn(duration: 0.5)) {
+                    showReadBooks.toggle()
+                }
+            } label: {
+                VStack(spacing: 5) {
+                    Text("\(viewModel.books?.count ?? 0)")
+                        .font(.system(size: 19, weight: .bold))
+                        .foregroundColor(.bookstaPurple800)
+                    Text("books read")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.bookstaPurple800)
+                }
             }
             
             Divider().frame(width: 2, height: 20)
                 .foregroundColor(.bookstaPurple)
             
-            VStack(spacing: 5) {
-                Text("234")
-                    .font(.system(size: 19, weight: .bold))
-                    .foregroundColor(.bookstaPurple800)
-                Text("reviews")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.bookstaPurple800)
+            Button {
+                withAnimation(.easeIn(duration: 0.5)) {
+                    showReviews.toggle()
+                }
+            } label: {
+                VStack(spacing: 5) {
+                    Text("\(viewModel.reviews?.count ?? 0)")
+                        .font(.system(size: 19, weight: .bold))
+                        .foregroundColor(.bookstaPurple800)
+                    Text("reviews")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.bookstaPurple800)
+                }
             }
         }
     }

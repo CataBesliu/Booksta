@@ -75,13 +75,7 @@ struct BookSearchView: View {
             }
             .eraseToAnyView()
         case let .loaded(books) :
-            return ScrollView {
-                ForEach(books, id: \.self) { book in
-                    NavigationLink(destination: BookView(book: book)) {
-                        getBookCell(book: book)
-                    }
-                }
-            }
+            return BooksScrollView(books: books)
             .animation(.default, value: viewModel.state)
             .eraseToAnyView()
         case let.error(errorDescription) :
@@ -92,29 +86,6 @@ struct BookSearchView: View {
             }
             .eraseToAnyView()
         }
-    }
-    
-    private func getBookCell(book: BookModel) -> some View {
-        HStack(spacing: 20) {
-            BookstaImage(url: book.thumbnail,
-                         height: 50,
-                         width: 50,
-                         placeholderImage: "book.circle")
-                .clipShape(Circle())
-                .overlay(Circle().stroke(lineWidth: 2))
-            Text("\(book.name)")
-                .font(.system(size: 20,weight: .bold))
-                .foregroundColor(.bookstaPurple800)
-            Spacer()
-        }
-        .padding()
-        .background(Color.bookstaGrey100)
-        .cornerRadius(10)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.bookstaPurple800, lineWidth: 1)
-        )
-        .padding(.vertical, 4)
     }
 }
 

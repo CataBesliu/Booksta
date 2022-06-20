@@ -13,5 +13,6 @@ extension Resolver: ResolverRegistering {
         register{ MainProfileViewModel() }.scope(.application)
         register{ PeopleSearchViewModel() }.scope(.application)
         register{ BookSearchViewModel() }.scope(.application)
+        register{ FeedViewModel() }.scope(.application)
     }
 }

@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 import Resolver
+
 struct TabBarView: View {
     @Environment(\.presentationMode) var presentationMode
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
@@ -31,26 +32,11 @@ struct TabBarView: View {
                 .font(.system(.headline, design: .rounded))
                 .tag(1)
             
-            
-            //            Text("Review books")
-//            SecondAttempt()
-//                .tabItem {
-//                    Label("Review", systemImage: "book.closed.circle")
-//                }
-//                .font(.system(.headline, design: .rounded))
-//                .tag(2)
-            
-//            Text("Add post")
-//                .tabItem {
-//                    Label("Post", systemImage:"photo.circle.fill")
-//                }
-//                .font(.system(.headline, design: .rounded))
-//                .tag(3)
-            
             MainProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }
+                .font(.system(.headline, design: .rounded))
                 .tag(2)
         }
         .onAppear() {
@@ -65,9 +51,6 @@ struct TabBarView: View {
             height: UIScreen.main.bounds.height
         )
         .edgesIgnoringSafeArea(.all)
-        
-        //            .tabViewStyle(PageTabViewStyle())
-        //TODO: change tab bar color
         }
     }
 }

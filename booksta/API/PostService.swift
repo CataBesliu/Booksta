@@ -10,39 +10,6 @@ import Firebase
 
 struct PostService {
     
-//    static func getReviews(bookID: String, completion: @escaping([ReviewerModel]?,String?) -> Void) {
-//        var returnList: [ReviewerModel] = []
-//        REVIEWS_COLLECTION.document(bookID).collection(USER_REVIEWS_COLLECTION).getDocuments { documentSnapshot, error in
-//            if let error = error {
-//                print("DEBUG: Error retrieving reviews - \(error.localizedDescription)")
-//                completion(nil, error.localizedDescription)
-//                return
-//            }
-//            guard let data = documentSnapshot else { return }
-//            let reviews = data.documents.map ({ ReviewModel(dictionary: $0.data(), id: $0.documentID) })
-//
-//            var count = 0
-//            for review in reviews {
-//                UserService.getUserInfo(uid: review.id) { user, error in
-//                    if let error = error {
-//                        print("DEBUG: Error retrieving reviewers - \(error)")
-//                        completion(nil, error)
-//                        return
-//                    }
-//                    guard let user = user else {
-//                        return
-//                    }
-//                    count += 1
-//                    returnList.append(ReviewerModel(user: user, review: review))
-//
-//                    if count == reviews.count {
-//                        completion(returnList, nil)
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
     static func sendPost(bookID: String, bookName: String, postDescription: String = "", postPhoto: String = "", completion: @escaping(FirestoreTypeCompletion)) {
         let stringArray: [String] = []
         let intArray: [Int] = []
@@ -56,33 +23,73 @@ struct PostService {
         
         guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
         POSTS_COLLECTION.document(currentUserUID).collection(USER_POSTS_COLLECTION).document(bookID).setData(docData){ error in
-                if let error = error {
-                    print("DEBUG: Error sending post - \(error.localizedDescription)")
-                    return
-                }
-                print(error ?? "Succeded sending post")
+            if let error = error {
+                print("DEBUG: Error sending post - \(error.localizedDescription)")
+                return
             }
+            print(error ?? "Succeded sending post")
+        }
     }
     
-//    static func hasUserSentReview(bookID: String, completion: @escaping((ReviewModel?,Bool?), String?) -> Void) {
-//        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
-//        REVIEWS_COLLECTION.document(bookID).collection(USER_REVIEWS_COLLECTION).document(currentUserUID).getDocument { documentSnapshot, error in
-//
-//            if let error = error {
-//                print("DEBUG: Error retrieving review - \(error.localizedDescription)")
-//                completion((nil, nil), error.localizedDescription)
-//                return
-//            }
-//            guard let doc = documentSnapshot else { return }
-//            if doc.exists, let data = doc.data() {
-//                let review = ReviewModel(dictionary: data, id: doc.documentID)
-////                let review = ReviewModel(dictionary: data, id: doc.documentID)
-//                completion((review, doc.exists),nil)
-//            } else {
-//                completion((nil, doc.exists),nil)
-//            }
-//        }
-//    }
+    static func getPosts(completion: @escaping([UserPostArrayModel]?,String?) -> Void) {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        var userPosts: [UserPostArrayModel] = []
+        
+        FOLLOWING_COLLECTION.document(currentUserUID).collection(USER_FOLLOWING_COLLECTION).getDocuments { documentSnapshot, error in
+            if let error = error {
+                print("DEBUG: Error retrieving reviews - \(error.localizedDescription)")
+                completion(nil, error.localizedDescription)
+                return
+            }
+            guard let data = documentSnapshot else { return }
+            let followed_users = data.documents.map ({ $0.documentID})
+            
+            var count = 0
+            for user in followed_users {
+                UserService.getUserInfo(uid: user) { userModel, error in
+                    if let error = error {
+                        print("DEBUG: Error retrieving reviewers - \(error)")
+                        completion(nil, error)
+                        return
+                    }
+                    guard let userModel = userModel else {
+                        return
+                    }
+                    
+                    getUserPosts(uid: userModel.uid) { posts, error in
+                        if let error = error {
+                            print("DEBUG: Error retrieving posts - \(error)")
+                            completion(nil, error)
+                            return
+                        }
+                        guard let posts = posts else {
+                            return
+                        }
+                        userPosts.append(UserPostArrayModel(post: posts, user: userModel))
+                        count += 1
+                        if count == followed_users.count {
+                            completion(userPosts, nil)
+                        }
+                    }
+                }
+            }
+        }
+        
+    }
+    
+    
+    static func getUserPosts(uid: String, completion: @escaping(([PostModel]?, String?) -> Void)) {
+        POSTS_COLLECTION.document(uid).collection(USER_POSTS_COLLECTION).getDocuments{ documentSnapshot, error in
+            if let error = error {
+                print("DEBUG: Error retrieving posts - \(error.localizedDescription)")
+                completion(nil, error.localizedDescription)
+                return
+            }
+            guard let data = documentSnapshot else { return }
+            let posts = data.documents.map ({ PostModel(dictionary: $0.data(), uid: uid, bookID: $0.documentID) })
+            completion(posts, nil)
+        }
+    }
     
 }
 
