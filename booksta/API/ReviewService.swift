@@ -13,7 +13,6 @@ struct ReviewService {
     static func getReviewsForUser(userID: String, completion: @escaping([ReviewModel]?,String?) -> Void) {
         var returnList: [ReviewModel] = []
         var count = 0
-        // Gets current user uid
         USERS_COLLECTION.document(userID).getDocument { documentSnapshot, error in
             if let error = error {
                 print("DEBUG: Error retrieving reviews - \(error.localizedDescription)")

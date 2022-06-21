@@ -49,10 +49,10 @@ struct ReviewScrollView: View {
         if let reviews = reviews {
             ScrollView {
                 ForEach(reviews, id: \.self) { review in
-                        getReviewCell(review: review)
-                    }
+                    getReviewCell(review: review)
                 }
             }
+        }
     }
     
     private func getReviewCell(review: ReviewModel) -> some View {
@@ -112,5 +112,70 @@ struct ModalPresenter: ViewModifier {
 extension View {
     func modalPresenter(title: String, onDismiss: @escaping () -> Void) -> some View {
         modifier(ModalPresenter(title: title, onDismiss: onDismiss))
+    }
+}
+
+
+struct BookstaNavigationBar: ViewModifier {
+    var showBackBtn: Bool = false
+    var onBackButton: () -> Void
+    
+    func body(content: Content) -> some View {
+        VStack {
+            Divider()
+                .frame(height: 1)
+                .foregroundColor(.bookstaPurple800)
+            content
+        }
+        .background(Color.white)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                bookstaLogo
+            }
+        }
+        .navigationBarItems(leading: btnBack)
+    }
+    
+    private var bookstaLogo: some View  {
+        VStack {
+            HStack {
+                Image("iconLogo")
+                    .resizable()
+                    .frame(width: 100, height: 20)
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.bottom, 10)
+            .zIndex(1)
+        }
+    }
+    
+    private var btnBack : some View {
+        if showBackBtn {
+            return Button(action: {
+                self.onBackButton()
+            }) {
+                HStack {
+                    Image(systemName: "arrow.backward.square")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                }
+                .foregroundColor(.bookstaPurple)
+                .leadingStyle()
+            }
+            .eraseToAnyView()
+        } else {
+            return EmptyView()
+                .eraseToAnyView()
+        }
+    }
+}
+
+
+extension View {
+    func bookstaNavigationBar(onBackButton: @escaping () -> Void, showBackBtn: Bool = false) -> some View {
+        modifier(BookstaNavigationBar(showBackBtn: showBackBtn, onBackButton: onBackButton))
     }
 }

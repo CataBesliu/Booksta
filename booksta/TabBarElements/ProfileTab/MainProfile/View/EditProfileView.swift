@@ -19,29 +19,25 @@ struct EditProfileView: View {
                 .foregroundColor(.bookstaPurple800)
             profileContent
             Spacer()
-            //                HStack(spacing: 20) {
-            //                    Button {
-            //                        Book
-            //                    }
-            //                }
         }
         .background(Color.white)
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: btnBack)
     }
     
-    var btnBack : some View { Button(action: {
-        self.presentationMode.wrappedValue.dismiss()
-    }) {
-        HStack {
-            Image(systemName: "arrow.backward.square")
-                .resizable()
-                .frame(width: 15, height: 15)
-            Text("Go back")
+    var btnBack : some View {
+        Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            HStack {
+                Image(systemName: "arrow.backward.square")
+                    .resizable()
+                    .frame(width: 15, height: 15)
+                Text("Go back")
+            }
+            .foregroundColor(.bookstaPurple)
+            .leadingStyle()
         }
-        .foregroundColor(.bookstaPurple)
-        .leadingStyle()
-    }
     }
     
     private var profileContent: some View {

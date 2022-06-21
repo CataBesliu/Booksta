@@ -11,7 +11,6 @@ import Resolver
 import SDWebImageSwiftUI
 
 struct MainProfileView: View {
-    @State private var isUserLoggedOut = false
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     @State private var profileImage: UIImage?
     @State private var isLibrarySheetPresented = false
@@ -26,14 +25,8 @@ struct MainProfileView: View {
         NavigationView {
             GeometryReader { geometry in
                 ZStack(alignment: .bottom) {
-                    VStack {
-                        bookstaLogo
-                            .zIndex(1)
-                        Divider()
-                            .frame(height: 1)
-                            .foregroundColor(.bookstaPurple800)
                         profileContent
-                    }
+
                     if showReadBooks {
                         BooksScrollView(books: viewModel.books)
                             .modalPresenter(title: "Books read", onDismiss: {
@@ -46,9 +39,7 @@ struct MainProfileView: View {
                             .zIndex(1)
                     }
                 }
-                .background(Color.white)
-                .navigationBarBackButtonHidden(true)
-                .navigationBarHidden(true)
+                .bookstaNavigationBar(onBackButton: {}, showBackBtn: false)
                 .onAppear(perform: {
                     viewModel.getUserBooks()
                     viewModel.getUserReviews()

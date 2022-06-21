@@ -9,8 +9,7 @@ import Foundation
 import SwiftUI
 import Firebase
 
-class UserProfileViewModel: ObservableObject {
-    @Published var state = DataState<UserModel>.idle
+class UserProfileViewModel: ProfileViewModel {
     @Published var stateForProperties = DataState<UserProperties>.idle
     @Published var isFollowedState: Bool = false
     @Published var user: UserModel
@@ -18,39 +17,6 @@ class UserProfileViewModel: ObservableObject {
     init(user: UserModel) {
         self.user = user
     }
-//
-//    func followUser(userToBeFollowed: UserModel) {
-//        print("DEBUG: Handling following user")
-//        state = .loading
-//        UserService.followUser(userToBeFollowedUID: userToBeFollowed.uid) { [weak self] error in
-//            guard let `self` = self else { return }
-//            if let error = error {
-//                self.state = .error(error.localizedDescription)
-//                return
-//            }
-//            self.state = .loaded(userToBeFollowed)
-//        }
-//    }
-//
-//    func unfollowUser(userToBeUnfollowed: UserModel) {
-//        print("DEBUG: Handling unfollowing user")
-//        state = .loading
-//        UserService.unfollowUser(userToBeUnfollowedUID: userToBeUnfollowed.uid) {[weak self] error in
-//            guard let `self` = self else { return }
-//            if let error = error {
-//                self.state = .error(error.localizedDescription)
-//                return
-//            }
-//            self.state = .loaded(userToBeUnfollowed)
-//        }
-//    }
-//
-//    func getIsUserFollowed(userToBeChecked: UserModel) {
-//        print("DEBUG: Checking if the current user if following given user")
-//        UserService.getIsUserFollowed(userCheckedUID: userToBeChecked.uid) { isUserFollowed in
-//            self.isFollowedState = isUserFollowed
-//        }
-//    }
     
     func followUser() {
         print("DEBUG: Handling following user")
@@ -87,7 +53,11 @@ class UserProfileViewModel: ObservableObject {
     
     func getUserProperties() {
         print("DEBUG: Handling getting user properties user")
+        //from parent
+        getUserBooks(user: user)
+        getUserReviews(user: user)
         stateForProperties = .loading
+        
         UserService.getUserProperties(uid: user.uid, completion: {[weak self] userProperties in
             guard let `self` = self else { return }
 //            if let error = error {
@@ -95,6 +65,7 @@ class UserProfileViewModel: ObservableObject {
 //                return
 //            }
             self.stateForProperties = .loaded(userProperties)
+            
         })
     }
     

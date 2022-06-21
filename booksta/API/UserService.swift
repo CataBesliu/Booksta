@@ -174,32 +174,30 @@ struct UserService {
         }
     }
     
-    static func getBooksRead(_ user: UserModel?, completion: @escaping([BookModel]?, String?) -> Void) {
-        if let user = user {
-            var books: [BookModel] = []
-            var count = 0
-            USERS_COLLECTION.document(user.uid).getDocument { documentSnapshot, error in
-                if let error = error {
-                    completion(nil, error.localizedDescription)
-                } else {
-                    guard let doc = documentSnapshot else { return }
-                    if doc.exists, let data = doc.data() {
-                        if let booksRead = data["booksRead"] as? [String] {
-                            var max = booksRead.count
-                            for book in booksRead {
-                                count += 1
-                                BOOKS_COLLECTION.document(book).getDocument { documentSnapshot, error in
-                                    if let error = error {
-                                        completion(nil, error.localizedDescription)
-                                    } else {
-                                        guard let doc = documentSnapshot else { return }
-                                        if doc.exists, let data = doc.data() {
-                                            let bookModel = BookModel(dictionary: data, id: doc.documentID)
-                                            books.append(bookModel)
-                                        }
-                                        if count == max {
-                                            completion(books, nil)
-                                        }
+    static func getBooksRead(_ user: UserModel, completion: @escaping([BookModel]?, String?) -> Void) {
+        var books: [BookModel] = []
+        var count = 0
+        USERS_COLLECTION.document(user.uid).getDocument { documentSnapshot, error in
+            if let error = error {
+                completion(nil, error.localizedDescription)
+            } else {
+                guard let doc = documentSnapshot else { return }
+                if doc.exists, let data = doc.data() {
+                    if let booksRead = data["booksRead"] as? [String] {
+                        var max = booksRead.count
+                        for book in booksRead {
+                            count += 1
+                            BOOKS_COLLECTION.document(book).getDocument { documentSnapshot, error in
+                                if let error = error {
+                                    completion(nil, error.localizedDescription)
+                                } else {
+                                    guard let doc = documentSnapshot else { return }
+                                    if doc.exists, let data = doc.data() {
+                                        let bookModel = BookModel(dictionary: data, id: doc.documentID)
+                                        books.append(bookModel)
+                                    }
+                                    if count == max {
+                                        completion(books, nil)
                                     }
                                 }
                             }

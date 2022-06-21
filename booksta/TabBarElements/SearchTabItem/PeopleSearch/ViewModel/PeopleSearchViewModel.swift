@@ -43,8 +43,7 @@ class PeopleSearchViewModel: ObservableObject {
     }
     
     func getFilteredList(unfilteredList: [UserModel], searchText: String) -> [UserModel] {
-//        let loggedInUserEmail = Auth.auth().currentUser?.email
-        let loggedInUserEmail = UserDefaults.standard.string(forKey: "email")
+        let loggedInUserEmail = Auth.auth().currentUser?.email
         return unfilteredList.filter({ searchText.isEmpty ? $0.email != loggedInUserEmail :
             $0.email.lowercased().contains(searchText.lowercased()) &&
             $0.email != loggedInUserEmail })

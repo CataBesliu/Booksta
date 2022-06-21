@@ -9,26 +9,24 @@ import Foundation
 import Firebase
 import Resolver
 
-class MainProfileViewModel: ObservableObject {
-    @Published var state = DataState<UserModel>.idle
-    @Published var isUserLoggedIn: Bool = false
+class MainProfileViewModel: ProfileViewModel {
+//    @Published var state = DataState<UserModel>.idle
+    @Published var imageState = DataState<String>.idle
+//    @Published var books: [BookModel]?
+//    @Published var reviews: [ReviewModel]?
     @Published var user: UserModel? {
         didSet {
             getUserBooks()
             getUserReviews()
         }
     }
-    
-    @Published var imageState = DataState<String>.idle
-    @Published var books: [BookModel]?
-    @Published var reviews: [ReviewModel]?
+    @Published var isUserLoggedIn: Bool = false
     
     
     func getUserInformation() {
         guard state == .idle else {
             return
         }
-        
         state = .loading
         
         UserService.getCurrentUserInfo { [weak self] user,error in
@@ -44,26 +42,14 @@ class MainProfileViewModel: ObservableObject {
     }
     
     func getUserBooks() {
-        UserService.getBooksRead(user) { [weak self] books,error in
-            guard let `self` = self else { return }
-            if let error = error {
-                print(error)
-            } else if let books = books {
-                self.books = books
-            }
+        if let user = user {
+            getUserBooks(user: user)
         }
     }
     
     func getUserReviews() {
-        if let uid = user?.uid {
-            ReviewService.getReviewsForUser(userID: uid) { [weak self] reviews,error in
-                guard let `self` = self else { return }
-                if let error = error {
-                    print(error)
-                } else if let reviews = reviews {
-                    self.reviews = reviews
-                }
-            }
+        if let user = user {
+            getUserReviews(user: user)
         }
     }
     
@@ -105,8 +91,6 @@ class MainProfileViewModel: ObservableObject {
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
             self.isUserLoggedIn = user != nil
-            UserDefaults.standard.set(user?.email, forKey: "email")
         }
     }
 }
-//        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
