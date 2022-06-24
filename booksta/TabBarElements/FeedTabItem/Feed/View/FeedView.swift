@@ -73,7 +73,7 @@ struct FeedView: View {
                 Image(systemName: "plus.circle")
                     .resizable()
                     .frame(width: 22, height: 22)
-                    .foregroundColor(.bookstaPurple800)
+                    .foregroundColor(.bookstaPurple)
             }
         }
         .padding([.horizontal, .top])
@@ -97,16 +97,17 @@ struct FeedView: View {
             switch postsViewModel.allPosts {
             case .idle, .loading :
                 HStack {
-                Text("No new posts")
-                    .font(.system(size: 20))
-                    .foregroundColor(.bookstaPurple800)
+                    Text("No new posts")
+                        .font(.system(size: 20))
+                        .foregroundColor(.bookstaPurple800)
                     Spacer()
                 }
+                .padding(.horizontal)
             case .error(_):
                 HStack {
-                Text("Error fetching posts")
-                    .font(.system(size: 20))
-                    .foregroundColor(.bookstaPurple800)
+                    Text("Error fetching posts")
+                        .font(.system(size: 20))
+                        .foregroundColor(.bookstaPurple800)
                     Spacer()
                 }
             case .loaded(let posts):

@@ -147,39 +147,47 @@ struct UserProfileView: View {
     }
     
     private var postsView: some View {
-        ScrollView {
-            VStack(spacing: 15) {
-                Text("\(viewModel.user.username)`s posts")
+        VStack {
+            VStack {
+                Text("Posts")
                     .font(.system(size: 16, weight: .bold))
                     .foregroundColor(.bookstaPurple800)
                     .padding(.leading)
                     .padding(.top, 7)
                     .leadingStyle()
                     .background(.white)
-                switch viewModel.postsState {
-                case .idle, .loading:
-                    Text("Loading...")
-                        .foregroundColor(.bookstaPurple800)
-                        .centerStyle()
-                case let .loaded(posts):
-                    if let user = viewModel.user {
-                        VStack(spacing: 0) {
-                            ForEach(posts, id: \.self) { post in
-                                PostView(userPostModel: UserPostModel(post: post, user: user))
-                                    .background(.white)
+                CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 5)
+            }
+            switch viewModel.postsState {
+            case .idle, .loading:
+                Text("Loading...")
+                    .foregroundColor(.bookstaPurple800)
+                    .centerStyle()
+            case let .loaded(posts):
+                if let user = viewModel.user {
+                    if posts.count == 0 {
+                        Text("No posts added")
+                            .font(.system(size: 16))
+                            .foregroundColor(.bookstaPurple800)
+                    } else {
+                        ScrollView {
+                            VStack {
+                                ForEach(posts, id: \.self) { post in
+                                    PostView(userPostModel: UserPostModel(post: post, user: user))
+                                        .background(.white)
+                                }
                             }
                         }
                         .background(Color.bookstaGrey200.opacity(0.5))
                     }
-                case let .error(error):
-                    Text("\(error)")
-                        .foregroundColor(.bookstaPurple800)
-                        .centerStyle()
                 }
-                
-                
+            case let .error(error):
+                Text("\(error)")
+                    .foregroundColor(.bookstaPurple800)
+                    .centerStyle()
             }
+            
+            
         }
     }
-    
 }

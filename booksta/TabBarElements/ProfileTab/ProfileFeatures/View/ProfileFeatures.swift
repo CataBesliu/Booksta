@@ -220,15 +220,15 @@ struct GenreHeader: View {
                         }
                     }
                 }
-                Button {
-                    //TODO: add genre posibility
-                    print("Add genre")
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(.bookstaPurple)
-                }
+            }
+            Button {
+                //TODO: add genre posibility
+                print("Add genre")
+            } label: {
+                Image(systemName: "plus.circle.fill")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(.bookstaPurple)
             }
         }
     }

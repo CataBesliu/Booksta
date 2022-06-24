@@ -25,8 +25,9 @@ struct EditProfileView: View {
         VStack {
             profileContent
             Spacer()
+            logOutButton
         }
-        .padding(.horizontal)
+        .padding()
         .bookstaNavigationBar(onBackButton: {
             self.presentationMode.wrappedValue.dismiss()},
                               showBackBtn: true,
@@ -62,11 +63,25 @@ struct EditProfileView: View {
         }
     }
     
+    private var logOutButton: some View {
+        Button(action: viewModel.logOut) {
+            BookstaButton(title: "Log out")
+                .clipShape(Capsule())
+        }
+    }
+    
     private func getGenreView(mainUser: UserModel) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Preferences")
                 .font(.system(size: 18, weight: .bold))
                 .foregroundColor(.bookstaPurple800)
+                .leadingStyle()
+            if mainUser.genres.count == 0 {
+                Text("Personalize with your unique taste in genres ")
+                    .font(.system(size: 18))
+                    .foregroundColor(.bookstaPurple800)
+                    .leadingStyle()
+            }
             GenreHeader(genres: mainUser.genres)
                 .foregroundColor(.bookstaPurple)
         }
@@ -80,8 +95,6 @@ struct EditProfileView: View {
                 profileImageView
             }
         }
-        .padding(.top)
-        .padding(.horizontal, 20)
     }
     
     private var profileImageView: some View {
@@ -95,7 +108,6 @@ struct EditProfileView: View {
                     .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
             case let .loaded(imageURL):
                 VStack(spacing: 13) {
-                    ZStack(alignment: .bottomTrailing) {
                         BookstaImage(url: imageURL,
                                      height: 70,
                                      width: 70,
@@ -103,16 +115,6 @@ struct EditProfileView: View {
                         .clipShape(Circle())
                         .overlay(Circle().stroke(Color.white, lineWidth: 2))
                         
-                        Image(systemName: "camera.fill")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                            .foregroundColor(.black)
-                            .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                            .overlay(Circle().stroke(Color.bookstaPurple, lineWidth: 2))
-                            .clipped()
-                            .padding(.trailing, 10)
-                            .zIndex(1)
-                    }
                     Text("Edit photo")
                         .font(.system(size: 14, weight: .medium))
                 }

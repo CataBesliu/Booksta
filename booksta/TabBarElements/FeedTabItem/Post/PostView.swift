@@ -9,24 +9,26 @@ import SwiftUI
 
 struct PostView: View {
     @ObservedObject var viewModel: PostViewModel
+    @State var isActiveLink: Bool
+    
     var dateFormatter: DateFormatter
     
-    init(userPostModel: UserPostModel) {
+    init(userPostModel: UserPostModel, isActiveLink: Bool = true) {
         self.dateFormatter = DateFormatter()
         self.dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
         
         self.viewModel = PostViewModel(userPostModel: userPostModel)
+        self.isActiveLink = isActiveLink
     }
     
     var body: some View {
         VStack {
-            Divider()
             postCell(user: viewModel.userPostModel.user,
                      post: viewModel.userPostModel.post)
             .padding(.horizontal)
             Divider()
         }
-        .background(Color.white)
+        CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 5)
     }
     
     private func postCell(user: UserModel, post: PostModel) -> some View{
@@ -41,13 +43,18 @@ struct PostView: View {
                 .overlay(Circle().stroke(Color.bookstaPurple, lineWidth: 1))
                 
                 VStack(spacing: 3) {
-                    NavigationLink {
-                        UserProfileView(viewModel: UserProfileViewModel(user: user))
-                    } label: {
-                    Text("@\(user.username)")
-                        .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(.bookstaPurple800)
-                        .leadingStyle()
+                    if isActiveLink {
+                        NavigationLink(destination: UserProfileView(viewModel: UserProfileViewModel(user: user))) {
+                            Text("@\(user.username)")
+                                .font(.system(size: 15, weight: .bold))
+                                .foregroundColor(.bookstaPurple800)
+                                .leadingStyle()
+                        }
+                    } else {
+                        Text("@\(user.username)")
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundColor(.bookstaPurple800)
+                            .leadingStyle()
                     }
                     
                     if let timestamp = post.timestamp {

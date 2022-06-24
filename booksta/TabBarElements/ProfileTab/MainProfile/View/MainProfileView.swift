@@ -12,8 +12,8 @@ import SDWebImageSwiftUI
 
 struct MainProfileView: View {
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
-//    @State private var profileImage: UIImage?
-//    @State private var isLibrarySheetPresented = false
+    //    @State private var profileImage: UIImage?
+    //    @State private var isLibrarySheetPresented = false
     
     init(){
         UINavigationBar.setAnimationsEnabled(false)
@@ -53,14 +53,14 @@ struct MainProfileView: View {
                 .onAppear(perform: {
                     viewModel.getProfileInformation()
                 })
-//                .onChange(of: profileImage, perform: { newImage in
-//                    viewModel.resetImageState()
-//                    viewModel.uploadPhoto(image: newImage)
-//                    viewModel.getUserInformation()
-//                })
-//                .sheet(isPresented: $isLibrarySheetPresented) {
-//                    ImagePicker(selectedImage: $profileImage)
-//                }
+                //                .onChange(of: profileImage, perform: { newImage in
+                //                    viewModel.resetImageState()
+                //                    viewModel.uploadPhoto(image: newImage)
+                //                    viewModel.getUserInformation()
+                //                })
+                //                .sheet(isPresented: $isLibrarySheetPresented) {
+                //                    ImagePicker(selectedImage: $profileImage)
+                //                }
             }
         }
     }
@@ -71,18 +71,10 @@ struct MainProfileView: View {
                 profileView
                 Divider()
                 postsView
-                //            Button(action: viewModel.logOut) {
-                //                logOutButtonView
-                //            }
             }
             Spacer()
             
         }
-    }
-    
-    private var logOutButtonView: some View {
-        BookstaButton(title: "Log out")
-            .clipShape(Capsule())
     }
     
     private var profileView: some View {
@@ -150,15 +142,16 @@ struct MainProfileView: View {
     }
     
     private var postsView: some View {
-        ScrollView {
-            VStack(spacing: 15) {
-                Text("My posts")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(.bookstaPurple800)
-                    .padding(.leading)
-                    .padding(.top, 7)
-                    .leadingStyle()
-                    .background(.white)
+        VStack {
+            Text("My posts")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundColor(.bookstaPurple800)
+                .padding(.leading)
+                .padding(.top, 7)
+                .leadingStyle()
+                .background(.clear)
+            CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 5)
+            ScrollView {
                 switch viewModel.postsState {
                 case .idle, .loading:
                     Text("Loading...")
@@ -166,10 +159,18 @@ struct MainProfileView: View {
                         .centerStyle()
                 case let .loaded(posts):
                     if let user = viewModel.user {
-                        VStack(spacing: 0) {
-                            ForEach(posts, id: \.self) { post in
-                                PostView(userPostModel: UserPostModel(post: post, user: user))
-                                    .background(.white)
+                        VStack {
+                            if posts.count == 0 {
+                                NavigationLink(destination: AddPostView()) {
+                                    Text("Add your first post")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(.bookstaPurple)
+                                }
+                            } else {
+                                ForEach(posts, id: \.self) { post in
+                                    PostView(userPostModel: UserPostModel(post: post, user: user), isActiveLink: false)
+                                        .background(.white)
+                                }
                             }
                         }
                         .background(Color.bookstaGrey200.opacity(0.5))
@@ -189,7 +190,7 @@ struct MainProfileView: View {
         VStack(spacing: 20) {
             HStack(spacing: 13){
                 Button(action: {
-//                    isLibrarySheetPresented = true
+                    //                    isLibrarySheetPresented = true
                 }) {
                     getProfileImageView()
                 }
