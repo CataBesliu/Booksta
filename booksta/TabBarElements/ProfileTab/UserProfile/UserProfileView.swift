@@ -22,12 +22,6 @@ struct UserProfileView: View {
             ZStack(alignment: .bottom) {
                 VStack(spacing: 12) {
                     profileHeaderView
-                    Button(action: {
-                        viewModel.isFollowedState ? viewModel.unfollowUser() : viewModel.followUser()
-                        viewModel.getIsUserFollowed()
-                    }, label: {
-                        followButton
-                    })
                     Divider()
                     postsView
                     Spacer()
@@ -61,7 +55,7 @@ struct UserProfileView: View {
                 viewModel.fetchUserData()
             })
             .bookstaNavigationBar(onBackButton: {self.presentationMode.wrappedValue.dismiss()},
-                                  showBackBtn: true)
+                                  showBackBtn: true, onOkButton: nil)
         }
     }
     
@@ -74,6 +68,7 @@ struct UserProfileView: View {
                     .foregroundColor(.bookstaPurple800)
                     .padding(.bottom, 10)
                 Spacer()
+                followButton
             }
             profileProperties
             
@@ -142,14 +137,13 @@ struct UserProfileView: View {
     }
     
     private var followButton: some View {
-        var title: String
-        if viewModel.isFollowedState {
-            title = "Following"
-        } else {
-            title = "Follow"
-        }
-        return BookstaButton(title: title)
-        
+        var title: String { viewModel.isFollowedState ? "Following" : "Follow" }
+        return Button(action: {
+            viewModel.isFollowedState ? viewModel.unfollowUser() : viewModel.followUser()
+            viewModel.getIsUserFollowed()
+        }, label: {
+            BookstaButton(title: title, paddingV: 5, paddingH: 10, titleSize: 17, titleWeight: .semibold)
+        })
     }
     
     private var postsView: some View {

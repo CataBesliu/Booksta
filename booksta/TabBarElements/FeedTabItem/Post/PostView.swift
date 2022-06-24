@@ -31,22 +31,30 @@ struct PostView: View {
     
     private func postCell(user: UserModel, post: PostModel) -> some View{
         VStack(spacing: 5) {
-            HStack(spacing: 2) {
+            HStack(alignment: .center, spacing: 4) {
                 BookstaImage(url: user.imageURL,
-                             height: 34,
-                             width: 34,
+                             height: 40,
+                             width: 40,
                              placeholderImage: "person.crop.circle")
                 .clipShape(Circle())
                 .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                .overlay(Circle().stroke(Color.bookstaPurple, lineWidth: 1))
                 
                 VStack(spacing: 3) {
-                    Text(user.username)
+                    NavigationLink {
+                        UserProfileView(viewModel: UserProfileViewModel(user: user))
+                    } label: {
+                    Text("@\(user.username)")
                         .font(.system(size: 15, weight: .bold))
                         .foregroundColor(.bookstaPurple800)
-                    if let timestamp = post.timestamp{
+                        .leadingStyle()
+                    }
+                    
+                    if let timestamp = post.timestamp {
                         Text( self.dateFormatter.string(from: timestamp))
                             .font(.system(size: 13))
                             .foregroundColor(.bookstaPurple800)
+                            .leadingStyle()
                     }
                 }
                 Spacer()
@@ -55,7 +63,7 @@ struct PostView: View {
                 Divider()
                     .frame(height: 2)
                 Text(post.description)
-                    .font(.system(size: 19, weight: .semibold))
+                    .font(.system(size: 17))
                     .foregroundColor(.bookstaPurple800)
                     .leadingStyle()
                 VStack(spacing: 20) {

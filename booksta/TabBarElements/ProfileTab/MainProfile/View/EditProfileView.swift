@@ -14,6 +14,8 @@ struct EditProfileView: View {
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     @State private var isLibrarySheetPresented = false
     @State private var profileImage: UIImage?
+    var oldImageUrl: String = ""
+    var genres: [String] = []
     
     init(){
         UINavigationBar.setAnimationsEnabled(false)
@@ -21,10 +23,10 @@ struct EditProfileView: View {
     
     var body: some View {
         VStack {
-            title
             profileContent
             Spacer()
         }
+        .padding(.horizontal)
         .bookstaNavigationBar(onBackButton: {
             self.presentationMode.wrappedValue.dismiss()},
                               showBackBtn: true,
@@ -40,44 +42,81 @@ struct EditProfileView: View {
     }
     
     private var profileContent: some View {
-        Text("bla")
+        VStack(spacing: 20) {
+            switch viewModel.state {
+            case .idle,.loading:
+                getProfileHeaderView(mainUser: nil)
+                getUserNamesView(mainUser: nil)
+                Text("Loading...")
+                    .foregroundColor(.bookstaPurple800)
+            case let .loaded(user):
+                getProfileHeaderView(mainUser: user)
+                getUserNamesView(mainUser: user)
+                getGenreView(mainUser: user)
+            case let .error(error):
+                getProfileHeaderView(mainUser: nil)
+                getUserNamesView(mainUser: nil)
+                Text("\(error)")
+                    .foregroundColor(.bookstaPurple800)
+            }
+        }
+    }
+    
+    private func getGenreView(mainUser: UserModel) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Preferences")
+                .font(.system(size: 18, weight: .bold))
+                .foregroundColor(.bookstaPurple800)
+            GenreHeader(genres: mainUser.genres)
+                .foregroundColor(.bookstaPurple)
+        }
     }
     
     private func getProfileHeaderView(mainUser: UserModel?) -> some View {
-        VStack(spacing: 20) {
-            HStack(spacing: 13){
-                Button(action: {
-                    isLibrarySheetPresented = true
-                }) {
-                    profileImageView
-                }
-                Text("@\(viewModel.user?.username ?? "-")")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.bookstaPurple800)
-                    .padding(.bottom, 10)
-                Spacer()
+        VStack(alignment: .center, spacing: 20) {
+            Button(action: {
+                isLibrarySheetPresented = true
+            }) {
+                profileImageView
             }
         }
         .padding(.top)
         .padding(.horizontal, 20)
     }
     
-    private var profileImageView(): some View {
+    private var profileImageView: some View {
         return VStack {
             switch viewModel.imageState {
             case .idle,.loading:
-                Text("Loading...")
+                Text("Loading photo...")
                     .foregroundColor(.bookstaPurple800)
                     .frame(width: 70, height: 70, alignment: .center)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
             case let .loaded(imageURL):
-                BookstaImage(url: imageURL,
-                             height: 70,
-                             width: 70,
-                             placeholderImage: "person.crop.circle")
-                .clipShape(Circle())
-                .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                VStack(spacing: 13) {
+                    ZStack(alignment: .bottomTrailing) {
+                        BookstaImage(url: imageURL,
+                                     height: 70,
+                                     width: 70,
+                                     placeholderImage: "person.crop.circle")
+                        .clipShape(Circle())
+                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                        
+                        Image(systemName: "camera.fill")
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                            .foregroundColor(.black)
+                            .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                            .overlay(Circle().stroke(Color.bookstaPurple, lineWidth: 2))
+                            .clipped()
+                            .padding(.trailing, 10)
+                            .zIndex(1)
+                    }
+                    Text("Edit photo")
+                        .font(.system(size: 14, weight: .medium))
+                }
+                .foregroundColor(.bookstaPurple)
                 
             case let .error(_):
                 Image(systemName: "person.crop.circle")
@@ -89,6 +128,34 @@ struct EditProfileView: View {
             }
         }
     }
+    
+    private func getUserNamesView(mainUser: UserModel?) -> some View {
+        VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Reader handle")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("@\(mainUser?.username ?? "-")")
+                        .font(.system(size: 18))
+                        .foregroundColor(.black)
+                    Divider()
+                }
+            }
+            VStack(alignment: .leading, spacing: 5) {
+                Text("My email")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(mainUser?.email ?? "-")")
+                        .font(.system(size: 18))
+                        .foregroundColor(.black)
+                    Divider()
+                }
+            }
+        }
+    }
+    
     
     private func saveFunction() {
         print("ok")

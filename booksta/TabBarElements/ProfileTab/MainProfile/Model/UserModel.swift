@@ -13,7 +13,7 @@ struct UserModel: Hashable, Equatable {
     let email: String
     let imageURL: String
     let booksRead: [String]
-    let categories: [String]
+    let genres: [String]
     let admin: Bool
     var isCurrentUser: Bool { return Auth.auth().currentUser?.uid == uid }
     
@@ -24,6 +24,6 @@ struct UserModel: Hashable, Equatable {
         self.imageURL = dictionary["imageURL"] as? String ?? ""
         self.admin = dictionary["admin"] as? Bool ?? false
         self.booksRead = dictionary["booksRead"] as? [String] ?? []
-        self.categories = dictionary["categories"] as? [String] ?? []
+        self.genres = dictionary["categories"] as? [String] ?? []
     }
 }

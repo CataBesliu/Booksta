@@ -12,8 +12,8 @@ import SDWebImageSwiftUI
 
 struct MainProfileView: View {
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
-    @State private var profileImage: UIImage?
-    @State private var isLibrarySheetPresented = false
+//    @State private var profileImage: UIImage?
+//    @State private var isLibrarySheetPresented = false
     
     init(){
         UINavigationBar.setAnimationsEnabled(false)
@@ -49,18 +49,18 @@ struct MainProfileView: View {
                             .zIndex(1)
                     }
                 }
-                .bookstaNavigationBar(onBackButton: {}, showBackBtn: false)
+                .bookstaNavigationBar(onBackButton: {}, showBackBtn: false, onOkButton: nil)
                 .onAppear(perform: {
                     viewModel.getProfileInformation()
                 })
-                .onChange(of: profileImage, perform: { newImage in
-                    viewModel.resetImageState()
-                    viewModel.uploadPhoto(image: newImage)
-                    viewModel.getUserInformation()
-                })
-                .sheet(isPresented: $isLibrarySheetPresented) {
-                    ImagePicker(selectedImage: $profileImage)
-                }
+//                .onChange(of: profileImage, perform: { newImage in
+//                    viewModel.resetImageState()
+//                    viewModel.uploadPhoto(image: newImage)
+//                    viewModel.getUserInformation()
+//                })
+//                .sheet(isPresented: $isLibrarySheetPresented) {
+//                    ImagePicker(selectedImage: $profileImage)
+//                }
             }
         }
     }
@@ -112,12 +112,11 @@ struct MainProfileView: View {
                 VStack(spacing: 5) {
                     Text("\(viewModel.followings?.count ?? 0)")
                         .font(.system(size: 19, weight: .bold))
-                        .foregroundColor(.bookstaPurple800)
                     Text("following")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.bookstaPurple800)
                 }
             }
+            .foregroundColor(.bookstaPurple)
             
             Divider().frame(width: 2, height: 20)
                 .foregroundColor(.bookstaPurple)
@@ -130,12 +129,11 @@ struct MainProfileView: View {
                 VStack(spacing: 5) {
                     Text("\(viewModel.books?.count ?? 0)")
                         .font(.system(size: 19, weight: .bold))
-                        .foregroundColor(.bookstaPurple800)
                     Text("books read")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.bookstaPurple800)
                 }
             }
+            .foregroundColor(.bookstaPurple)
             
             Divider().frame(width: 2, height: 20)
                 .foregroundColor(.bookstaPurple)
@@ -143,11 +141,10 @@ struct MainProfileView: View {
             VStack(spacing: 5) {
                 Text("\(viewModel.reviews?.count ?? 0)")
                     .font(.system(size: 19, weight: .bold))
-                    .foregroundColor(.bookstaPurple800)
                 Text("reviews")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.bookstaPurple800)
             }
+            .foregroundColor(.bookstaPurple)
         }
         
     }
@@ -192,7 +189,7 @@ struct MainProfileView: View {
         VStack(spacing: 20) {
             HStack(spacing: 13){
                 Button(action: {
-                    isLibrarySheetPresented = true
+//                    isLibrarySheetPresented = true
                 }) {
                     getProfileImageView()
                 }

@@ -131,7 +131,7 @@ struct BookstaNavigationBar: ViewModifier {
                 HStack {
                     Image(systemName: "person.crop.circle.badge.checkmark")
                         .resizable()
-                        .frame(width: 20, height: 20)
+                        .frame(width: 30, height: 26)
                 }
                 .foregroundColor(.bookstaPurple)
             }
@@ -145,7 +145,7 @@ struct BookstaNavigationBar: ViewModifier {
 
 
 extension View {
-    func bookstaNavigationBar(onBackButton: @escaping () -> Void, showBackBtn: Bool = false, onOkButton: (() -> Void)?) -> some View {
+    func  bookstaNavigationBar(onBackButton: @escaping () -> Void, showBackBtn: Bool = false, onOkButton: (() -> Void)?) -> some View {
         modifier(BookstaNavigationBar(showBackBtn: showBackBtn, onBackButton: onBackButton, onOkButton: onOkButton))
     }
 }

@@ -168,3 +168,68 @@ struct PostsScrollView: View {
         )
     }
 }
+
+struct GenreView: View {
+    @State var wasDismissed = false
+    var title: String
+    var onDismiss: () -> Void
+    
+    var body: some View {
+        HStack {
+            if !wasDismissed {
+                HStack(spacing: 3) {
+                    Text("\(title)")
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundColor(.bookstaPurple800)
+                    Button {
+                        withAnimation(.linear) {
+                            wasDismissed = true
+                            onDismiss()
+                        }
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                            .foregroundColor(.bookstaPurple800)
+                    }
+                }
+                .padding(.vertical, 4)
+                .padding(.horizontal, 6)
+                .background(Color.bookstaPurple800.opacity(0.3))
+                .cornerRadius(8)
+            } else {
+                EmptyView()
+            }
+        }
+    }
+}
+
+
+struct GenreHeader: View {
+    var genres: [String]
+    
+    var body: some View {
+        HStack(alignment: .center) {
+            if genres.count > 0 {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 5) {
+                        ForEach(genres, id: \.self) { genre in
+                            GenreView(title: "\(genre)") {
+                                print("closed")
+                            }
+                        }
+                    }
+                }
+                Button {
+                    //TODO: add genre posibility
+                    print("Add genre")
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.bookstaPurple)
+                }
+            }
+        }
+    }
+}
