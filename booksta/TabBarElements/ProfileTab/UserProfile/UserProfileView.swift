@@ -11,7 +11,6 @@ struct UserProfileView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @ObservedObject var viewModel: UserProfileViewModel
-    @State private var showReadBooks = false
     
     init(viewModel: UserProfileViewModel) {
         self.viewModel = viewModel
@@ -21,7 +20,7 @@ struct UserProfileView: View {
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
-                VStack(spacing: 20) {
+                VStack(spacing: 12) {
                     profileHeaderView
                     Button(action: {
                         viewModel.isFollowedState ? viewModel.unfollowUser() : viewModel.followUser()
@@ -29,27 +28,41 @@ struct UserProfileView: View {
                     }, label: {
                         followButton
                     })
+                    Divider()
+                    postsView
                     Spacer()
                 }
                 
+                if viewModel.showReadBooks {
+                    BooksScrollView(books: viewModel.books)
+                        .modalPresenter(title: "Books read", onDismiss: {
+                            withAnimation(.easeIn(duration: 0.5)) {
+                                viewModel.showReadBooks = false
+                            }
+                        })
+                        .transition(.bottomslide)
+                        .frame(height: geometry.size.height - 150)
+                        .zIndex(1)
+                }
+                
+                if viewModel.showFollowings {
+                    UsersScrollView(users: viewModel.followings)
+                        .modalPresenter(title: "Following", onDismiss: {
+                            withAnimation(.easeIn(duration: 0.5)) {
+                                viewModel.showFollowings = false
+                            }
+                        })
+                        .transition(.bottomslide)
+                        .frame(height: geometry.size.height - 150)
+                        .zIndex(1)
+                }
             }
-            if showReadBooks {
-                BooksScrollView(books: viewModel.books)
-                    .modalPresenter(title: "Books read", onDismiss: {
-                        withAnimation(.easeIn(duration: 0.5)) {
-                            showReadBooks = false
-                        }
-                    })
-                    .transition(.bottomslide)
-                    .frame(height: geometry.size.height - 200)
-                    .zIndex(1)
-            }
+            .onAppear(perform: {
+                viewModel.fetchUserData()
+            })
+            .bookstaNavigationBar(onBackButton: {self.presentationMode.wrappedValue.dismiss()},
+                                  showBackBtn: true)
         }
-        .onAppear(perform: {
-            viewModel.fetchUserData()
-        })
-        .bookstaNavigationBar(onBackButton: {self.presentationMode.wrappedValue.dismiss()},
-                              showBackBtn: true)
     }
     
     private var profileHeaderView: some View {
@@ -75,19 +88,25 @@ struct UserProfileView: View {
                      width: 60,
                      placeholderImage: "person.crop.circle")
         .clipShape(Circle())
-        .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
+        .overlay(Circle().stroke(Color.white, lineWidth: 2))
         
     }
     
     private var profileProperties: some View {
         HStack(spacing: 20) {
-            VStack(spacing: 5) {
-                Text("234")
-                    .font(.system(size: 19, weight: .bold))
-                    .foregroundColor(.bookstaPurple800)
-                Text("following")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.bookstaPurple800)
+            Button {
+                withAnimation(.easeIn(duration: 0.5)) {
+                    viewModel.showFollowings.toggle()
+                }
+            } label: {
+                VStack(spacing: 5) {
+                    Text("\(viewModel.followings?.count ?? 0)")
+                        .font(.system(size: 19, weight: .bold))
+                        .foregroundColor(.bookstaPurple800)
+                    Text("following")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(.bookstaPurple800)
+                }
             }
             
             Divider().frame(width: 2, height: 20)
@@ -95,7 +114,7 @@ struct UserProfileView: View {
             
             Button {
                 withAnimation(.easeIn(duration: 0.5)) {
-                    showReadBooks.toggle()
+                    viewModel.showReadBooks.toggle()
                 }
             } label: {
                 VStack(spacing: 5) {
@@ -111,19 +130,13 @@ struct UserProfileView: View {
             Divider().frame(width: 2, height: 20)
                 .foregroundColor(.bookstaPurple)
             
-            Button {
-                withAnimation(.easeIn(duration: 0.5)) {
-                    //                    showReviews.toggle()
-                }
-            } label: {
-                VStack(spacing: 5) {
-                    Text("\(viewModel.reviews?.count ?? 0)")
-                        .font(.system(size: 19, weight: .bold))
-                        .foregroundColor(.bookstaPurple800)
-                    Text("reviews")
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.bookstaPurple800)
-                }
+            VStack(spacing: 5) {
+                Text("\(viewModel.reviews?.count ?? 0)")
+                    .font(.system(size: 19, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
+                Text("reviews")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.bookstaPurple800)
             }
         }
     }
@@ -139,18 +152,40 @@ struct UserProfileView: View {
         
     }
     
-    private var followingView: some View {
-        VStack {
-            Text("Following")
-            switch viewModel.stateForProperties {
-            case .idle, .loading:
-                Text("...")
-            case let .loaded(userProperties):
-                Text("\(userProperties.following)")
-            case let .error(error):
-                EmptyView()
+    private var postsView: some View {
+        ScrollView {
+            VStack(spacing: 15) {
+                Text("\(viewModel.user.username)`s posts")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.bookstaPurple800)
+                    .padding(.leading)
+                    .padding(.top, 7)
+                    .leadingStyle()
+                    .background(.white)
+                switch viewModel.postsState {
+                case .idle, .loading:
+                    Text("Loading...")
+                        .foregroundColor(.bookstaPurple800)
+                        .centerStyle()
+                case let .loaded(posts):
+                    if let user = viewModel.user {
+                        VStack(spacing: 0) {
+                            ForEach(posts, id: \.self) { post in
+                                PostView(userPostModel: UserPostModel(post: post, user: user))
+                                    .background(.white)
+                            }
+                        }
+                        .background(Color.bookstaGrey200.opacity(0.5))
+                    }
+                case let .error(error):
+                    Text("\(error)")
+                        .foregroundColor(.bookstaPurple800)
+                        .centerStyle()
+                }
+                
+                
             }
         }
-        .padding(.trailing, 20)
     }
+    
 }

@@ -31,7 +31,7 @@ struct PostService {
         }
     }
     
-    static func getPosts(completion: @escaping([UserPostArrayModel]?,String?) -> Void) {
+    static func getFollowingsPosts(completion: @escaping([UserPostArrayModel]?,String?) -> Void) {
         guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
         var userPosts: [UserPostArrayModel] = []
         
@@ -88,6 +88,22 @@ struct PostService {
             guard let data = documentSnapshot else { return }
             let posts = data.documents.map ({ PostModel(dictionary: $0.data(), uid: uid, bookID: $0.documentID) })
             completion(posts, nil)
+        }
+    }
+    
+    static func uploadPhoto(image: UIImage, completion: @escaping(String?, Error?) -> Void) {
+        guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
+        let filename = NSUUID().uuidString
+        let ref = Storage.storage().reference(withPath: "/user_image/\(filename)")
+        ref.putData(imageData, metadata: nil) { metadata, error in
+            if let error = error {
+                print("DEBUG: Failed to upload image \(error.localizedDescription)")
+                completion(nil, error)
+            }
+            ref.downloadURL { url, error in
+                guard let imageUrl = url?.absoluteString else { return }
+                completion(imageUrl,nil)
+            }
         }
     }
     

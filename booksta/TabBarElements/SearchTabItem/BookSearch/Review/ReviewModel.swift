@@ -41,6 +41,3 @@ struct ReviewerModel: Equatable, Hashable {
     }
     
 }
-//            let calendar = Calendar.autoupdatingCurrent
-//            let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: date)
-//            let components = calendar.dateComponents(in: TimeZone.current, from: date)

@@ -9,33 +9,36 @@ import SwiftUI
 
 struct PostView: View {
     @ObservedObject var viewModel: PostViewModel
-    var userPostModel: UserPostModel
     var dateFormatter: DateFormatter
     
     init(userPostModel: UserPostModel) {
-        self.userPostModel = userPostModel
         self.dateFormatter = DateFormatter()
         self.dateFormatter.dateFormat = "dd/MM/yyyy HH:mm"
         
-        self.viewModel = PostViewModel()
+        self.viewModel = PostViewModel(userPostModel: userPostModel)
     }
     
     var body: some View {
-        postCell(user: userPostModel.user, post: userPostModel.post)
-            .onAppear{
-            viewModel.getBook(bookID: userPostModel.post.bookID)
-            }
+        VStack {
+            Divider()
+            postCell(user: viewModel.userPostModel.user,
+                     post: viewModel.userPostModel.post)
+            .padding(.horizontal)
+            Divider()
+        }
+        .background(Color.white)
     }
     
     private func postCell(user: UserModel, post: PostModel) -> some View{
         VStack(spacing: 5) {
-            HStack(spacing: 10) {
+            HStack(spacing: 2) {
                 BookstaImage(url: user.imageURL,
                              height: 34,
                              width: 34,
                              placeholderImage: "person.crop.circle")
                 .clipShape(Circle())
                 .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                
                 VStack(spacing: 3) {
                     Text(user.username)
                         .font(.system(size: 15, weight: .bold))
@@ -56,7 +59,11 @@ struct PostView: View {
                     .foregroundColor(.bookstaPurple800)
                     .leadingStyle()
                 VStack(spacing: 20) {
-                    //TODO: post image
+                    if !post.imageURL.isEmpty {
+                        BookstaImage(url: post.imageURL, isHeightGiven: false)
+                            .frame(maxWidth: .infinity)
+                            .cornerRadius(10)
+                    }
                     HStack(spacing: 5) {
                         Image(systemName: "eye")
                             .resizable()
@@ -71,11 +78,13 @@ struct PostView: View {
                             } label: {
                                 Text("\(post.bookName)")
                                     .font(.system(size: 14))
+                                    .lineLimit(1)
                                     .foregroundColor(.bookstaPurple)
                             }
                         } else {
                             Text("\(post.bookName)")
                                 .font(.system(size: 14))
+                                .lineLimit(1)
                                 .foregroundColor(.bookstaPurple)
                         }
                     }
@@ -83,9 +92,7 @@ struct PostView: View {
                 }
             }
         }
-        .padding()
-        .border(Color.bookstaPurple, width: 3)
-        .cornerRadius(10)
+        .padding(.vertical)
     }
 }
 

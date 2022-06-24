@@ -22,7 +22,7 @@ class FeedViewModel: ObservableObject {
         state = .loading
         allPosts = .loading
         
-        PostService.getPosts {[weak self] posts, error in
+        PostService.getFollowingsPosts {[weak self] posts, error in
             guard let `self` = self else { return }
             if let error = error {
                 self.state = .error(error)
@@ -40,6 +40,11 @@ class FeedViewModel: ObservableObject {
                 self.allPosts = .loaded(allPostsArray)
             }
         }
+    }
+    
+    func resetState() {
+        state = .idle
+        fetchPosts()
     }
 }
     

@@ -109,17 +109,40 @@ struct UserService {
         }
     }
     
-    static func getUserProperties(uid: String, completion: @escaping(UserProperties) -> Void) {
-        FOLLOWING_COLLECTION.document(uid).collection(USER_FOLLOWING_COLLECTION).getDocuments { documentSnapshot, _ in
-            let nrFollowing = documentSnapshot?.documents.count ?? 0
-            BOOKS_READ_COLLECTION.document(uid).collection(USER_READ_BOOKS_COLLECTION).getDocuments { documentSnapshot, _  in
-                let nrBooksRead = documentSnapshot?.documents.count ?? 0
-                completion(UserProperties(following: nrFollowing, booksRead: nrBooksRead, review: 0, filters: []))
-                //TODO: review and filters
-                //                REVIEWS_COLLECTION.document(uid).collection(USER_REVIEWS_COLLECTION).getDocuments { documentSnapshot, _  in
-                //                    let reviews = documentSnapshot?.documents.count ?? 0
-                //
-                //                }
+    static func getUserFollowings(uid: String, completion: @escaping([UserModel]?,Error?) -> Void) {
+        var following: [UserModel] = []
+        var count = 0
+        FOLLOWING_COLLECTION.document(uid).collection(USER_FOLLOWING_COLLECTION).getDocuments { documentSnapshot, error in
+            if let error = error {
+                completion(nil, error)
+            } else {
+                guard let doc = documentSnapshot else { return }
+                let max = doc.documents.count
+                if max == 0 {
+                    completion(following, nil)
+                }
+                let followed_users = doc.documents.map ({ $0.documentID})
+                
+                for userUID in followed_users {
+                    count += 1
+                    USERS_COLLECTION.document(userUID).getDocument { documentSnapshot, error in
+                        // documentSnapshot data returns a nsdictionary
+                        if let error = error {
+                            print("DEBUG: Error retrieving document - \(error.localizedDescription)")
+                            return
+                        }
+                        guard let data = documentSnapshot?.data() else { return }
+                        print("DEBUG: Document succesfully retrieved")
+                        
+                        let userModel = UserModel(dictionary: data)
+                        following.append(userModel)
+                        
+                        if count == max {
+                            completion(following, nil)
+                        }
+                    }
+                    
+                }
             }
         }
     }
@@ -184,7 +207,12 @@ struct UserService {
                 guard let doc = documentSnapshot else { return }
                 if doc.exists, let data = doc.data() {
                     if let booksRead = data["booksRead"] as? [String] {
-                        var max = booksRead.count
+                        let max = booksRead.count
+                        
+                        if max == 0 {
+                            completion(books, nil)
+                        }
+                        
                         for book in booksRead {
                             count += 1
                             BOOKS_COLLECTION.document(book).getDocument { documentSnapshot, error in

@@ -51,3 +51,19 @@ extension View {
         modifier(LeadingAlignment())
     }
 }
+
+struct CenterAlignment: ViewModifier {
+    func body(content: Content) -> some View {
+        HStack {
+            Spacer()
+            content
+            Spacer()
+        }
+    }
+}
+
+extension View {
+    func centerStyle() -> some View {
+        modifier(CenterAlignment())
+    }
+}

@@ -23,6 +23,9 @@ struct ReviewService {
             if let data = doc.data(),
                let booksRead = data["booksRead"] as? [String] {
                 let max = booksRead.count
+                if max == 0 {
+                    completion(returnList, nil)
+                }
                 for book in booksRead {
                     count += 1
                     REVIEWS_COLLECTION.document(book).collection(USER_REVIEWS_COLLECTION).document(userID).getDocument { documentSnapshot2, error2 in

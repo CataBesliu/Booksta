@@ -53,7 +53,7 @@ struct FeedView: View {
             }
             .navigationTitle("")
             .navigationBarHidden(true)
-            .onAppear(perform: postsViewModel.fetchPosts)
+            .onAppear(perform: postsViewModel.resetState)
         }
         .accentColor(.bookstaPurple800)
     }
@@ -85,14 +85,11 @@ struct FeedView: View {
             VStack {
                 iconFeedView
                 postsView
-                
-                Spacer()
                 Spacer()
             }
         }
         .frame(maxWidth: .infinity)
-        .padding(.horizontal)
-        .background(Color.white)
+        .background(Color.bookstaGrey200.opacity(0.5))
     }
     
     private var postsView: some View {
@@ -149,7 +146,6 @@ struct FeedView: View {
             LinearGradient(gradient: Gradient(colors: [.bookstaPurple400, .bookstaPurple]),
                            startPoint: .topLeading,
                            endPoint: .bottomTrailing))
-        .cornerRadius(4)
     }
     
     private var addPostView: some View {

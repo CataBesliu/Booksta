@@ -145,6 +145,7 @@ struct BookView: View {
                              placeholderImage: "person.crop.circle")
                 .clipShape(Circle())
                 .overlay(Circle().stroke(Color.white, lineWidth: 4))
+                
                 VStack {
                     Text(reviewerModel.user.email)
                         .font(.system(size: 13, weight: .bold))

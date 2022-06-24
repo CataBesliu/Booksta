@@ -10,14 +10,10 @@ import Firebase
 import Resolver
 
 class MainProfileViewModel: ProfileViewModel {
-//    @Published var state = DataState<UserModel>.idle
     @Published var imageState = DataState<String>.idle
-//    @Published var books: [BookModel]?
-//    @Published var reviews: [ReviewModel]?
     @Published var user: UserModel? {
         didSet {
-            getUserBooks()
-            getUserReviews()
+            getProfileInformation()
         }
     }
     @Published var isUserLoggedIn: Bool = false
@@ -41,15 +37,9 @@ class MainProfileViewModel: ProfileViewModel {
         }
     }
     
-    func getUserBooks() {
+    func getProfileInformation() {
         if let user = user {
-            getUserBooks(user: user)
-        }
-    }
-    
-    func getUserReviews() {
-        if let user = user {
-            getUserReviews(user: user)
+            getProfileInformation(user: user)
         }
     }
     

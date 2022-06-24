@@ -13,6 +13,7 @@ struct BookstaImage: View {
     var height: CGFloat = 80
     var width: CGFloat = 70
     var placeholderImage: String?
+    var isHeightGiven = true
     
     var body: some View {
         ZStack(alignment: .center) {
@@ -25,9 +26,15 @@ struct BookstaImage: View {
                     .foregroundColor(.bookstaPurple)
             }
             if URL.isValid(urlString: url) {
+                if isHeightGiven {
                 WebImage(url: URL(string: url))
                     .resizable()
                     .frame(width: width, height: height)
+                } else {
+                    WebImage(url: URL(string: url))
+                        .resizable()
+                        .scaledToFill()
+                }
             }
         }
         

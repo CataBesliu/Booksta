@@ -10,7 +10,6 @@ import SwiftUI
 import Firebase
 
 class UserProfileViewModel: ProfileViewModel {
-    @Published var stateForProperties = DataState<UserProperties>.idle
     @Published var isFollowedState: Bool = false
     @Published var user: UserModel
     
@@ -51,27 +50,9 @@ class UserProfileViewModel: ProfileViewModel {
         }
     }
     
-    func getUserProperties() {
-        print("DEBUG: Handling getting user properties user")
-        //from parent
-        getUserBooks(user: user)
-        getUserReviews(user: user)
-        stateForProperties = .loading
-        
-        UserService.getUserProperties(uid: user.uid, completion: {[weak self] userProperties in
-            guard let `self` = self else { return }
-//            if let error = error {
-//                self.state = .error(error.localizedDescription)
-//                return
-//            }
-            self.stateForProperties = .loaded(userProperties)
-            
-        })
-    }
-    
     func fetchUserData() {
         getIsUserFollowed()
-        getUserProperties()
+        getProfileInformation(user: user)
     }
 }
 

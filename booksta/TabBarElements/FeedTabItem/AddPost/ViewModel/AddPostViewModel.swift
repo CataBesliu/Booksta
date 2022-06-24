@@ -5,10 +5,13 @@
 //  Created by Catalina Besliu on 17.06.2022.
 //
 
-import Foundation
+import SwiftUI
+import UIKit
 
 class AddPostViewModel: ObservableObject {
     @Published var state = DataState<[BookModel]>.idle
+    @Published var imageURL: String = ""
+    
     @Published var wasPostSend = false
     @Published var listOfBooks: [BookModel] = []
     @Published var showBooks = true
@@ -48,15 +51,15 @@ class AddPostViewModel: ObservableObject {
                 } else if let books = books {
                     self.state = .loaded(books)
                     self.listOfBooks = books
-                    
                 }
             }
         }
     }
     
-    func sendPost(postDescription: String, postPhoto: String = "") {
+    func sendPost(postDescription: String) {
+        let postImageURL = imageURL
         if let selectedBook = selectedBook {
-            PostService.sendPost(bookID: selectedBook.id, bookName: selectedBook.name, postDescription: postDescription, postPhoto: postPhoto) { [weak self] error in
+            PostService.sendPost(bookID: selectedBook.id, bookName: selectedBook.name, postDescription: postDescription, postPhoto: postImageURL) { [weak self] error in
                 guard let `self` = self else { return }
                 if error != nil {
                     self.wasPostSend = false
@@ -67,8 +70,27 @@ class AddPostViewModel: ObservableObject {
         }
     }
     
+    func uploadPhoto(image: UIImage?) {
+        if let image = image {
+            PostService.uploadPhoto(image: image) { [weak self] urlImage, error in
+                guard let `self` = self else { return }
+                if let error = error {
+                    print(error.localizedDescription)
+                } else if let urlImage = urlImage {
+                    self.imageURL = urlImage
+                }
+            }
+        } else {
+            print("Unable to load image")
+        }
+    }
+    
     func selectBook(book: BookModel) {
         self.showBooks = false
         self.selectedBook = book
+    }
+    
+    func resetImageState() {
+        self.imageURL = ""
     }
 }

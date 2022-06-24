@@ -19,6 +19,14 @@ struct BooksScrollView: View {
                     }
                 }
             }
+        } else {
+            VStack {
+                Text("Loading...")
+                    .font(.system(size: 18))
+                    .foregroundColor(.bookstaPurple800)
+                    .centerStyle()
+                Spacer()
+            }
         }
     }
     
@@ -42,6 +50,7 @@ struct BooksScrollView: View {
         )
     }
 }
+
 struct ReviewScrollView: View {
     @State var reviews: [ReviewModel]?
     
@@ -70,112 +79,92 @@ struct ReviewScrollView: View {
     }
 }
 
-struct ModalPresenter: ViewModifier {
-    var title: String
-    var onDismiss: () -> Void
+struct UsersScrollView: View {
+    @State var users: [UserModel]?
     
-    func body(content: Content) -> some View {
-        VStack(spacing: 10) {
-            RoundedRectangle(cornerRadius: 1)
-                .frame(width: 30, height: 1)
-                .background(Color.bookstaPurple800)
-                .foregroundColor(.bookstaPurple800)
-            HStack {
-                Spacer()
-                Text("\(title)")
-                    .foregroundColor(.bookstaPurple800)
-                    .font(.system(size: 20, weight: .semibold))
-                Spacer()
-            }
-            Divider()
-                .frame(height: 1)
-                .foregroundColor(.bookstaPurple)
-            content
-                .background(Color.bookstaGrey50)
-            Spacer()
-        }
-        .padding(.top, 5)
-        .background(Color.bookstaGrey50)
-        .simultaneousGesture(
-            DragGesture()
-                .onChanged { gesture in
-                    if gesture.translation.height > 10 {
-                        onDismiss()
+    var body: some View {
+        if let users = users {
+            ScrollView {
+                ForEach(users, id: \.self) { user in
+                    NavigationLink(destination: UserProfileView(viewModel: UserProfileViewModel(user: user))) {
+                        getUserCell(user: user)
                     }
                 }
-        )
-        .clipped()
-        .shadow(color: .bookstaGrey500, radius: 5)
-    }
-}
-
-extension View {
-    func modalPresenter(title: String, onDismiss: @escaping () -> Void) -> some View {
-        modifier(ModalPresenter(title: title, onDismiss: onDismiss))
-    }
-}
-
-
-struct BookstaNavigationBar: ViewModifier {
-    var showBackBtn: Bool = false
-    var onBackButton: () -> Void
-    
-    func body(content: Content) -> some View {
-        VStack {
-            Divider()
-                .frame(height: 1)
-                .foregroundColor(.bookstaPurple800)
-            content
-        }
-        .background(Color.white)
-        .navigationBarBackButtonHidden(true)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                bookstaLogo
             }
-        }
-        .navigationBarItems(leading: btnBack)
-    }
-    
-    private var bookstaLogo: some View  {
-        VStack {
-            HStack {
-                Image("iconLogo")
-                    .resizable()
-                    .frame(width: 100, height: 20)
+        } else {
+            VStack {
+                Text("Loading...")
+                    .font(.system(size: 18))
+                    .foregroundColor(.bookstaPurple800)
+                    .centerStyle()
                 Spacer()
             }
-            .padding(.horizontal)
-            .padding(.bottom, 10)
-            .zIndex(1)
         }
     }
     
-    private var btnBack : some View {
-        if showBackBtn {
-            return Button(action: {
-                self.onBackButton()
-            }) {
-                HStack {
-                    Image(systemName: "arrow.backward.square")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                }
-                .foregroundColor(.bookstaPurple)
-                .leadingStyle()
-            }
-            .eraseToAnyView()
-        } else {
-            return EmptyView()
-                .eraseToAnyView()
+    private func getUserCell(user: UserModel) -> some View {
+        HStack(spacing: 20) {
+            BookstaImage(url: user.imageURL,
+                         height: 60,
+                         width: 60,
+                         placeholderImage: "person.crop.circle")
+            .clipShape(Circle())
+            .overlay(Circle().stroke(Color.white, lineWidth: 2))
+            
+            Text("@\(user.username)")
+                .font(.system(size: 20,weight: .bold))
+                .foregroundColor(Color.bookstaPurple800)
+            Spacer()
         }
+        .padding(10)
+        .overlay(
+            Rectangle()
+                .stroke(Color.bookstaPurple800, lineWidth: 1)
+        )
     }
 }
 
-
-extension View {
-    func bookstaNavigationBar(onBackButton: @escaping () -> Void, showBackBtn: Bool = false) -> some View {
-        modifier(BookstaNavigationBar(showBackBtn: showBackBtn, onBackButton: onBackButton))
+struct PostsScrollView: View {
+    @State var users: [UserModel]?
+    
+    var body: some View {
+        if let users = users {
+            ScrollView {
+                ForEach(users, id: \.self) { user in
+                    NavigationLink(destination: UserProfileView(viewModel: UserProfileViewModel(user: user))) {
+                        getUserCell(user: user)
+                    }
+                }
+            }
+        } else {
+            VStack {
+                Text("Loading...")
+                    .font(.system(size: 18))
+                    .foregroundColor(.bookstaPurple800)
+                    .centerStyle()
+                Spacer()
+            }
+        }
+    }
+    
+    private func getUserCell(user: UserModel) -> some View {
+        HStack(spacing: 20) {
+            BookstaImage(url: user.imageURL,
+                         height: 60,
+                         width: 60,
+                         placeholderImage: "person.crop.circle")
+            .clipShape(Circle())
+            .overlay(Circle().stroke(Color.white, lineWidth: 2))
+            
+            Text("@\(user.username)")
+                .font(.system(size: 20,weight: .bold))
+                .foregroundColor(Color.bookstaPurple800)
+            Spacer()
+        }
+        .padding(10)
+        .overlay(
+            Rectangle()
+                .stroke(Color.bookstaPurple800, lineWidth: 1)
+        )
     }
 }

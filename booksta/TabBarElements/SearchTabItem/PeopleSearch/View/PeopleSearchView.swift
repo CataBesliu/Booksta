@@ -36,14 +36,8 @@ struct PeopleSearchView: View {
             }
             .eraseToAnyView()
         case let .loaded(users) :
-            return ScrollView {
-                ForEach(users, id: \.self) { user in
-                    NavigationLink(destination: UserProfileView(viewModel: UserProfileViewModel(user: user))) {
-                        getUserCell(user: user)
-                    }
-                }
-            }
-            .eraseToAnyView()
+            return UsersScrollView(users: users)
+                .eraseToAnyView()
         case let.error(errorDescription) :
             return VStack {
                 Spacer()
@@ -84,27 +78,6 @@ struct PeopleSearchView: View {
         }
         .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: -5)
         .cornerRadius(30)
-    }
-    
-    private func getUserCell(user: UserModel) -> some View {
-        HStack(spacing: 20) {
-            Image(systemName: "person.crop.circle")
-                .resizable()
-                .frame(width: 50, height: 50)
-                .foregroundColor(Color.bookstaPurple800)
-            Text("\(user.email)")
-                .font(.system(size: 20))
-                .foregroundColor(Color.bookstaPurple800)
-            Spacer()
-        }
-        .padding()
-        .background(Color.bookstaGrey100)
-        .cornerRadius(10)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.bookstaPurple800, lineWidth: 1)
-        )
-        .padding(.vertical, 4)
     }
 }
 

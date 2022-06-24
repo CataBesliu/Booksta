@@ -11,7 +11,17 @@ import Firebase
 class PostViewModel: ObservableObject {
     @Published var book: BookModel?
     @Published var isBookFetched = false
+    @Published var userPostModel: UserPostModel {
+        didSet {
+            print("bla")
+            getBook(bookID: userPostModel.post.bookID)
+        }
+    }
     
+    init(userPostModel: UserPostModel) {
+        self.userPostModel = userPostModel
+        getBook(bookID: userPostModel.post.bookID)
+    }
     
     func getBook(bookID: String) {
         BookService.getBook(bookID: bookID) {[weak self] book, error in
