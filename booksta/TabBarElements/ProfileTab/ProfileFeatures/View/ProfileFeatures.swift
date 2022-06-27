@@ -170,64 +170,56 @@ struct PostsScrollView: View {
 }
 
 struct GenreView: View {
-    @State var wasDismissed = false
     var title: String
-    var onDismiss: () -> Void
+    var onUnselect: () -> Void
     
     var body: some View {
         HStack {
-            if !wasDismissed {
-                HStack(spacing: 3) {
-                    Text("\(title)")
-                        .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(.bookstaPurple800)
-                    Button {
-                        withAnimation(.linear) {
-                            wasDismissed = true
-                            onDismiss()
-                        }
-                    } label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                            .foregroundColor(.bookstaPurple800)
+            HStack(spacing: 3) {
+                Text("\(title)")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(.bookstaPurple800)
+                Button {
+                    withAnimation(.easeIn) {
+                        onUnselect()
                     }
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .frame(width: 15, height: 15)
+                        .foregroundColor(.bookstaPurple800)
                 }
-                .padding(.vertical, 4)
-                .padding(.horizontal, 6)
-                .background(Color.bookstaPurple800.opacity(0.3))
-                .cornerRadius(8)
-            } else {
-                EmptyView()
             }
+            .padding(.vertical, 7)
+            .padding(.horizontal)
+            .background(Color.bookstaPurple800.opacity(0.3))
+            .cornerRadius(15)
         }
     }
 }
 
 
 struct GenreHeader: View {
-    var genres: [String]
+    @ObservedObject var viewModel: EditProfileViewModel
     
     var body: some View {
         HStack(alignment: .center) {
-            if genres.count > 0 {
+            if viewModel.newGenres.count > 0 {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 5) {
-                        ForEach(genres, id: \.self) { genre in
-                            GenreView(title: "\(genre)") {
-                                print("closed")
+                        ForEach(Array(viewModel.newGenres.enumerated()), id: \.offset) { index, element in
+                            GenreView(title: "\(element)") {
+                                viewModel.onUnselect(index: index)
                             }
                         }
                     }
                 }
             }
-            Button {
-                //TODO: add genre posibility
-                print("Add genre")
-            } label: {
+            
+            NavigationLink(destination: AddGenreView(viewModel: viewModel)) {
                 Image(systemName: "plus.circle.fill")
                     .resizable()
-                    .frame(width: 20, height: 20)
+                    .frame(width: 25, height: 25)
                     .foregroundColor(.bookstaPurple)
             }
         }

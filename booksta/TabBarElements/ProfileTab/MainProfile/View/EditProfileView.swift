@@ -11,13 +11,13 @@ import Resolver
 
 struct EditProfileView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
+    @ObservedObject var mainViewModel: MainProfileViewModel = Resolver.resolve()
+    @ObservedObject var viewModel: EditProfileViewModel = EditProfileViewModel()
+    
     @State private var isLibrarySheetPresented = false
     @State private var profileImage: UIImage?
-    var oldImageUrl: String = ""
-    var genres: [String] = []
     
-    init(){
+    init() {
         UINavigationBar.setAnimationsEnabled(false)
     }
     
@@ -26,19 +26,33 @@ struct EditProfileView: View {
             profileContent
             Spacer()
             logOutButton
+            Spacer()
         }
         .padding()
-        .bookstaNavigationBar(onBackButton: {
-            self.presentationMode.wrappedValue.dismiss()},
-                              showBackBtn: true,
+        .bookstaNavigationBar(showBackBtn: true,
+                              onBackButton: { viewModel.canGoBackFunction() },
                               onOkButton: saveFunction)
         .onChange(of: profileImage, perform: { newImage in
             viewModel.resetImageState()
             viewModel.uploadPhoto(image: newImage)
             viewModel.getUserInformation()
         })
+        .onChange(of: viewModel.canGoForth, perform: { newValue in
+            if newValue {
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        })
+        .onChange(of: viewModel.canGoBack, perform: { newValue in
+            if newValue {
+                self.presentationMode.wrappedValue.dismiss()
+            }
+        })
         .sheet(isPresented: $isLibrarySheetPresented) {
             ImagePicker(selectedImage: $profileImage)
+        }
+        .onAppear {
+            viewModel.getUserInformation()
+            viewModel.getAllGenres()
         }
     }
     
@@ -53,7 +67,9 @@ struct EditProfileView: View {
             case let .loaded(user):
                 getProfileHeaderView(mainUser: user)
                 getUserNamesView(mainUser: user)
-                getGenreView(mainUser: user)
+                if viewModel.areGenresSet {
+                    getGenreView()
+                }
             case let .error(error):
                 getProfileHeaderView(mainUser: nil)
                 getUserNamesView(mainUser: nil)
@@ -64,25 +80,25 @@ struct EditProfileView: View {
     }
     
     private var logOutButton: some View {
-        Button(action: viewModel.logOut) {
+        Button(action: mainViewModel.logOut) {
             BookstaButton(title: "Log out")
                 .clipShape(Capsule())
         }
     }
     
-    private func getGenreView(mainUser: UserModel) -> some View {
+    private func getGenreView() -> some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Preferences")
                 .font(.system(size: 18, weight: .bold))
                 .foregroundColor(.bookstaPurple800)
                 .leadingStyle()
-            if mainUser.genres.count == 0 {
+            if viewModel.newGenres.count == 0 {
                 Text("Personalize with your unique taste in genres ")
                     .font(.system(size: 18))
                     .foregroundColor(.bookstaPurple800)
                     .leadingStyle()
             }
-            GenreHeader(genres: mainUser.genres)
+            GenreHeader(viewModel: viewModel)
                 .foregroundColor(.bookstaPurple)
         }
     }
@@ -108,13 +124,13 @@ struct EditProfileView: View {
                     .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
             case let .loaded(imageURL):
                 VStack(spacing: 13) {
-                        BookstaImage(url: imageURL,
-                                     height: 70,
-                                     width: 70,
-                                     placeholderImage: "person.crop.circle")
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                        
+                    BookstaImage(url: imageURL,
+                                 height: 70,
+                                 width: 70,
+                                 placeholderImage: "person.crop.circle")
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                    
                     Text("Edit photo")
                         .font(.system(size: 14, weight: .medium))
                 }
@@ -160,7 +176,7 @@ struct EditProfileView: View {
     
     
     private func saveFunction() {
-        print("ok")
+        viewModel.saveChanges()
     }
 }
 

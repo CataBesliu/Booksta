@@ -26,11 +26,9 @@ struct AddPostView: View {
     
     var body: some View {
         VStack {
-            header
-                .zIndex(1)
             GeometryReader { geometry in
-            ScrollView(showsIndicators: false) {
-             
+                ScrollView(showsIndicators: false) {
+                    
                     VStack(spacing: 20) {
                         getPhotoView(width: geometry.size.width)
                         
@@ -71,9 +69,13 @@ struct AddPostView: View {
             }
             .padding()
         }
-        .navigationTitle("")
-        .edgesIgnoringSafeArea(.top)
-        .background(Color.white)
+        //        .navigationTitle("")
+        //        .edgesIgnoringSafeArea(.top)
+        .bookstaNavigationBar(title: "Add new post",
+                              showBackBtn: true,
+                              onBackButton: {
+            self.presentationMode.wrappedValue.dismiss()
+        })
         .onChange(of: postImage, perform: { newImage in
             viewModel.resetImageState()
             viewModel.uploadPhoto(image: newImage)
@@ -83,24 +85,6 @@ struct AddPostView: View {
         }
     }
     
-    private var header: some View  {
-        VStack {
-            HStack {
-                Spacer()
-                Text("Add new post")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(.bookstaPurple800)
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.bottom, 10)
-            .padding(.top, 25)
-            
-            Divider().frame(height: 2)
-        }
-        .background(Color.white)
-    }
-    
     private func getPhotoView(width: CGFloat) -> some View {
         Button {
             isLibrarySheetPresented = true
@@ -108,7 +92,7 @@ struct AddPostView: View {
             ZStack(alignment: .center) {
                 if !viewModel.imageURL.isEmpty {
                     BookstaImage(url: viewModel.imageURL,
-                    isHeightGiven: false)
+                                 isHeightGiven: false)
                     .frame(width: width)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.bookstaPurple, lineWidth: 3))

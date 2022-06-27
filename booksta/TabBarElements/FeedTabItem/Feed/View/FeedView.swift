@@ -89,7 +89,6 @@ struct FeedView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .background(Color.bookstaGrey200.opacity(0.5))
     }
     
     private var postsView: some View {
@@ -111,11 +110,14 @@ struct FeedView: View {
                     Spacer()
                 }
             case .loaded(let posts):
-                ForEach(posts, id: \.self) { post in
-                    PostView(userPostModel: post)
+                VStack {
+                    ForEach(posts, id: \.self) { post in
+                        PostView(userPostModel: post)
+                    }
                 }
             }
         }
+        //        .background(Color.bookstaGrey200.opacity(0.5))
     }
     
     private var iconFeedView: some View {
@@ -168,7 +170,6 @@ struct FeedView: View {
             NavigationLink(destination: AddPostView()) {
                 addPostButtonView
             }
-            
         }
         .padding(.vertical, 16)
         .background(Color.white)

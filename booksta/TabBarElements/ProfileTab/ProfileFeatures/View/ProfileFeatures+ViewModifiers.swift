@@ -36,7 +36,7 @@ struct ModalPresenter: ViewModifier {
         .simultaneousGesture(
             DragGesture()
                 .onChanged { gesture in
-                    if gesture.translation.height > 10 {
+                    if gesture.translation.height > 25 {
                         onDismiss()
                     }
                 }
@@ -57,13 +57,12 @@ struct BookstaNavigationBar: ViewModifier {
     var showBackBtn: Bool = false
     var onBackButton: () -> Void
     var title = ""
+    var okButtonImg = ""
     var onOkButton: (() -> Void)?
     
     func body(content: Content) -> some View {
-        VStack {
-            Divider()
-                .frame(height: 3)
-                .foregroundColor(.bookstaPurple800)
+        VStack(spacing: 0) {
+            CustomDivider()
             content
         }
         .background(Color.white)
@@ -129,7 +128,7 @@ struct BookstaNavigationBar: ViewModifier {
                 okFunction()
             }) {
                 HStack {
-                    Image(systemName: "person.crop.circle.badge.checkmark")
+                    Image(systemName: "\(okButtonImg)")
                         .resizable()
                         .frame(width: 30, height: 26)
                 }
@@ -145,7 +144,15 @@ struct BookstaNavigationBar: ViewModifier {
 
 
 extension View {
-    func  bookstaNavigationBar(onBackButton: @escaping () -> Void, showBackBtn: Bool = false, onOkButton: (() -> Void)?) -> some View {
-        modifier(BookstaNavigationBar(showBackBtn: showBackBtn, onBackButton: onBackButton, onOkButton: onOkButton))
+    func  bookstaNavigationBar(title: String = "",
+                               showBackBtn: Bool = false,
+                               onBackButton: @escaping () -> Void,
+                               okButtonImg: String = "person.crop.circle.badge.checkmark",
+                               onOkButton: (() -> Void)? = nil) -> some View {
+        modifier(BookstaNavigationBar(showBackBtn: showBackBtn,
+                                      onBackButton: onBackButton,
+                                      title: title,
+                                      okButtonImg: okButtonImg,
+                                      onOkButton: onOkButton))
     }
 }

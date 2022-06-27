@@ -59,6 +59,36 @@ struct BookService {
                 }
             })
     }
+    
+    static func getBookGenres(completion: @escaping([String]?,String?) -> Void) {
+        var genres: [String] = []
+        var count = 0
+        BOOKS_COLLECTION
+            .getDocuments { documentSnapshot, error in
+                if let error = error {
+                    print("DEBUG: Error retrieving books - \(error.localizedDescription)")
+                    completion(nil, error.localizedDescription)
+                    return
+                }
+                guard let data = documentSnapshot else { return }
+                let books = data.documents.map ({ BookModel(dictionary: $0.data(), id: $0.documentID) })
+                let max = books.count
+                if max == 0 {
+                    completion(genres, nil)
+                }
+                for book in books {
+                    count += 1
+                    for genre in book.genres {
+                        if !genres.contains(genre) {
+                            genres.append(genre)
+                        }
+                    }
+                    if count == max {
+                        completion(genres, nil)
+                    }
+                }
+            }
+    }
 }
 
 

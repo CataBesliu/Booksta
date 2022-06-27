@@ -54,8 +54,8 @@ struct UserProfileView: View {
             .onAppear(perform: {
                 viewModel.fetchUserData()
             })
-            .bookstaNavigationBar(onBackButton: {self.presentationMode.wrappedValue.dismiss()},
-                                  showBackBtn: true, onOkButton: nil)
+            .bookstaNavigationBar(showBackBtn: true,
+                                  onBackButton: {self.presentationMode.wrappedValue.dismiss()})
         }
     }
     
@@ -97,12 +97,11 @@ struct UserProfileView: View {
                 VStack(spacing: 5) {
                     Text("\(viewModel.followings?.count ?? 0)")
                         .font(.system(size: 19, weight: .bold))
-                        .foregroundColor(.bookstaPurple800)
                     Text("following")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.bookstaPurple800)
                 }
             }
+            .foregroundColor(.bookstaPurple)
             
             Divider().frame(width: 2, height: 20)
                 .foregroundColor(.bookstaPurple)
@@ -115,12 +114,11 @@ struct UserProfileView: View {
                 VStack(spacing: 5) {
                     Text("\(viewModel.books?.count ?? 0)")
                         .font(.system(size: 19, weight: .bold))
-                        .foregroundColor(.bookstaPurple800)
                     Text("books read")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(.bookstaPurple800)
                 }
             }
+            .foregroundColor(.bookstaPurple)
             
             Divider().frame(width: 2, height: 20)
                 .foregroundColor(.bookstaPurple)
@@ -128,11 +126,10 @@ struct UserProfileView: View {
             VStack(spacing: 5) {
                 Text("\(viewModel.reviews?.count ?? 0)")
                     .font(.system(size: 19, weight: .bold))
-                    .foregroundColor(.bookstaPurple800)
                 Text("reviews")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(.bookstaPurple800)
             }
+            .foregroundColor(.bookstaPurple)
         }
     }
     
@@ -156,21 +153,21 @@ struct UserProfileView: View {
                     .padding(.top, 7)
                     .leadingStyle()
                     .background(.white)
-                CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 5)
+                CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 1)
             }
-            switch viewModel.postsState {
-            case .idle, .loading:
-                Text("Loading...")
-                    .foregroundColor(.bookstaPurple800)
-                    .centerStyle()
-            case let .loaded(posts):
-                if let user = viewModel.user {
-                    if posts.count == 0 {
-                        Text("No posts added")
-                            .font(.system(size: 16))
-                            .foregroundColor(.bookstaPurple800)
-                    } else {
-                        ScrollView {
+            ScrollView {
+                switch viewModel.postsState {
+                case .idle, .loading:
+                    Text("Loading...")
+                        .foregroundColor(.bookstaPurple800)
+                        .centerStyle()
+                case let .loaded(posts):
+                    if let user = viewModel.user {
+                        if posts.count == 0 {
+                            Text("No posts added")
+                                .font(.system(size: 16))
+                                .foregroundColor(.bookstaPurple800)
+                        } else {
                             VStack {
                                 ForEach(posts, id: \.self) { post in
                                     PostView(userPostModel: UserPostModel(post: post, user: user))
@@ -178,16 +175,13 @@ struct UserProfileView: View {
                                 }
                             }
                         }
-                        .background(Color.bookstaGrey200.opacity(0.5))
                     }
+                case let .error(error):
+                    Text("\(error)")
+                        .foregroundColor(.bookstaPurple800)
+                        .centerStyle()
                 }
-            case let .error(error):
-                Text("\(error)")
-                    .foregroundColor(.bookstaPurple800)
-                    .centerStyle()
             }
-            
-            
         }
     }
 }

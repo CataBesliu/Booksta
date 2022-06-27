@@ -26,9 +26,8 @@ struct PostView: View {
             postCell(user: viewModel.userPostModel.user,
                      post: viewModel.userPostModel.post)
             .padding(.horizontal)
-            Divider()
-        }
         CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 5)
+        }
     }
     
     private func postCell(user: UserModel, post: PostModel) -> some View{

@@ -12,7 +12,7 @@ typealias FirestoreTypeCompletion = (Error?) -> Void
 
 struct UserService {
     
-    static func uploadPhoto(uid: String, image: UIImage, completion: @escaping(String) -> Void) {
+    static func uploadPhotoToStorage(uid: String, image: UIImage, completion: @escaping(String) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
         let filename = NSUUID().uuidString
         let ref = Storage.storage().reference(withPath: "/user_image/\(filename)")
@@ -23,8 +23,32 @@ struct UserService {
             }
             ref.downloadURL { url, error in
                 guard let imageUrl = url?.absoluteString else { return }
-                USERS_COLLECTION.document(uid).updateData(["imageURL" : imageUrl])
-                completion(imageUrl)
+                updateProfilePhoto(uid: uid, url: imageUrl) { result in
+                    if result {
+                        completion(imageUrl)
+                    }
+                }
+            }
+        }
+    }
+    
+    static func updateProfilePhoto(uid: String, url: String, completion: @escaping(Bool) -> Void) {
+        USERS_COLLECTION.document(uid).updateData(["imageURL" : url]) { error in
+            if error != nil {
+                completion(false)
+            } else {
+                completion(true)
+            }
+        }
+    }
+    
+    static func updateProfileGenres(genres: [String], completion: @escaping(Bool) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        USERS_COLLECTION.document(uid).updateData(["categories" : genres]) { error in
+            if error != nil {
+                completion(false)
+            } else {
+                completion(true)
             }
         }
     }

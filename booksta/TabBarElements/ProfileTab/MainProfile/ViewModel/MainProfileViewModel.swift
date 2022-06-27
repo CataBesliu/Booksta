@@ -18,17 +18,18 @@ class MainProfileViewModel: ProfileViewModel {
     }
     @Published var isUserLoggedIn: Bool = false
     
-    
     func getUserInformation() {
         guard state == .idle else {
             return
         }
         state = .loading
+        imageState = .loading
         
         UserService.getCurrentUserInfo { [weak self] user,error in
             guard let `self` = self else { return }
             if let error = error {
                 self.state = .error(error)
+                self.imageState = .error(error)
             } else if let user = user {
                 self.state = .loaded(user)
                 self.imageState = .loaded(user.imageURL)
@@ -37,31 +38,33 @@ class MainProfileViewModel: ProfileViewModel {
         }
     }
     
+    func getUserPhoto() {
+        guard imageState == .idle else {
+            return
+        }
+        imageState = .loading
+        
+        UserService.getCurrentUserInfo { [weak self] user,error in
+            guard let `self` = self else { return }
+            if let error = error {
+                self.imageState = .error(error)
+            } else if let user = user {
+                self.imageState = .loaded(user.imageURL)
+                self.user = user
+                self.state = .loaded(user)
+            }
+        }
+    }
+    
+    func getProfilePhoto() {
+        imageState = .idle
+        getUserPhoto()
+    }
+    
     func getProfileInformation() {
         if let user = user {
             getProfileInformation(user: user)
         }
-    }
-    
-    func uploadPhoto(image: UIImage?) {
-        guard imageState == .idle else {
-            return
-        }
-        
-        imageState = .loading
-        
-        if let image = image, let user = user {
-            UserService.uploadPhoto(uid: user.uid, image: image, completion: { [weak self] urlImage in
-                guard let `self` = self else { return }
-                self.imageState = .loaded(urlImage)
-            })
-        } else {
-            self.state = .error("Unable to load image")
-        }
-    }
-    
-    func resetImageState() {
-        self.imageState = .idle
     }
     
     func logOut() {

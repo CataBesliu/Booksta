@@ -31,6 +31,8 @@
 		7257A294285F5C5F0032A3EF /* ProfileFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7257A293285F5C5F0032A3EF /* ProfileFeatures.swift */; };
 		7257A2962860792E0032A3EF /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7257A2952860792E0032A3EF /* EditProfileView.swift */; };
 		7257A29828607ED40032A3EF /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7257A29728607ED40032A3EF /* NavigationBar.swift */; };
+		725E601C28672CE900B5B757 /* AddGenreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E601B28672CE900B5B757 /* AddGenreView.swift */; };
+		725E601F2868C73600B5B757 /* GenresViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E601E2868C73600B5B757 /* GenresViewModel.swift */; };
 		7263379927C6738F001D59FE /* ImageUploaderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7263379827C6738F001D59FE /* ImageUploaderService.swift */; };
 		7263379B27C6739C001D59FE /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7263379A27C6739C001D59FE /* AuthService.swift */; };
 		7263379F27C675A6001D59FE /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7263379E27C675A6001D59FE /* LoginModel.swift */; };
@@ -148,6 +150,8 @@
 		7257A293285F5C5F0032A3EF /* ProfileFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFeatures.swift; sourceTree = "<group>"; };
 		7257A2952860792E0032A3EF /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		7257A29728607ED40032A3EF /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		725E601B28672CE900B5B757 /* AddGenreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGenreView.swift; sourceTree = "<group>"; };
+		725E601E2868C73600B5B757 /* GenresViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresViewModel.swift; sourceTree = "<group>"; };
 		7263379827C6738F001D59FE /* ImageUploaderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploaderService.swift; sourceTree = "<group>"; };
 		7263379A27C6739C001D59FE /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		7263379E27C675A6001D59FE /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -369,6 +373,7 @@
 		7257A291285F5C260032A3EF /* ProfileFeatures */ = {
 			isa = PBXGroup;
 			children = (
+				725E601D2868C70700B5B757 /* New Group */,
 				7257A292285F5C300032A3EF /* View */,
 			);
 			path = ProfileFeatures;
@@ -381,6 +386,14 @@
 				729B99C92861D2A1000CDCFA /* ProfileFeatures+ViewModifiers.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		725E601D2868C70700B5B757 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				725E601E2868C73600B5B757 /* GenresViewModel.swift */,
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 		7263379727C67362001D59FE /* API */ = {
@@ -655,6 +668,7 @@
 			children = (
 				72CDE62527C2EDD700C83327 /* MainProfileView.swift */,
 				7257A2952860792E0032A3EF /* EditProfileView.swift */,
+				725E601B28672CE900B5B757 /* AddGenreView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1084,7 +1098,9 @@
 				72BCE28D284F77FC00434F9F /* StarView.swift in Sources */,
 				72ED9C8127C047CC00EEC6CB /* SceneDelegate.swift in Sources */,
 				7204037F285BFD130022F6E1 /* AddPostViewModel.swift in Sources */,
+				725E601C28672CE900B5B757 /* AddGenreView.swift in Sources */,
 				722FCC9F27CFE66900126903 /* UserModel.swift in Sources */,
+				725E601F2868C73600B5B757 /* GenresViewModel.swift in Sources */,
 				722FCCA627D00A3B00126903 /* BookSearchView.swift in Sources */,
 				72667F6527D1608A00EAB2D4 /* GeneralSearchView.swift in Sources */,
 				722FCCA127D008AD00126903 /* SearchShapes.swift in Sources */,

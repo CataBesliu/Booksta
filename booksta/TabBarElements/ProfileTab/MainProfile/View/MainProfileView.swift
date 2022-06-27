@@ -12,12 +12,6 @@ import SDWebImageSwiftUI
 
 struct MainProfileView: View {
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
-    //    @State private var profileImage: UIImage?
-    //    @State private var isLibrarySheetPresented = false
-    
-    init(){
-        UINavigationBar.setAnimationsEnabled(false)
-    }
     
     var body: some View {
         NavigationView {
@@ -49,18 +43,11 @@ struct MainProfileView: View {
                             .zIndex(1)
                     }
                 }
-                .bookstaNavigationBar(onBackButton: {}, showBackBtn: false, onOkButton: nil)
+                .bookstaNavigationBar(showBackBtn: false, onBackButton: {})
                 .onAppear(perform: {
                     viewModel.getProfileInformation()
+                    viewModel.getProfilePhoto()
                 })
-                //                .onChange(of: profileImage, perform: { newImage in
-                //                    viewModel.resetImageState()
-                //                    viewModel.uploadPhoto(image: newImage)
-                //                    viewModel.getUserInformation()
-                //                })
-                //                .sheet(isPresented: $isLibrarySheetPresented) {
-                //                    ImagePicker(selectedImage: $profileImage)
-                //                }
             }
         }
     }
@@ -150,7 +137,7 @@ struct MainProfileView: View {
                 .padding(.top, 7)
                 .leadingStyle()
                 .background(.clear)
-            CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 5)
+            CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 1)
             ScrollView {
                 switch viewModel.postsState {
                 case .idle, .loading:
@@ -159,21 +146,20 @@ struct MainProfileView: View {
                         .centerStyle()
                 case let .loaded(posts):
                     if let user = viewModel.user {
-                        VStack {
-                            if posts.count == 0 {
-                                NavigationLink(destination: AddPostView()) {
-                                    Text("Add your first post")
-                                        .font(.system(size: 16))
-                                        .foregroundColor(.bookstaPurple)
-                                }
-                            } else {
+                        if posts.count == 0 {
+                            NavigationLink(destination: AddPostView()) {
+                                Text("Add your first post")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(.bookstaPurple)
+                            }
+                        } else {
+                            VStack {
                                 ForEach(posts, id: \.self) { post in
                                     PostView(userPostModel: UserPostModel(post: post, user: user), isActiveLink: false)
                                         .background(.white)
                                 }
                             }
                         }
-                        .background(Color.bookstaGrey200.opacity(0.5))
                     }
                 case let .error(error):
                     Text("\(error)")
@@ -194,7 +180,7 @@ struct MainProfileView: View {
                 }) {
                     getProfileImageView()
                 }
-                Text("@\(viewModel.user?.username ?? "-")")
+                Text("@\(mainUser?.username ?? "-")")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.bookstaPurple800)
                     .padding(.bottom, 10)
