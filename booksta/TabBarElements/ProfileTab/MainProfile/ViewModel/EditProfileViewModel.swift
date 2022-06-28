@@ -29,9 +29,9 @@ class EditProfileViewModel: ObservableObject {
         }
     }
     @Published var availableGenres: [String] = []
-    @Published var searchText: String = "" {
+    @Published var genreSearchText: String = "" {
         didSet {
-            //            fetch genres
+            getAvailableGenres()
         }
     }
 
@@ -110,7 +110,6 @@ class EditProfileViewModel: ObservableObject {
         guard imageState == .idle else {
             return
         }
-        
         imageState = .loading
         
         if let image = image, let user = user {
@@ -146,7 +145,8 @@ class EditProfileViewModel: ObservableObject {
                 returnValue.append(genre)
             }
         }
-        availableGenres = returnValue
+        availableGenres = returnValue.filter({ genreSearchText.isEmpty ? true : $0.lowercased().contains(genreSearchText.lowercased()) })
+            .sorted(by: < )
     }
     
     func onUnselect(index: Int) {

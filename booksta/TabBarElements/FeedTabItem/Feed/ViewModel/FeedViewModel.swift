@@ -37,6 +37,7 @@ class FeedViewModel: ObservableObject {
                     }
                     tempPosts = []
                 }
+                allPostsArray.sort(by: { $0.post.timestamp! > $1.post.timestamp! })
                 self.allPosts = .loaded(allPostsArray)
             }
         }

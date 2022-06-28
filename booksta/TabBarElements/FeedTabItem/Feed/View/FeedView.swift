@@ -30,12 +30,16 @@ struct FeedView: View {
                         }
                     }
                     .background(Color.white)
+                    .refreshable {
+                        postsViewModel.resetState()
+                    }
                     
                     if showSheet {
                         Color.bookstaPurple
                             .opacity(0.15)
                             .frame(maxHeight: .infinity)
                     }
+                    
                 }
                 .clipped()
                 .onTapGesture {

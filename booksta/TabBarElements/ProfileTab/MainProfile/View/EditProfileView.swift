@@ -29,7 +29,8 @@ struct EditProfileView: View {
             Spacer()
         }
         .padding()
-        .bookstaNavigationBar(showBackBtn: true,
+        .bookstaNavigationBar(title: "Edit profile",
+                              showBackBtn: true,
                               onBackButton: { viewModel.canGoBackFunction() },
                               onOkButton: saveFunction)
         .onChange(of: profileImage, perform: { newImage in
@@ -130,6 +131,7 @@ struct EditProfileView: View {
                                  placeholderImage: "person.crop.circle")
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                    .overlay(Circle().stroke(Color.bookstaPurple, lineWidth: 2))
                     
                     Text("Edit photo")
                         .font(.system(size: 14, weight: .medium))

@@ -14,6 +14,9 @@ struct AddGenreView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            SearchBar(text: $viewModel.genreSearchText, placeholder: "Type in genre...")
+                .padding()
+            Divider()
             ScrollView {
                 VStack(spacing: 1) {
                     ForEach(viewModel.availableGenres, id: \.self) { genre in
