@@ -220,6 +220,7 @@ struct MainProfileView: View {
                              placeholderImage: "person.crop.circle")
                 .clipShape(Circle())
                 .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                .overlay(Circle().stroke(Color.bookstaPurple, lineWidth: 2))
                 .eraseToAnyView()
                 
             case let .error(_):
