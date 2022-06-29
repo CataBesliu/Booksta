@@ -192,7 +192,7 @@ struct GenreView: View {
             }
             .padding(.vertical, 7)
             .padding(.horizontal)
-            .background(Color.bookstaPurple800.opacity(0.3))
+            .background(Color.bookstaPurple200)
             .cornerRadius(15)
         }
     }
@@ -225,3 +225,64 @@ struct GenreHeader: View {
         }
     }
 }
+
+
+struct ProfileGenreHeader: View {
+    var genres: [String]
+    
+    var body: some View {
+        HStack(alignment: .center) {
+            if genres.count > 0 {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 5) {
+                        ForEach(Array(genres.enumerated()), id: \.offset) { index, element in
+                            getGenreCell(title: element)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    private func getGenreCell(title: String) -> some View {
+        HStack(spacing: 3) {
+            Text("\(title)")
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(.bookstaPurple800)
+                .centerStyle()
+        }
+        .padding(.vertical, 7)
+        .padding(.horizontal)
+        .background(Color.bookstaGrey100)
+        .cornerRadius(15)
+    }
+}
+
+
+struct RecommendBookView: View {
+    
+    var body: some View {
+        HStack(alignment: .center, spacing: 14) {
+            Image(systemName: "")
+                .resizable()
+                .frame(width: 26, height: 23)
+                .foregroundColor(.white)
+            VStack(alignment: .leading, spacing: 5) {
+                Text("Random")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.white)
+                Text("Recommend me a book")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.white)
+            }
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity)
+        .background(
+            LinearGradient(gradient: Gradient(colors: [.bookstaPurple400, .bookstaPurple]),
+                           startPoint: .topLeading,
+                           endPoint: .bottomTrailing))
+    }
+}
+

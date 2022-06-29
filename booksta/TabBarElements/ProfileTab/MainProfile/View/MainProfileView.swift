@@ -39,7 +39,7 @@ struct MainProfileView: View {
                                 }
                             })
                             .transition(.bottomslide)
-                            .frame(height: geometry.size.height - 150)
+                            .frame(height: geometry.size.height - 200)
                             .zIndex(1)
                     }
                 }
@@ -65,7 +65,7 @@ struct MainProfileView: View {
     }
     
     private var profileView: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 15) {
             switch viewModel.state {
             case .idle,.loading:
                 getProfileHeaderView(mainUser: nil)
@@ -73,6 +73,9 @@ struct MainProfileView: View {
                     .foregroundColor(.bookstaPurple800)
             case let .loaded(user):
                 getProfileHeaderView(mainUser: user)
+                
+                ProfileGenreHeader(genres: user.genres)
+                    .padding(.horizontal)
             case let .error(error):
                 getProfileHeaderView(mainUser: nil)
                 Text("\(error)")
@@ -136,8 +139,8 @@ struct MainProfileView: View {
                 .padding(.leading)
                 .padding(.top, 7)
                 .leadingStyle()
-                .background(.clear)
-            CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 1)
+                .background(.white)
+//            CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 1)
             ScrollView {
                 switch viewModel.postsState {
                 case .idle, .loading:

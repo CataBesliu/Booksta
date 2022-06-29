@@ -60,7 +60,7 @@ struct UserProfileView: View {
     }
     
     private var profileHeaderView: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 15) {
             HStack(spacing: 13){
                 profileImageView
                 Text("@\(viewModel.user.username)")
@@ -70,11 +70,14 @@ struct UserProfileView: View {
                 Spacer()
                 followButton
             }
-            profileProperties
+            VStack(spacing: 20) {
+                profileProperties
+                ProfileGenreHeader(genres: viewModel.user.genres)
+            }
             
         }
-        .padding(.vertical)
-        .padding(.horizontal, 20)
+        .padding(.top)
+        .padding(.horizontal)
     }
     
     private var profileImageView: some View {
@@ -153,7 +156,7 @@ struct UserProfileView: View {
                     .padding(.top, 7)
                     .leadingStyle()
                     .background(.white)
-                CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 1)
+//                CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 1)
             }
             ScrollView {
                 switch viewModel.postsState {

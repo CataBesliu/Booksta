@@ -51,6 +51,7 @@ struct TabBarView: View {
             height: UIScreen.main.bounds.height
         )
         .edgesIgnoringSafeArea(.all)
+        .preferredColorScheme(.light)
         }
     }
 }
