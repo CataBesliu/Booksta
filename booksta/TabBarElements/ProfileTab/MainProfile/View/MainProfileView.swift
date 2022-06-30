@@ -12,7 +12,7 @@ import SDWebImageSwiftUI
 
 struct MainProfileView: View {
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
-    @StateObject var bookRecommenderSession: BookRecommenderAPI = BookRecommenderAPI()
+    @ObservedObject var bookRecommenderSession: BookRecommenderAPI = Resolver.resolve()
     @State var showBookRecommendResult = false
     
     var body: some View {
@@ -59,35 +59,43 @@ struct MainProfileView: View {
     
     private var bookRecommenderView: some View {
         VStack {
-            Spacer()
             ZStack {
                 if bookRecommenderSession.book == nil &&
                     bookRecommenderSession.noDataReturned == false {
                     VStack {
-                        ProgressView(value: bookRecommenderSession.progress,
-                                     total: bookRecommenderSession.total)
-                        .progressViewStyle(.linear)
-                        .accentColor(.bookstaPurple)
-                        .scaleEffect(x: 1, y: 4, anchor: .center)
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
-                        .padding()
-                        Text("Waiting for result...")
+                        Spacer()
+                        ProgressView("Waiting for result...")
+                            .progressViewStyle(CircularProgressViewStyle(tint: .bookstaPurple))
+                            .scaleEffect(2)
                             .foregroundColor(.bookstaPurple)
-                            .font(.system(size: 17, weight: .semibold))
+                            .font(.system(size: 10, weight: .semibold))
+                        Spacer()
                     }
+                    .frame(width: 300, height: 400)
                 } else if let book = bookRecommenderSession.book {
-                    //show book
+                    VStack {
+                        Text("Suggested book based on your preferences:")
+                            .foregroundColor(.bookstaPurple800)
+                            .font(.system(size: 14, weight: .bold))
+                            .padding(.top)
+                        BookView(book: book)
+                    }
                 } else {
-                    Text("No data was returned")
-                        .foregroundColor(.bookstaPurple800)
-                        .font(.system(size: 17, weight: .bold))
+                    VStack {
+                        Spacer()
+                        Text("No data was returned")
+                            .foregroundColor(.bookstaPurple800)
+                            .font(.system(size: 17, weight: .bold))
+                            .frame(width: 300, height: 400)
+                        Spacer()
+                    }
                 }
-                
             }
-            Spacer()
+            .background(.white)
+            .cornerRadius(10)
         }
-        .frame(maxWidth: .infinity)
-        .background(.white)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.bookstaPurple200)
     }
     
     private var profileContent: some View {

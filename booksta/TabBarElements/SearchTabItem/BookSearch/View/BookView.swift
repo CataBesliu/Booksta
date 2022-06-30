@@ -147,7 +147,7 @@ struct BookView: View {
                 .overlay(Circle().stroke(Color.white, lineWidth: 4))
                 
                 VStack {
-                    Text(reviewerModel.user.email)
+                    Text(reviewerModel.user.username)
                         .font(.system(size: 13, weight: .bold))
                         .foregroundColor(.bookstaPurple800)
                 }
@@ -158,7 +158,7 @@ struct BookView: View {
                     .frame(height: 2)
                 VStack(alignment: .leading, spacing: 5) {
                     Text(reviewerModel.review.reviewDescription)
-                        .font(.system(size: 19, weight: .bold))
+                        .font(.system(size: 17, weight: .regular))
                         .foregroundColor(.bookstaPurple800)
                         .leadingStyle()
                     StarView(rating: .constant(reviewerModel.review.reviewGrade), isActive: false, width: 20, height: 15)

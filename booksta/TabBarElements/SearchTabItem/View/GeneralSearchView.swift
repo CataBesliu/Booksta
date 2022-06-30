@@ -13,9 +13,10 @@ struct GeneralSearchView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                Color.bookstaPurple.opacity(0.1)
                 Color.white
                     .padding(.top,50)
-
+                
                 ZStack {
                     BookSearchView(ownIndex: self.$indexForBookSearch, peopleViewIndex: self.$indexForPeopleSearch, curbeRadius: 30, curbeHeight: 50)
                         .zIndex(Double(self.indexForBookSearch))
@@ -23,6 +24,7 @@ struct GeneralSearchView: View {
                     PeopleSearchView(ownIndex: self.$indexForPeopleSearch, bookViewIndex: self.$indexForBookSearch, curbeRadius: 30, curbeHeight: 50)
                         .zIndex(Double(self.indexForPeopleSearch))
                 }
+                .padding(.top, 1)
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             }
             .navigationBarTitle("", displayMode: .inline)

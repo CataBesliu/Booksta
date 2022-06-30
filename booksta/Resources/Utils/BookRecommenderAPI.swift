@@ -12,14 +12,15 @@ import Resolver
 class BookRecommenderAPI: ObservableObject {
     @Published var book: BookModel? = nil
     @Published var noDataReturned = false
-    @State var dataTask: URLSessionDataTask?
-    @State var observation: NSKeyValueObservation?
-    @State var progress: Double = 0
-    let total: Double = 1
     
+    func resetData() {
+        noDataReturned = false
+        book = nil
+    }
     
     func getBookRecommendation(userID: String,
                   urlString: String = "https://us-central1-booksta-92688.cloudfunctions.net/app/recommendation/") {
+        resetData()
         guard let url = URL(string: "\(urlString)\(userID)") else {
             noDataReturned = true
             return
@@ -27,10 +28,8 @@ class BookRecommenderAPI: ObservableObject {
         
         let urlRequest = URLRequest(url: url)
         
-        dataTask = URLSession.shared.dataTask(with: urlRequest) {[weak self] (data, response, error) in
+        let dataTask = URLSession.shared.dataTask(with: urlRequest) { [weak self] (data, response, error) in
             guard let `self` = self else { return }
-            //invalidate observation
-            self.observation?.invalidate()
             
             if let error = error {
                 print("Request error: ", error)
@@ -56,13 +55,6 @@ class BookRecommenderAPI: ObservableObject {
             }
         }
         
-        observation = dataTask?.progress.observe(\.fractionCompleted) { [weak self] observationProgress, _ in
-            guard let `self` = self else { return }
-            DispatchQueue.main.async {
-                self.progress = observationProgress.fractionCompleted
-            }
-        }
-        
-        dataTask?.resume()
+        dataTask.resume()
     }
 }

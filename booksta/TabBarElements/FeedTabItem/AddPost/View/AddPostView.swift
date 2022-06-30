@@ -45,6 +45,7 @@ struct AddPostView: View {
                                     RoundedRectangle(cornerRadius: 5)
                                         .stroke(Color.bookstaPurple800, lineWidth: 2))
                                 .frame(height: 150)
+                                .padding(.horizontal,1)
                         }
                         bookReadingView
                         if let book = viewModel.selectedBook,
@@ -69,8 +70,6 @@ struct AddPostView: View {
             }
             .padding()
         }
-        //        .navigationTitle("")
-        //        .edgesIgnoringSafeArea(.top)
         .bookstaNavigationBar(title: "Add new post",
                               showBackBtn: true,
                               onBackButton: {
@@ -120,6 +119,7 @@ struct AddPostView: View {
             }
             VStack(spacing: 0) {
                 SimpleSearchBar(text: $viewModel.searchText, placeholder: "What are you reading?")
+                    .padding(.horizontal,1)
                 
                 if viewModel.listOfBooks.count > 0,
                    !viewModel.searchText.isEmpty,
