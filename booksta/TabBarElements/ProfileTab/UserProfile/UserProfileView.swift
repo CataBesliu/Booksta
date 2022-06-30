@@ -156,7 +156,7 @@ struct UserProfileView: View {
                     .padding(.top, 7)
                     .leadingStyle()
                     .background(.white)
-//                CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 1)
+                //                CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 1)
             }
             ScrollView {
                 switch viewModel.postsState {
@@ -173,8 +173,9 @@ struct UserProfileView: View {
                         } else {
                             VStack {
                                 ForEach(posts, id: \.self) { post in
-                                    PostView(userPostModel: UserPostModel(post: post, user: user))
-                                        .background(.white)
+                                    PostView(userPostModel: UserPostModel(post: post, user: user),
+                                             isActiveLink: false)
+                                    .background(.white)
                                 }
                             }
                         }

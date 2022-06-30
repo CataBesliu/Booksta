@@ -39,10 +39,10 @@ struct AddBookView: View {
     private var genreView: some View {
         Menu {
             Picker(selection: $selection) {
-            Text(BookGenre.horror.rawValue).tag(BookGenre.horror)
-            Text(BookGenre.comedy.rawValue).tag(BookGenre.comedy)
-            Text(BookGenre.scify.rawValue).tag(BookGenre.scify)
-            Text(BookGenre.romantic.rawValue).tag(BookGenre.romantic)
+                Text(BookGenre.horror.rawValue).tag(BookGenre.horror)
+                Text(BookGenre.comedy.rawValue).tag(BookGenre.comedy)
+                Text(BookGenre.scify.rawValue).tag(BookGenre.scify)
+                Text(BookGenre.romantic.rawValue).tag(BookGenre.romantic)
             } label: {}
         } label: {
             Text(selection == .empty ? "+" : selection.rawValue)
@@ -51,7 +51,7 @@ struct AddBookView: View {
                 .background(Color.bookstaPink)
                 .foregroundColor(.bookstaGrey50 )
                 .cornerRadius(4)
-            }
+        }
     }
     
 }

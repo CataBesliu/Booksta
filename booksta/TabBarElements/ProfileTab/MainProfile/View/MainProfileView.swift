@@ -12,6 +12,8 @@ import SDWebImageSwiftUI
 
 struct MainProfileView: View {
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
+    @StateObject var bookRecommenderSession: BookRecommenderAPI = BookRecommenderAPI()
+    @State var showBookRecommendResult = false
     
     var body: some View {
         NavigationView {
@@ -48,8 +50,44 @@ struct MainProfileView: View {
                     viewModel.getProfileInformation()
                     viewModel.getProfilePhoto()
                 })
+                .sheet(isPresented: $showBookRecommendResult) {
+                    bookRecommenderView
+                }
             }
         }
+    }
+    
+    private var bookRecommenderView: some View {
+        VStack {
+            Spacer()
+            ZStack {
+                if bookRecommenderSession.book == nil &&
+                    bookRecommenderSession.noDataReturned == false {
+                    VStack {
+                        ProgressView(value: bookRecommenderSession.progress,
+                                     total: bookRecommenderSession.total)
+                        .progressViewStyle(.linear)
+                        .accentColor(.bookstaPurple)
+                        .scaleEffect(x: 1, y: 4, anchor: .center)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                        .padding()
+                        Text("Waiting for result...")
+                            .foregroundColor(.bookstaPurple)
+                            .font(.system(size: 17, weight: .semibold))
+                    }
+                } else if let book = bookRecommenderSession.book {
+                    //show book
+                } else {
+                    Text("No data was returned")
+                        .foregroundColor(.bookstaPurple800)
+                        .font(.system(size: 17, weight: .bold))
+                }
+                
+            }
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+        .background(.white)
     }
     
     private var profileContent: some View {
@@ -73,7 +111,8 @@ struct MainProfileView: View {
                     .foregroundColor(.bookstaPurple800)
             case let .loaded(user):
                 getProfileHeaderView(mainUser: user)
-                
+                recommendBookButton(mainUser: user)
+                    .padding(.horizontal)
                 ProfileGenreHeader(genres: user.genres)
                     .padding(.horizontal)
             case let .error(error):
@@ -140,7 +179,7 @@ struct MainProfileView: View {
                 .padding(.top, 7)
                 .leadingStyle()
                 .background(.white)
-//            CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 1)
+            //            CustomDivider(color: Color.bookstaGrey200.opacity(0.5), width: 1)
             ScrollView {
                 switch viewModel.postsState {
                 case .idle, .loading:
@@ -175,14 +214,41 @@ struct MainProfileView: View {
         }
     }
     
+    private func recommendBookButton(mainUser: UserModel) -> some View {
+        HStack(alignment: .center, spacing: 20) {
+            Image("iconRandom")
+                .resizable()
+                .frame(width: 26, height: 23)
+                .foregroundColor(.white)
+            VStack(alignment: .leading) {
+                Text("Random")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundColor(.white)
+                Text("Recommend me a book")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(.white)
+            }
+            .leadingStyle()
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 10)
+        .frame(maxWidth: .infinity)
+        .background(
+            LinearGradient(gradient: Gradient(colors: [.bookstaPurple400, .bookstaPurple]),
+                           startPoint: .topLeading,
+                           endPoint: .bottomTrailing))
+        .cornerRadius(10)
+        .clipped()
+        .onTapGesture(perform: {
+            bookRecommenderSession.getBookRecommendation(userID: mainUser.uid)
+            showBookRecommendResult = true
+        })
+    }
+    
     private func getProfileHeaderView(mainUser: UserModel?) -> some View {
         VStack(spacing: 20) {
             HStack(spacing: 13){
-                Button(action: {
-                    //                    isLibrarySheetPresented = true
-                }) {
-                    getProfileImageView()
-                }
+                getProfileImageView()
                 Text("@\(mainUser?.username ?? "-")")
                     .font(.system(size: 20, weight: .bold))
                     .foregroundColor(.bookstaPurple800)

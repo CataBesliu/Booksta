@@ -31,6 +31,7 @@
 		7257A294285F5C5F0032A3EF /* ProfileFeatures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7257A293285F5C5F0032A3EF /* ProfileFeatures.swift */; };
 		7257A2962860792E0032A3EF /* EditProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7257A2952860792E0032A3EF /* EditProfileView.swift */; };
 		7257A29828607ED40032A3EF /* NavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7257A29728607ED40032A3EF /* NavigationBar.swift */; };
+		725D89CA286DB25F002E05FB /* BookRecommenderAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725D89C9286DB25F002E05FB /* BookRecommenderAPI.swift */; };
 		725E601C28672CE900B5B757 /* AddGenreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E601B28672CE900B5B757 /* AddGenreView.swift */; };
 		725E601F2868C73600B5B757 /* GenresViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 725E601E2868C73600B5B757 /* GenresViewModel.swift */; };
 		7263379927C6738F001D59FE /* ImageUploaderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7263379827C6738F001D59FE /* ImageUploaderService.swift */; };
@@ -150,6 +151,7 @@
 		7257A293285F5C5F0032A3EF /* ProfileFeatures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFeatures.swift; sourceTree = "<group>"; };
 		7257A2952860792E0032A3EF /* EditProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileView.swift; sourceTree = "<group>"; };
 		7257A29728607ED40032A3EF /* NavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBar.swift; sourceTree = "<group>"; };
+		725D89C9286DB25F002E05FB /* BookRecommenderAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookRecommenderAPI.swift; sourceTree = "<group>"; };
 		725E601B28672CE900B5B757 /* AddGenreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGenreView.swift; sourceTree = "<group>"; };
 		725E601E2868C73600B5B757 /* GenresViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenresViewModel.swift; sourceTree = "<group>"; };
 		7263379827C6738F001D59FE /* ImageUploaderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploaderService.swift; sourceTree = "<group>"; };
@@ -331,6 +333,7 @@
 				72BCE28C284F77FC00434F9F /* StarView.swift */,
 				724C2B382850AF78003CE1B5 /* BookstaImage.swift */,
 				7257A29728607ED40032A3EF /* NavigationBar.swift */,
+				725D89C9286DB25F002E05FB /* BookRecommenderAPI.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1088,6 +1091,7 @@
 				72CDE62627C2EDD700C83327 /* MainProfileView.swift in Sources */,
 				722FCC9C27CFD77100126903 /* Collections.swift in Sources */,
 				726337A127C675B7001D59FE /* SignUpModel.swift in Sources */,
+				725D89CA286DB25F002E05FB /* BookRecommenderAPI.swift in Sources */,
 				7218E96527E0D9FA00BDE6B2 /* ImagePicker.swift in Sources */,
 				72A1C93D27D4FE9B0070E344 /* SearchBar.swift in Sources */,
 				7204037D285BEE2C0022F6E1 /* AddPostView.swift in Sources */,
