@@ -47,7 +47,7 @@ struct LoginView: View {
     }
     
     private var logInView: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 57) {
             logInTitle
             VStack {
                 getEmailField(title: "Email address", stateText: $email)
@@ -122,7 +122,7 @@ struct LoginView: View {
                     .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
             }
         }
-        .padding(.vertical, 10)
+        .padding(.vertical, 20)
     }
     
     ///Function to call for password field

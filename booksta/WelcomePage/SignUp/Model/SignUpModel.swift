@@ -10,8 +10,11 @@ import Foundation
 
 struct SignUpModel {
     let email: String
+    let username: String
     let password: String
     let repeatedPassword: String
+    let admin: Bool = false
     let booksRead: [String] = []
-    let username: String = ""
+    let categories: [String] = []
+    let imageURL: String = ""
 }

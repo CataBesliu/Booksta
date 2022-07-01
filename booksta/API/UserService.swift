@@ -104,7 +104,7 @@ struct UserService {
         }
         
         // Gets current user uid
-       documentReference
+        documentReference
             .getDocuments { documentSnapshot, error in
                 // documentSnapshot data returns a nsdictionary
                 if let error = error {
@@ -273,5 +273,39 @@ struct UserService {
                 }
             }
         }
+    }
+    
+    static func checkIfEmailIsTaken(email: String, completion: @escaping(Bool?, String?) -> Void) {
+        USERS_COLLECTION
+            .whereField("email", isEqualTo: email)
+            .getDocuments { snapshot, error in
+                if let err = error {
+                    completion(nil, "DEBUG: Error verifying email")
+                } else if let snapshot = snapshot {
+                    if snapshot.isEmpty {
+                        completion(false,nil)
+                    }
+                    else {
+                        completion(true,nil)
+                    }
+                }
+            }
+    }
+    
+    static func checkIfUsernameIsTaken(username: String, completion: @escaping(Bool?, String?) -> Void) {
+        USERS_COLLECTION
+            .whereField("username", isEqualTo: username)
+            .getDocuments { snapshot, error in
+                if let err = error {
+                    completion(nil, "DEBUG: Error verifying username")
+                } else if let snapshot = snapshot {
+                    if snapshot.isEmpty {
+                        completion(false,nil)
+                    }
+                    else {
+                        completion(true,nil)
+                    }
+                }
+            }
     }
 }

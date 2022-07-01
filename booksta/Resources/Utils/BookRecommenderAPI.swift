@@ -19,7 +19,7 @@ class BookRecommenderAPI: ObservableObject {
     }
     
     func getBookRecommendation(userID: String,
-                  urlString: String = "https://us-central1-booksta-92688.cloudfunctions.net/app/recommendation/") {
+                               urlString: String = "https://us-central1-booksta-92688.cloudfunctions.net/app/recommendation/") {
         resetData()
         guard let url = URL(string: "\(urlString)\(userID)") else {
             noDataReturned = true
@@ -52,8 +52,15 @@ class BookRecommenderAPI: ObservableObject {
                     }
                 }
             } else if response.statusCode == 204 {
-                self.book = nil
-                self.noDataReturned = true
+                DispatchQueue.main.async {
+                    self.book = nil
+                    self.noDataReturned = true
+                }
+            } else if response.statusCode == 404 {
+                DispatchQueue.main.async {
+                    self.book = nil
+                    self.noDataReturned = true
+                }
             }
         }
         

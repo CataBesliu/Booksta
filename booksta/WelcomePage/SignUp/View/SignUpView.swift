@@ -13,6 +13,7 @@ struct SignUpView: View {
     @ObservedObject var viewModel = SignUpViewModel()
     
     @State private var email: String = ""
+    @State private var username: String = ""
     @State private var password: String = ""
     @State private var repeatedPassword: String = ""
     @State private var showingAlertForPasswordsNotMacthing = false
@@ -50,7 +51,16 @@ struct SignUpView: View {
             signUpTitle
             VStack {
                 getEmailField(title: "Email address", stateText: $email)
+                getUsername(title: "Username", stateText: $username)
+                VStack {
                 getFieldToBeCompleted(title: "Password", stateText: $password)
+                    if viewModel.isPasswordShort {
+                        Text("Password too short")
+                            .foregroundColor(.red)
+                            .font(.system(size: 11, weight: .semibold))
+                            .leadingStyle()
+                    }
+                }
                 getFieldToBeCompleted(title: "Repeat password", stateText: $repeatedPassword)
                 
                 Button(action: checkFields, label: {
@@ -99,7 +109,7 @@ struct SignUpView: View {
             }
             .padding(10)
             .onSubmit {
-                //do some validation
+                viewModel.checkEmail(email: email)
             }
             .textInputAutocapitalization(.never)
             .disableAutocorrection(true)
@@ -107,6 +117,49 @@ struct SignUpView: View {
             .cornerRadius(4)
             
             CustomDivider()
+            if (viewModel.isEmailTaken) {
+                Text("Email is already taken")
+                    .foregroundColor(.red)
+                    .font(.system(size: 11, weight: .semibold))
+                    .leadingStyle()
+            }
+        }
+    }
+    
+    ///Function to call for email field
+    private func getUsername(title: String, stateText: Binding<String>) -> some View {
+        return  VStack(alignment: .leading, spacing: 5)  {
+            HStack(spacing: 5) {
+                Image(systemName: "person.fill")
+                    .font(.system(size: 20))
+                    .foregroundColor(.bookstaPurple800)
+                ZStack(alignment: .leading) {
+                    if stateText.wrappedValue.isEmpty {
+                        placeholder(title)
+                    }
+                    TextField(title, text: stateText)
+                        .focused($fieldIsFocused)
+                        .foregroundColor(.bookstaPurple800)
+                }
+                
+                Spacer()
+            }
+            .padding(10)
+            .onSubmit {
+                viewModel.checkUsername(username: username)
+            }
+            .textInputAutocapitalization(.never)
+            .disableAutocorrection(true)
+            .foregroundColor(.bookstaGrey200)
+            .cornerRadius(4)
+            
+            CustomDivider()
+            if (viewModel.isUsernameTaken) {
+                Text("Username is already taken")
+                    .foregroundColor(.red)
+                    .font(.system(size: 11, weight: .semibold))
+                    .leadingStyle()
+            }
         }
     }
     
@@ -165,16 +218,25 @@ struct SignUpView: View {
     }
     
     private func checkFields() {
+        viewModel.checkEmail(email: email)
+        viewModel.checkUsername(username: username)
         fieldIsFocused = false
         showingAlertForUncompletedFields = !viewModel.checkFieldsAreCompleted(email: email, password1: password, password2: repeatedPassword)
         showingAlertForPasswordsNotMacthing = !viewModel.checkPasswordsMatch(password1: password, password2: repeatedPassword)
-        if !(showingAlertForUncompletedFields || showingAlertForPasswordsNotMacthing) {
+        if !showingAlertForPasswordsNotMacthing {
+            viewModel.checkPassword(password: password)
+        }
+        if !(showingAlertForUncompletedFields ||
+             showingAlertForPasswordsNotMacthing ||
+             viewModel.isEmailTaken ||
+             viewModel.isPasswordShort ||
+             viewModel.isUsernameTaken ) {
             signUp()
         }
     }
     
     private func signUp() {
-        let credentials = SignUpModel(email: email, password: password, repeatedPassword: repeatedPassword)
+        let credentials = SignUpModel(email: email, username: username, password: password, repeatedPassword: repeatedPassword)
         AuthService.registerUser(withCredential: credentials, completion: { error in
             if let error = error {
                 print("DEBUG - Failed to register user \(error.localizedDescription) ")
