@@ -64,7 +64,7 @@ struct UserService {
                 return
             }
             guard let data = documentSnapshot?.data() else { return }
-            print("DEBUG: Document succesfully retrieved")
+            print("DEBUG: Main user information succesfully retrieved")
             
             let user = UserModel(dictionary: data)
             completion(user, nil)
@@ -81,7 +81,7 @@ struct UserService {
                 return
             }
             guard let data = documentSnapshot?.data() else { return }
-            print("DEBUG: Document succesfully retrieved")
+            print("DEBUG: User information succesfully retrieved")
             
             let user = UserModel(dictionary: data)
             completion(user, nil)
@@ -90,9 +90,21 @@ struct UserService {
     
     
     
-    static func getUsers(limit: Int = 20, completion: @escaping([UserModel]?,String?) -> Void) {
+    static func getUsers(searchField: String = "",
+                         genres: [String] = [],
+                         completion: @escaping([UserModel]?,String?) -> Void) {
+        var documentReference: Query
+        
+        if !genres.isEmpty {
+            documentReference = USERS_COLLECTION
+                .whereField("categories", arrayContainsAny: genres)
+        }  else {
+            documentReference = USERS_COLLECTION
+                .limit(to: 1000)
+        }
+        
         // Gets current user uid
-        USERS_COLLECTION.limit(to: limit)
+       documentReference
             .getDocuments { documentSnapshot, error in
                 // documentSnapshot data returns a nsdictionary
                 if let error = error {
@@ -101,14 +113,17 @@ struct UserService {
                     return
                 }
                 guard let data = documentSnapshot else { return }
-                
-                let users = data.documents.map ({ UserModel(dictionary: $0.data()) })
+                var users = data.documents.map ({ UserModel(dictionary: $0.data()) })
+                if !searchField.isEmpty {
+                    users = users.filter({ Set(searchField.lowercased()).isSubset(of: Set($0.username.lowercased()))})
+                }
                 print("DEBUG: Users succesfully retrieved")
                 
                 completion(users, nil)
                 
             }
     }
+    
     //TODO: add time of following?
     static func followUser(userToBeFollowedUID: String, completion: @escaping(FirestoreTypeCompletion)) {
         guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
@@ -156,7 +171,7 @@ struct UserService {
                             return
                         }
                         guard let data = documentSnapshot?.data() else { return }
-                        print("DEBUG: Document succesfully retrieved")
+                        print("DEBUG: Followings succesfully retrieved")
                         
                         let userModel = UserModel(dictionary: data)
                         following.append(userModel)

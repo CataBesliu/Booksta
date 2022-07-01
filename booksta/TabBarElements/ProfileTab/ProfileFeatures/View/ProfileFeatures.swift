@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Resolver
 
 struct BooksScrollView: View {
     @State var books: [BookModel]?
@@ -257,4 +258,39 @@ struct ProfileGenreHeader: View {
         .cornerRadius(15)
     }
 }
-
+//
+//private func reviewCell(reviewerModel: ReviewerModel) -> some View{
+//    VStack(spacing: 5) {
+//        HStack(spacing: 10) {
+//            BookstaImage(url: reviewerModel.user.imageURL,
+//                         height: 34,
+//                         width: 34,
+//                         placeholderImage: "person.crop.circle")
+//            .clipShape(Circle())
+//            .overlay(Circle().stroke(Color.white, lineWidth: 4))
+//
+//            VStack {
+//                Text(reviewerModel.user.username)
+//                    .font(.system(size: 13, weight: .bold))
+//                    .foregroundColor(.bookstaPurple800)
+//            }
+//            Spacer()
+//        }
+//        VStack(spacing: 8) {
+//            Divider()
+//                .frame(height: 2)
+//            VStack(alignment: .leading, spacing: 5) {
+//                Text(reviewerModel.review.reviewDescription)
+//                    .font(.system(size: 17, weight: .regular))
+//                    .foregroundColor(.bookstaPurple800)
+//                    .leadingStyle()
+//                StarView(rating: .constant(reviewerModel.review.reviewGrade), isActive: false, width: 20, height: 15)
+//                    .padding(.leading, 3)
+//
+//            }
+//        }
+//    }
+//    .padding()
+//    .background(Color.bookstaPurple.opacity(0.3))
+//    .cornerRadius(10)
+//}

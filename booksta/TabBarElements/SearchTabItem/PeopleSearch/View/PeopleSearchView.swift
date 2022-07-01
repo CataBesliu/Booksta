@@ -15,15 +15,42 @@ struct PeopleSearchView: View {
     
     @State var curbeRadius: CGFloat
     @State var curbeHeight: CGFloat
-    
-    //@State var searchText: String = ""
+    @State var showFiltersView = false
     
     var body: some View {
-        content
-            .onAppear(perform: {
-                viewModel.searchText = ""
-                viewModel.fetchUsers(searchTerm: viewModel.searchText)
-            })
+        ZStack(alignment: .bottom) {
+            ZStack {
+                content
+                    .onAppear(perform: {
+                        viewModel.searchText = ""
+                        viewModel.changeState()
+                        viewModel.fetchFilters()
+                    })
+                if showFiltersView {
+                    Color.bookstaPurple
+                        .opacity(0.15)
+                        .frame(maxHeight: .infinity)
+                }
+            }
+            .clipped()
+            .onTapGesture {
+                withAnimation(.easeOut(duration: 0.5)) {
+                    showFiltersView = false
+                }
+            }
+            
+            if showFiltersView {
+                FilterView(viewModel: viewModel)
+                    .modalPresenter(title: "Filtering options", onDismiss: {
+                        withAnimation(.easeIn(duration: 0.5)) {
+                            showFiltersView = false
+                        }
+                    })
+                    .transition(.bottomslide)
+                    .frame(height: 150)
+                    .zIndex(1)
+            }
+        }
     }
     
     private func getStateView(state: DataState<[UserModel]>) -> some View {
@@ -60,12 +87,10 @@ struct PeopleSearchView: View {
                     .frame(height: curbeHeight, alignment: .top)
             }
             VStack(spacing: 10) {
-                
-                SearchBar(text: $viewModel.searchText, placeholder: "Start looking for somebody")
+                SearchBar(text: $viewModel.searchText, placeholder: "Search for somebody", button: AnyView(filterView))
+                FilterHeader(viewModel: viewModel)
                 getStateView(state: viewModel.state)
             }
-            Spacer()
-            
         }
         .padding([.horizontal, .top])
         .background(Color.bookstaBackground)
@@ -79,10 +104,20 @@ struct PeopleSearchView: View {
         .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: -5)
         .cornerRadius(30)
     }
+    
+    private var filterView: some View {
+        Button {
+            UIApplication.shared.endEditing()
+            withAnimation(.spring(response: 1, dampingFraction: 1, blendDuration: 0.2)) {
+                showFiltersView.toggle()
+            }
+            
+        } label: {
+            Image(systemName: "line.3.horizontal.decrease")
+                .resizable()
+                .frame(width: 20, height: 20)
+                .foregroundColor(.bookstaPurple)
+        }
+    }
 }
 
-//struct PeopleSearchView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        PeopleSearchView(ownIndex: <#Binding<Int>#>, bookViewIndex: <#Binding<Int>#>)
-//    }
-//}

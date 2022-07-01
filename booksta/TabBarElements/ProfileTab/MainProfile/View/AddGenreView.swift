@@ -82,9 +82,3 @@ struct GenreCell: View {
         }
     }
 }
-
-//struct AddGenreView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddGenreView()
-//    }
-//}

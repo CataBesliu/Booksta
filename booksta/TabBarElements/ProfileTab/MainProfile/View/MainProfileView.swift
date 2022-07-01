@@ -14,6 +14,7 @@ struct MainProfileView: View {
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     @ObservedObject var bookRecommenderSession: BookRecommenderAPI = Resolver.resolve()
     @State var showBookRecommendResult = false
+    @EnvironmentObject var mainCheck: LogoutMainCheck
     
     var body: some View {
         NavigationView {
@@ -29,7 +30,7 @@ struct MainProfileView: View {
                                 }
                             })
                             .transition(.bottomslide)
-                            .frame(height: geometry.size.height - 200)
+                            .frame(height: geometry.size.height - 150)
                             .zIndex(1)
                     }
                     
@@ -41,7 +42,7 @@ struct MainProfileView: View {
                                 }
                             })
                             .transition(.bottomslide)
-                            .frame(height: geometry.size.height - 200)
+                            .frame(height: geometry.size.height - 150)
                             .zIndex(1)
                     }
                 }
@@ -83,7 +84,7 @@ struct MainProfileView: View {
                 } else {
                     VStack {
                         Spacer()
-                        Text("No data was returned")
+                        Text("Sorry! Could not recommend a book based on your current preferences")
                             .foregroundColor(.bookstaPurple800)
                             .font(.system(size: 17, weight: .bold))
                             .frame(width: 300, height: 400)
@@ -91,11 +92,10 @@ struct MainProfileView: View {
                     }
                 }
             }
-            .background(.white)
             .cornerRadius(10)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.bookstaPurple200)
+        .background(.white)
     }
     
     private var profileContent: some View {
@@ -263,7 +263,7 @@ struct MainProfileView: View {
                     .padding(.bottom, 10)
                 Spacer()
                 NavigationLink {
-                    withAnimation(.spring(response: 1, dampingFraction: 1, blendDuration: 0.2)) { EditProfileView()}
+                    withAnimation(.spring(response: 1, dampingFraction: 1, blendDuration: 0.2)) { EditProfileView().environmentObject(mainCheck)}
                 } label: {
                     Image(systemName: "gear")
                         .resizable()

@@ -12,21 +12,27 @@ struct SearchBar: View {
     @State private var isEditing = false
     @FocusState private var fieldIsFocused: Bool
     var placeholder: String
+    var button: AnyView?
     
     var body: some View {
         HStack {
             HStack(spacing: 5) {
-                Image(systemName: "magnifyingglass.circle.fill")
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(.bookstaPurple800)
-                    .padding(.vertical, 5)
+                if let button = button {
+                    button
+                } else {
+                    Image(systemName: "magnifyingglass.circle.fill")
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .foregroundColor(.bookstaPurple)
+                        .padding(.vertical, 5)
+                }
                 ZStack(alignment: .leading) {
                     if text.isEmpty {
                         placeholder("\(placeholder)...")
                     }
                     TextField(text, text: $text)
                         .foregroundColor(.bookstaPurple800)
+                        .accentColor(.bookstaPurple800)
                         .focused($fieldIsFocused)
                         .padding(5)
                 }
@@ -37,7 +43,7 @@ struct SearchBar: View {
                         self.text = ""
                     }) {
                         Image(systemName: "multiply.circle.fill")
-                            .foregroundColor(.bookstaPurple800)
+                            .foregroundColor(.bookstaPurple)
                             .padding(.trailing, 8)
                     }
                 }
@@ -48,7 +54,7 @@ struct SearchBar: View {
             .cornerRadius(15)
             .overlay(
                 RoundedRectangle(cornerRadius: 15)
-                    .stroke(Color.bookstaPurple800, lineWidth: 2)
+                    .stroke(Color.bookstaPurple, lineWidth: 2)
             )
             
             if isEditing && fieldIsFocused {
@@ -59,7 +65,7 @@ struct SearchBar: View {
                     
                 }) {
                     Text("Cancel")
-                        .foregroundColor(.bookstaPurple800)
+                        .foregroundColor(.bookstaPurple)
                 }
                 .padding(.trailing, 10)
                 //                .transition(.move(edge: .trailing))

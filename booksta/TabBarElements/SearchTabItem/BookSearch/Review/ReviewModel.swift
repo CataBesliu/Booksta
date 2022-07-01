@@ -9,12 +9,14 @@ import Foundation
 
 struct ReviewModel: Hashable, Equatable {
     let id: String
+    let bookID: String
     let reviewGrade: Int
     let reviewDescription: String
     let timestamp: Date?
     
-    init(dictionary: [String: Any], id: String?) {
+    init(dictionary: [String: Any], id: String?, bookID: String?) {
         self.id = id ?? ""
+        self.bookID = bookID ?? ""
         self.reviewGrade = dictionary["reviewGrade"] as? Int ?? 0
         self.reviewDescription = dictionary["reviewDescription"] as? String ?? ""
         self.timestamp = ReviewModel.getDate(data: dictionary["timestamp"] as? String ?? "")

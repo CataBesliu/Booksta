@@ -13,13 +13,12 @@ struct HomeView: View {
     
     var body: some View {
         NavigationView {
-            VStack {
+            VStack(spacing: 10) {
                 Spacer()
-                //TODO: logo image
-                Image(systemName: "book.closed.circle")
-                    .font(.system(size: 80))
-                    .foregroundColor(.bookstaPurple800)
-                
+                Image("iconLogo")
+                    .resizable()
+                    .frame(width: 140, height: 28)
+                Spacer()
                 ZStack(alignment: .center) {
                     LoginView(ownIndex: self.$indexForLoginPage, signUpIndex: self.$indexForSignUpPage)
                         .zIndex(Double(self.indexForLoginPage))
@@ -31,8 +30,8 @@ struct HomeView: View {
             }
             .navigationBarBackButtonHidden(true)
             .edgesIgnoringSafeArea(.all)
-            .background(Color.white)
-            .preferredColorScheme(.dark)
+            .background(Color.bookstaPurple200)
+            .preferredColorScheme(.light)
         }
     }
 }

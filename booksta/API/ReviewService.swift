@@ -36,7 +36,7 @@ struct ReviewService {
                         }
                         guard let doc = documentSnapshot2 else { return }
                         if doc.exists, let data = doc.data() {
-                            let review = ReviewModel(dictionary: data, id: doc.documentID)
+                            let review = ReviewModel(dictionary: data, id: doc.documentID, bookID: book)
                             returnList.append(review)
                             
                         }
@@ -59,7 +59,7 @@ struct ReviewService {
                 return
             }
             guard let data = documentSnapshot else { return }
-            let reviews = data.documents.map ({ ReviewModel(dictionary: $0.data(), id: $0.documentID) })
+            let reviews = data.documents.map ({ ReviewModel(dictionary: $0.data(), id: $0.documentID, bookID: bookID) })
             
             var count = 0
             for review in reviews {
@@ -106,7 +106,7 @@ struct ReviewService {
             }
             guard let doc = documentSnapshot else { return }
             if doc.exists, let data = doc.data() {
-                let review = ReviewModel(dictionary: data, id: doc.documentID)
+                let review = ReviewModel(dictionary: data, id: doc.documentID, bookID: bookID)
                 //                let review = ReviewModel(dictionary: data, id: doc.documentID)
                 completion((review, doc.exists),nil)
             } else {

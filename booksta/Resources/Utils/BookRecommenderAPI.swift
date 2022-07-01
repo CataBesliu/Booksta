@@ -46,6 +46,8 @@ class BookRecommenderAPI: ObservableObject {
                         let decodedBook = try JSONDecoder().decode(DataDecodable  .self, from: data)
                         self.book = BookModel(decodedObject: decodedBook)
                     } catch let error {
+                        self.book = nil
+                        self.noDataReturned = true
                         print("Error decoding: ", error)
                     }
                 }

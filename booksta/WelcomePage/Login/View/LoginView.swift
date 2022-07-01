@@ -65,7 +65,7 @@ struct LoginView: View {
         .background(Color.bookstaGrey100)
         .clipShape(CShapeLeftCurve())
         .contentShape(CShapeLeftCurve())
-//        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: -5)
+        //        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: -5)
         .onTapGesture {
             self.ownIndex = 1
             self.signUpIndex = 0
@@ -95,7 +95,7 @@ struct LoginView: View {
                         .focused($fieldIsFocused)
                         .foregroundColor(.bookstaPurple800)
                     placeholder(stateText.wrappedValue)
-
+                    
                 }
                 
                 Spacer()
@@ -202,13 +202,6 @@ struct LoginView: View {
         }
     }
 }
-
-
-//    struct LoginView_Previews: PreviewProvider {
-//        static var previews: some View {
-//            LoginView(, index: 0)
-//        }
-//    }
 
 extension View {
     func hideKeyboard() {

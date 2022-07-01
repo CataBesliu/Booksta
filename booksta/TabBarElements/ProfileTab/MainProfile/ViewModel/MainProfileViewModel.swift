@@ -8,7 +8,7 @@
 import Foundation
 import Firebase
 import Resolver
-
+import SwiftUI
 class MainProfileViewModel: ProfileViewModel {
     @Published var imageState = DataState<String>.idle
     @Published var user: UserModel? {
@@ -67,23 +67,26 @@ class MainProfileViewModel: ProfileViewModel {
         }
     }
     
-    func logOut() {
+    func logOut(logout: Binding<Bool>) {
         do {
             try Auth.auth().signOut()
-            Resolver.reset()
             self.state = .idle
             self.user = nil
-            checkIfUserIsLoggedIn()
+            checkIfUserIsLoggedIn(logout: logout)
+            Resolver.reset()
         } catch {
             print("DEBUG: Failed to sign out")
         }
     }
     
-    func checkIfUserIsLoggedIn() {
+    func checkIfUserIsLoggedIn(logout: Binding<Bool> = Binding.constant(false)) {
         let user = Auth.auth().currentUser
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
             self.isUserLoggedIn = user != nil
+            if self.isUserLoggedIn == false {
+                logout.wrappedValue = true
+            }
         }
     }
 }

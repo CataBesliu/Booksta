@@ -15,14 +15,44 @@ struct BookSearchView: View {
     
     @State var curbeRadius: CGFloat
     @State var curbeHeight: CGFloat
+    @State var showFiltersView = false
     
     
     var body: some View {
-        content
-            .onAppear(perform: {
-                viewModel.searchText = ""
-                viewModel.fetchBooks(searchTerm: viewModel.searchText)
-            })
+        ZStack(alignment: .bottom) {
+            ZStack {
+                content
+                    .onAppear(perform: {
+                        viewModel.searchText = ""
+                        viewModel.changeState()
+                        viewModel.fetchFilters()
+                    })
+                
+                if showFiltersView {
+                    Color.bookstaPurple
+                        .opacity(0.15)
+                        .frame(maxHeight: .infinity)
+                }
+                
+            }
+            .clipped()
+            .onTapGesture {
+                withAnimation(.easeOut(duration: 0.5)) {
+                    showFiltersView = false
+                }
+            }
+            if showFiltersView {
+                FilterView(viewModel: viewModel, showAuthors: true)
+                    .modalPresenter(title: "Filtering options", onDismiss: {
+                        withAnimation(.easeIn(duration: 0.5)) {
+                            showFiltersView = false
+                        }
+                    })
+                    .transition(.bottomslide)
+                    .frame(height: 170)
+                    .zIndex(1)
+            }
+        }
     }
     
     private var content: some View {
@@ -37,17 +67,9 @@ struct BookSearchView: View {
                 Spacer()
             }
             VStack(spacing: 10) {
-                SearchBar(text: $viewModel.searchText, placeholder: "Search for a book")
+                SearchBar(text: $viewModel.searchText, placeholder: "Search for a book", button: AnyView(filterView))
+                FilterHeader(viewModel: viewModel)
                 getStateView(state: viewModel.state)
-//                HStack {
-//                    Spacer()
-//                    Button {
-//                        viewModel.countOfBooks += 10
-//                    } label: {
-//                        BookstaButton(title: "Show more", paddingV: 5, paddingH: 10, titleSize: 15)
-//                    }
-//                    Spacer()
-//                }
             }
             
         }
@@ -65,6 +87,20 @@ struct BookSearchView: View {
         .cornerRadius(30)
     }
     
+    private var filterView: some View {
+        Button {
+            withAnimation(.spring(response: 1, dampingFraction: 1, blendDuration: 0.2)) {
+                showFiltersView.toggle()
+            }
+            
+        } label: {
+            Image(systemName: "line.3.horizontal.decrease")
+                .resizable()
+                .frame(width: 20, height: 20)
+                .foregroundColor(.bookstaPurple)
+        }
+    }
+    
     private func getStateView(state: DataState<[BookModel]>) -> some View {
         switch state {
         case .idle, .loading :
@@ -75,8 +111,13 @@ struct BookSearchView: View {
             }
             .eraseToAnyView()
         case let .loaded(books) :
-            return BooksScrollView(books: books)
-            .animation(.default, value: viewModel.state)
+            return  ScrollView {
+                ForEach(books, id: \.self) { book in
+                    NavigationLink(destination: BookView(book: book)) {
+                        getBookCell(book: book)
+                    }
+                }
+            }
             .eraseToAnyView()
         case let.error(errorDescription) :
             return VStack {
@@ -86,6 +127,26 @@ struct BookSearchView: View {
             }
             .eraseToAnyView()
         }
+    }
+    
+    private func getBookCell(book: BookModel) -> some View {
+        HStack(spacing: 20) {
+            BookstaImage(url: book.thumbnail,
+                         height: 50,
+                         width: 50,
+                         placeholderImage: "book.circle")
+            .clipShape(Circle())
+            .overlay(Circle().stroke(lineWidth: 2))
+            Text("\(book.name)")
+                .font(.system(size: 20,weight: .bold))
+                .foregroundColor(.bookstaPurple800)
+            Spacer()
+        }
+        .padding()
+        .overlay(
+            Rectangle()
+                .stroke(Color.bookstaPurple800, lineWidth: 1)
+        )
     }
 }
 

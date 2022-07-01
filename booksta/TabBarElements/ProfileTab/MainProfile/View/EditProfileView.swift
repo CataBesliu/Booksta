@@ -11,6 +11,7 @@ import Resolver
 
 struct EditProfileView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var mainCheck: LogoutMainCheck
     @ObservedObject var mainViewModel: MainProfileViewModel = Resolver.resolve()
     @ObservedObject var viewModel: EditProfileViewModel = EditProfileViewModel()
     
@@ -81,7 +82,7 @@ struct EditProfileView: View {
     }
     
     private var logOutButton: some View {
-        Button(action: mainViewModel.logOut) {
+        Button(action: { mainViewModel.logOut(logout: $mainCheck.logout) }) {
             BookstaButton(title: "Log out")
                 .clipShape(Capsule())
         }

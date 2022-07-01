@@ -99,6 +99,7 @@ struct BookView: View {
             Text("\(reviewViewModel.book.description)")
                 .foregroundColor(.bookstaPurple800)
                 .font(.system(size: 15))
+                .leadingStyle()
         }
     }
     
@@ -197,7 +198,7 @@ struct BookHeaderView: View {
                 .frame(height: 150)
                 .frame(maxWidth: .infinity)
             
-            BookstaImage(url: book.thumbnail, placeholderImage: "iconBookBackground")
+            BookstaImage(url: book.thumbnail, placeholderImage: "iconBookBackground", isSystemPhoto: false)
                 .clipShape(Rectangle())
                 .border(.white, width: 3)
                 .cornerRadius(4)
@@ -207,6 +208,7 @@ struct BookHeaderView: View {
             HStack {
                 Text("\(book.name)")
                     .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(.white)
                     .lineLimit(1)
                     .padding(.trailing, 92)
                     .padding(.bottom, 10)

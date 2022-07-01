@@ -11,6 +11,7 @@ import Resolver
 
 struct TabBarView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var logoutMainCheck: LogoutMainCheck
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     @State private var selection = 0
     var body: some View {
@@ -32,7 +33,7 @@ struct TabBarView: View {
                 .font(.system(.headline, design: .rounded))
                 .tag(1)
             
-            MainProfileView()
+            MainProfileView().environmentObject(logoutMainCheck)
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }

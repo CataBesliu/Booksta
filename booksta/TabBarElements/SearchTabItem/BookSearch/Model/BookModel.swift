@@ -36,14 +36,14 @@ struct BookModel: Hashable {
     
     init(decodedObject: DataDecodable) {
         self.id = decodedObject.id
-        self.name = decodedObject.data.title
-        self.authors = decodedObject.data.authors
-        self.genres = decodedObject.data.categories
-        self.description = decodedObject.data.description
-        self.isbn13 = decodedObject.data.isbn13
-        self.publishYear = decodedObject.data.published_year
-        self.subtitle = decodedObject.data.subtitle
-        self.thumbnail = decodedObject.data.thumbnail
+        self.name = decodedObject.data.title ?? ""
+        self.authors = decodedObject.data.authors ?? []
+        self.genres = decodedObject.data.categories ?? []
+        self.description = decodedObject.data.description ?? ""
+        self.isbn13 = decodedObject.data.isbn13 ?? 0
+        self.publishYear = decodedObject.data.published_year ?? 0
+        self.subtitle = decodedObject.data.subtitle ?? ""
+        self.thumbnail = decodedObject.data.thumbnail ?? ""
         self.genre = BookGenre.empty
     }
 }
@@ -62,12 +62,12 @@ struct DataDecodable: Decodable {
 }
 
 struct BookModelDecodable: Decodable {
-    var title: String
-    var authors: [String]
-    var categories: [String]
-    var description: String
-    var isbn13: Int
-    var subtitle: String
-    var published_year: Int
-    var thumbnail: String
+    var title: String?
+    var authors: [String]?
+    var categories: [String]?
+    var description: String?
+    var isbn13: Int?
+    var subtitle: String?
+    var published_year: Int?
+    var thumbnail: String?
 }
