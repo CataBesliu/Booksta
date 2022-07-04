@@ -48,6 +48,11 @@
 		726D709127D6370A001EE64F /* PeopleSearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726D709027D6370A001EE64F /* PeopleSearchViewModel.swift */; };
 		726D709327D63DE6001EE64F /* DataState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 726D709227D63DE6001EE64F /* DataState.swift */; };
 		728863E228660AAA007F1B7F /* EditProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728863E128660AAA007F1B7F /* EditProfileViewModel.swift */; };
+		728928362872F95900487722 /* RefreshViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728928352872F95900487722 /* RefreshViewModifier.swift */; };
+		7289283B2873617600487722 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7289283A2873617600487722 /* StatisticsView.swift */; };
+		7289283D28736B4B00487722 /* BarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7289283C28736B4B00487722 /* BarChart.swift */; };
+		7289284028737E3700487722 /* FollowersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7289283F28737E3700487722 /* FollowersModel.swift */; };
+		728928422873802500487722 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728928412873802500487722 /* StatisticsViewModel.swift */; };
 		728A70EC2844111D00E95B0D /* AddBookReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728A70EB2844111D00E95B0D /* AddBookReviewViewModel.swift */; };
 		728A7101284414D000E95B0D /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 728A70EE284414D000E95B0D /* Poppins-ExtraLight.ttf */; };
 		728A7102284414D000E95B0D /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 728A70EF284414D000E95B0D /* Poppins-ThinItalic.ttf */; };
@@ -171,6 +176,11 @@
 		726D709027D6370A001EE64F /* PeopleSearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleSearchViewModel.swift; sourceTree = "<group>"; };
 		726D709227D63DE6001EE64F /* DataState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataState.swift; sourceTree = "<group>"; };
 		728863E128660AAA007F1B7F /* EditProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModel.swift; sourceTree = "<group>"; };
+		728928352872F95900487722 /* RefreshViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshViewModifier.swift; sourceTree = "<group>"; };
+		7289283A2873617600487722 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		7289283C28736B4B00487722 /* BarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChart.swift; sourceTree = "<group>"; };
+		7289283F28737E3700487722 /* FollowersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersModel.swift; sourceTree = "<group>"; };
+		728928412873802500487722 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		728A70EB2844111D00E95B0D /* AddBookReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookReviewViewModel.swift; sourceTree = "<group>"; };
 		728A70EE284414D000E95B0D /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		728A70EF284414D000E95B0D /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
@@ -340,6 +350,7 @@
 				724C2B382850AF78003CE1B5 /* BookstaImage.swift */,
 				7257A29728607ED40032A3EF /* NavigationBar.swift */,
 				725D89C9286DB25F002E05FB /* BookRecommenderAPI.swift */,
+				728928352872F95900487722 /* RefreshViewModifier.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -501,6 +512,41 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		728928372873615400487722 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				7289283E28737E0C00487722 /* Model */,
+				728928392873616300487722 /* ViewModel */,
+				728928382873615C00487722 /* View */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
+		728928382873615C00487722 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7289283A2873617600487722 /* StatisticsView.swift */,
+				7289283C28736B4B00487722 /* BarChart.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		728928392873616300487722 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				728928412873802500487722 /* StatisticsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		7289283E28737E0C00487722 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7289283F28737E3700487722 /* FollowersModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		728A70ED284414D000E95B0D /* Poppins */ = {
 			isa = PBXGroup;
 			children = (
@@ -656,6 +702,7 @@
 		72CDE62227C2ED8700C83327 /* TabBarElements */ = {
 			isa = PBXGroup;
 			children = (
+				728928372873615400487722 /* Statistics */,
 				72BCE285284F687000434F9F /* FeedTabItem */,
 				722FCCA227D00A1600126903 /* SearchTabItem */,
 				722883E727C9792B006EB7A4 /* TabBar */,
@@ -1094,6 +1141,7 @@
 				7257A290285F2F970032A3EF /* PostViewModel.swift in Sources */,
 				722452D727D92EC7008B215B /* Buttons.swift in Sources */,
 				725D89CC286DE8ED002E05FB /* GeneralSearchViewModel.swift in Sources */,
+				7289284028737E3700487722 /* FollowersModel.swift in Sources */,
 				72ED9C7D27C03E3B00EEC6CB /* CustomDivider.swift in Sources */,
 				72667F6727D168E700EAB2D4 /* SecondAttempt.swift in Sources */,
 				728A70EC2844111D00E95B0D /* AddBookReviewViewModel.swift in Sources */,
@@ -1110,9 +1158,12 @@
 				72BCE292284FC03F00434F9F /* ReviewModel.swift in Sources */,
 				72ED9C7F27C0444700EEC6CB /* NewApp.swift in Sources */,
 				72BCE28D284F77FC00434F9F /* StarView.swift in Sources */,
+				7289283D28736B4B00487722 /* BarChart.swift in Sources */,
 				72ED9C8127C047CC00EEC6CB /* SceneDelegate.swift in Sources */,
+				728928362872F95900487722 /* RefreshViewModifier.swift in Sources */,
 				7204037F285BFD130022F6E1 /* AddPostViewModel.swift in Sources */,
 				725E601C28672CE900B5B757 /* AddGenreView.swift in Sources */,
+				7289283B2873617600487722 /* StatisticsView.swift in Sources */,
 				722FCC9F27CFE66900126903 /* UserModel.swift in Sources */,
 				725E601F2868C73600B5B757 /* GenresViewModel.swift in Sources */,
 				722FCCA627D00A3B00126903 /* BookSearchView.swift in Sources */,
@@ -1153,6 +1204,7 @@
 				72BCE289284F694700434F9F /* FeedView.swift in Sources */,
 				7257A2962860792E0032A3EF /* EditProfileView.swift in Sources */,
 				72CDE62127C2E61400C83327 /* SignUpViewModel.swift in Sources */,
+				728928422873802500487722 /* StatisticsViewModel.swift in Sources */,
 				72B2C91027C00A7500554C72 /* booksta.xcdatamodeld in Sources */,
 				72D9563027C6C405006C0D88 /* View+Extension.swift in Sources */,
 				72E5DE6827F3A5F900818DC0 /* AddBookView.swift in Sources */,

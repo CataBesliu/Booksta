@@ -17,6 +17,7 @@ target 'booksta' do
 	pod 'JGProgressHUD','~>2.0.3'
 	pod 'YPImagePicker'
 	pod 'Resolver'
+	pod c
 
   target 'bookstaTests' do
     inherit! :search_paths

@@ -74,7 +74,41 @@ struct PostService {
                 }
             }
         }
+    }
+    
+    static func getFollowingUsers(completion: @escaping([UserModel]?,String?) -> Void) {
+        guard let currentUserUID = Auth.auth().currentUser?.uid else { return }
+        var userFollowing: [UserModel] = []
         
+        FOLLOWING_COLLECTION.document(currentUserUID).collection(USER_FOLLOWING_COLLECTION).getDocuments { documentSnapshot, error in
+            if let error = error {
+                print("DEBUG: Error retrieving reviews - \(error.localizedDescription)")
+                completion(nil, error.localizedDescription)
+                return
+            }
+            guard let data = documentSnapshot else { return }
+            let followed_users = data.documents.map ({ $0.documentID})
+            
+            var count = 0
+            for user in followed_users {
+                UserService.getUserInfo(uid: user) { userModel, error in
+                    if let error = error {
+                        print("DEBUG: Error retrieving reviewers - \(error)")
+                        completion(nil, error)
+                        return
+                    }
+                    guard let userModel = userModel else {
+                        return
+                    }
+                    
+                    userFollowing.append(userModel)
+                    count += 1
+                    if count == followed_users.count {
+                        completion(userFollowing, nil)
+                    }
+                }
+            }
+        }
     }
     
     

@@ -13,6 +13,9 @@ class MainProfileViewModel: ProfileViewModel {
     @Published var imageState = DataState<String>.idle
     @Published var user: UserModel? {
         didSet {
+            if let user = user {
+                UserDefaults.standard.set(user.uid, forKey: "userID")
+            }
             getProfileInformation()
         }
     }

@@ -33,12 +33,19 @@ struct TabBarView: View {
                 .font(.system(.headline, design: .rounded))
                 .tag(1)
             
+            StatisticsView()
+                .tabItem {
+                    Label("Statistics", systemImage: "chart.bar.fill")
+                }
+                .font(.system(.headline, design: .rounded))
+                .tag(2)
+            
             MainProfileView().environmentObject(logoutMainCheck)
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }
                 .font(.system(.headline, design: .rounded))
-                .tag(2)
+                .tag(3)
         }
         .onAppear() {
             UITabBar.appearance().backgroundColor = UIColor(named: "bookstaPurple800")

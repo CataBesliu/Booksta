@@ -163,7 +163,6 @@ struct UserService {
                 let followed_users = doc.documents.map ({ $0.documentID})
                 
                 for userUID in followed_users {
-                    count += 1
                     USERS_COLLECTION.document(userUID).getDocument { documentSnapshot, error in
                         // documentSnapshot data returns a nsdictionary
                         if let error = error {
@@ -172,11 +171,10 @@ struct UserService {
                         }
                         guard let data = documentSnapshot?.data() else { return }
                         print("DEBUG: Followings succesfully retrieved")
-                        
                         let userModel = UserModel(dictionary: data)
                         following.append(userModel)
-                        
-                        if count == max {
+                        count += 1
+                        if following.count == max {
                             completion(following, nil)
                         }
                     }
