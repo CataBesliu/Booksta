@@ -15,7 +15,7 @@ struct UserService {
     static func uploadPhotoToStorage(uid: String, image: UIImage, completion: @escaping(String) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
         let filename = NSUUID().uuidString
-        let ref = Storage.storage().reference(withPath: "/user_image/\(filename)")
+        let ref = Storage.storage().reference(withPath: "/user_image/\(uid)/\(filename)")
         ref.putData(imageData, metadata: nil) { metadata, error in
             if let error = error {
                 print("DEBUG: Failed to upload image \(error.localizedDescription)")
@@ -273,39 +273,5 @@ struct UserService {
                 }
             }
         }
-    }
-    
-    static func checkIfEmailIsTaken(email: String, completion: @escaping(Bool?, String?) -> Void) {
-        USERS_COLLECTION
-            .whereField("email", isEqualTo: email)
-            .getDocuments { snapshot, error in
-                if let err = error {
-                    completion(nil, "DEBUG: Error verifying email")
-                } else if let snapshot = snapshot {
-                    if snapshot.isEmpty {
-                        completion(false,nil)
-                    }
-                    else {
-                        completion(true,nil)
-                    }
-                }
-            }
-    }
-    
-    static func checkIfUsernameIsTaken(username: String, completion: @escaping(Bool?, String?) -> Void) {
-        USERS_COLLECTION
-            .whereField("username", isEqualTo: username)
-            .getDocuments { snapshot, error in
-                if let err = error {
-                    completion(nil, "DEBUG: Error verifying username")
-                } else if let snapshot = snapshot {
-                    if snapshot.isEmpty {
-                        completion(false,nil)
-                    }
-                    else {
-                        completion(true,nil)
-                    }
-                }
-            }
     }
 }

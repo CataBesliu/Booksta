@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AddReviewView: View {
+internal struct AddReviewView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @ObservedObject var viewModel: AddBookReviewViewModel

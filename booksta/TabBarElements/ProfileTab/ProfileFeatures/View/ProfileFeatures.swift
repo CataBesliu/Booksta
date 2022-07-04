@@ -170,7 +170,7 @@ struct PostsScrollView: View {
     }
 }
 
-struct GenreView: View {
+fileprivate struct GenreView: View {
     var title: String
     var onUnselect: () -> Void
     

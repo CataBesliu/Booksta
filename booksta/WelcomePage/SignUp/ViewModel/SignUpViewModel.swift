@@ -23,7 +23,7 @@ class SignUpViewModel: ObservableObject {
     }
     
     func checkEmail(email: String) {
-        UserService.checkIfEmailIsTaken(email: email) {[weak self] result, error in
+        AuthService.checkIfEmailIsTaken(email: email) {[weak self] result, error in
             guard let `self` = self else { return }
             if let error = error {
                 print(error)
@@ -34,7 +34,7 @@ class SignUpViewModel: ObservableObject {
     }
     
     func checkUsername(username: String) {
-        UserService.checkIfUsernameIsTaken(username: username) {[weak self] result, error in
+        AuthService.checkIfUsernameIsTaken(username: username) {[weak self] result, error in
             guard let `self` = self else { return }
             if let error = error {
                 print(error)

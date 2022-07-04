@@ -3,7 +3,7 @@
 //  booksta
 //
 //  Created by Catalina Besliu on 20.02.2022.
-//
+
 
 import SwiftUI
 import Firebase
@@ -11,10 +11,10 @@ import Resolver
 import SDWebImageSwiftUI
 
 struct MainProfileView: View {
+    @EnvironmentObject var mainCheck: LogoutMainCheck
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     @ObservedObject var bookRecommenderSession: BookRecommenderAPI = Resolver.resolve()
-    @State var showBookRecommendResult = false
-    @EnvironmentObject var mainCheck: LogoutMainCheck
+    @State var showBookRecommendationResult = false
     
     var body: some View {
         NavigationView {
@@ -51,7 +51,7 @@ struct MainProfileView: View {
                     viewModel.getProfileInformation()
                     viewModel.getProfilePhoto()
                 })
-                .sheet(isPresented: $showBookRecommendResult) {
+                .sheet(isPresented: $showBookRecommendationResult) {
                     bookRecommenderView
                 }
             }
@@ -249,7 +249,7 @@ struct MainProfileView: View {
         .clipped()
         .onTapGesture(perform: {
             bookRecommenderSession.getBookRecommendation(userID: mainUser.uid)
-            showBookRecommendResult = true
+            showBookRecommendationResult = true
         })
     }
     
