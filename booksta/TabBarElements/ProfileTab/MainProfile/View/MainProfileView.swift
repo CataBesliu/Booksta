@@ -11,7 +11,7 @@ import Resolver
 import SDWebImageSwiftUI
 
 struct MainProfileView: View {
-    @EnvironmentObject var mainCheck: LogoutMainCheck
+    @EnvironmentObject var mainCheck: MainCheck
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     @ObservedObject var bookRecommenderSession: BookRecommenderAPI = Resolver.resolve()
     @State var showBookRecommendationResult = false

@@ -7,6 +7,7 @@
 
 import Foundation
 
-class LogoutMainCheck: ObservableObject {
+class MainCheck: ObservableObject {
+    @Published var login = false
     @Published var logout = false
 }

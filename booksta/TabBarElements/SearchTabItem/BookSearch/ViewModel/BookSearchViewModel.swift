@@ -44,7 +44,6 @@ class BookSearchViewModel: GeneralSearchViewModel {
             if let error = error {
                 self.state = .error(error)
             } else if let books = books {
-                //                    let list = self.getFilteredList(unfilteredList: books, searchText: searchTerm)
                 self.state = .loaded(books)
                 self.listOfBooks = books
                 

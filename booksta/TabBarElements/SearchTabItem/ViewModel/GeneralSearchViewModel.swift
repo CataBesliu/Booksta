@@ -11,15 +11,11 @@ class GeneralSearchViewModel: ObservableObject {
     @Published var selectedGenres: [String] = [] {
         didSet {
             getGenres()
-            resetState()
-            changeState()
         }
     }
     @Published var selectedAuthors: [String] = [] {
         didSet {
             getAuthors()
-            resetState()
-            changeState()
         }
     }
     

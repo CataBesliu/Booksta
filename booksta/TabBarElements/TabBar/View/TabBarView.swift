@@ -11,7 +11,7 @@ import Resolver
 
 struct TabBarView: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var logoutMainCheck: LogoutMainCheck
+    @EnvironmentObject var logoutMainCheck: MainCheck
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
     @State private var selection = 0
     var body: some View {

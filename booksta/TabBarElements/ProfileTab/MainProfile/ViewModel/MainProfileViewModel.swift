@@ -82,13 +82,16 @@ class MainProfileViewModel: ProfileViewModel {
         }
     }
     
-    func checkIfUserIsLoggedIn(logout: Binding<Bool> = Binding.constant(false)) {
+    func checkIfUserIsLoggedIn(logout: Binding<Bool> = Binding.constant(false),
+                               login: Binding<Bool> = Binding.constant(false)) {
         let user = Auth.auth().currentUser
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
             self.isUserLoggedIn = user != nil
             if self.isUserLoggedIn == false {
                 logout.wrappedValue = true
+            } else if self.isUserLoggedIn {
+                login.wrappedValue = true
             }
         }
     }

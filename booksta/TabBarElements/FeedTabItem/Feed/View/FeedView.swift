@@ -30,9 +30,7 @@ struct FeedView: View {
                         }
                     }
                     .background(Color.white)
-                    .refreshable {
-                        postsViewModel.resetState()
-                    }
+
                     
                     if showSheet {
                         Color.bookstaPurple
@@ -121,7 +119,6 @@ struct FeedView: View {
                 }
             }
         }
-        //        .background(Color.bookstaGrey200.opacity(0.5))
     }
     
     private var iconFeedView: some View {

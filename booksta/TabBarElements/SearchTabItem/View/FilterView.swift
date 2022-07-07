@@ -47,6 +47,8 @@ struct FilterView: View {
                 Button {
                     viewModel.selectedGenres = []
                     viewModel.selectedAuthors = []
+                    viewModel.resetState()
+                    viewModel.changeState()
                 } label: {
                     BookstaButton(title: "Delete filters", paddingV: 5)
                 }

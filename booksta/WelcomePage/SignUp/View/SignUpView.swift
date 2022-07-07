@@ -9,6 +9,7 @@ import SwiftUI
 import Resolver
 
 struct SignUpView: View {
+    @EnvironmentObject var mainCheck: MainCheck
     @ObservedObject var profileViewModel : MainProfileViewModel = Resolver.resolve()
     @ObservedObject var viewModel = SignUpViewModel()
     
@@ -244,7 +245,7 @@ struct SignUpView: View {
             }
             //TODO: check if an email was already registered
             print("DEBUG - Succesfully registered user with firestore...")
-            profileViewModel.checkIfUserIsLoggedIn()
+            profileViewModel.checkIfUserIsLoggedIn(login: $mainCheck.login )
         })
     }
 }

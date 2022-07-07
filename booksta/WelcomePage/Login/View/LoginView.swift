@@ -9,6 +9,7 @@ import SwiftUI
 import Resolver
 
 struct LoginView: View {
+    @EnvironmentObject var mainCheck: MainCheck
     @ObservedObject var profileViewModel : MainProfileViewModel = Resolver.resolve()
     @ObservedObject var viewModel = LoginViewModel()
     
@@ -118,7 +119,7 @@ struct LoginView: View {
             Button(action: {
             }) {
                 Text("Forget password?")
-                    .foregroundColor(.bookstaPurple800)
+                    .foregroundColor(.clear)
                     .shadow(color: Color.white.opacity(0.1), radius: 5, x: 0, y: 5)
             }
         }
@@ -198,7 +199,7 @@ struct LoginView: View {
             }
             print("DEBUG - Succesfully logged in user with firestore...")
             
-            profileViewModel.checkIfUserIsLoggedIn()
+            profileViewModel.checkIfUserIsLoggedIn(login: $mainCheck.login )
         }
     }
 }

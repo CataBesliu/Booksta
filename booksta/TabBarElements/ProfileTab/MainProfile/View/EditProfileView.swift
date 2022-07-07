@@ -11,9 +11,9 @@ import Resolver
 
 struct EditProfileView: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var mainCheck: LogoutMainCheck
+    @EnvironmentObject var mainCheck: MainCheck
     @ObservedObject var mainViewModel: MainProfileViewModel = Resolver.resolve()
-    @ObservedObject var viewModel: EditProfileViewModel = EditProfileViewModel()
+    @ObservedObject var viewModel: EditProfileViewModel = Resolver.resolve()
     
     @State private var isLibrarySheetPresented = false
     @State private var profileImage: UIImage?

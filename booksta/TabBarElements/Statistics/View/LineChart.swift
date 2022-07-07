@@ -1,29 +1,32 @@
 //
-//  BarChart.swift
+//  LineChart.swift
 //  booksta
 //
-//  Created by Catalina Besliu on 04.07.2022.
+//  Created by Catalina Besliu on 05.07.2022.
 //
-import Charts
-import SwiftUI
 
-struct BarChart : UIViewRepresentable {
+import SwiftUI
+import Charts
+
+struct LineChart : UIViewRepresentable {
     @Binding var selectedItem: String
     var chartLegend: String
     var usernames: [String]
-    var entries : [BarChartDataEntry]
-    let barChartView = BarChartView()
+    var entries : [[ChartDataEntry]]
+    let lineChartView = LineChartView()
+    let months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
     
     // this func is required to conform to UIViewRepresentable protocol
-    func makeUIView(context: Context) -> BarChartView {
-        barChartView.delegate = context.coordinator
-        return barChartView
+    func makeUIView(context: Context) -> LineChartView {
+        lineChartView.delegate = context.coordinator
+        return lineChartView
     }
     
     // this func is required to conform to UIViewRepresentable protocol
-    func updateUIView(_ uiView: BarChartView, context: Context) {
+    func updateUIView(_ uiView: LineChartView, context: Context) {
         //when data changes chartd.data update is required
         uiView.data = addData()
+            
         uiView.rightAxis.enabled = false
         uiView.setScaleEnabled(false)
         //        if uiView.scaleX == 1.0
@@ -37,8 +40,8 @@ struct BarChart : UIViewRepresentable {
     }
     
     class Coordinator: NSObject, ChartViewDelegate {
-        let parent: BarChart
-        init(parent: BarChart) {
+        let parent: LineChart
+        init(parent: LineChart) {
             self.parent = parent
         }
         
@@ -54,21 +57,26 @@ struct BarChart : UIViewRepresentable {
     }
     
     
-    func addData() -> BarChartData{
-        let data = BarChartData()
-        //BarChartDataSet is an object that contains information about your data, styling and more
-        let dataSet = BarChartDataSet(entries: entries)
-        data.addDataSet(dataSet)
-        formatDataSet(dataSet: dataSet)
+    func addData() -> LineChartData{
+        
+        let data = LineChartData()
+        for entry in entries {
+            let line = LineChartDataSet(entries: entry,
+                                        label: "\(entry[0].data as? String ?? "")")
+            line.colors = [generateRandomPastelColor()]
+            line.lineWidth = 3
+            data.addDataSet(line)
+        }
+        formatDataSet(dataSet: data)
         return data
     }
     
-    func formatDataSet(dataSet: BarChartDataSet) {
-        dataSet.colors = (1...10).map({ _ in generateRandomPastelColor()})
-        dataSet.valueColors = [UIColor.purple]
-        //change data label
-//        dataSet.stackLabels = [chartLegend,"bla"]
-        dataSet.label = chartLegend
+    func formatDataSet(dataSet: LineChartData) {
+//        dataSet.colors = (1...10).map({ _ in generateRandomPastelColor()})
+//        dataSet.valueColors = [UIColor.purple]
+//        //change data label
+////        dataSet.stackLabels = [chartLegend,"bla"]
+//        dataSet.label = chartLegend
         
     }
     
@@ -83,7 +91,7 @@ struct BarChart : UIViewRepresentable {
     }
     
     func formatXAxis(xAxis: XAxis) {
-        xAxis.valueFormatter = IndexAxisValueFormatter(values: usernames)
+        xAxis.valueFormatter = IndexAxisValueFormatter(values: months)
         xAxis.labelPosition = .bottom
         xAxis.labelTextColor = .purple
     }
@@ -119,6 +127,6 @@ struct BarChart : UIViewRepresentable {
         return UIColor(red: red, green: green, blue: blue, alpha: 1)
     }
     
-    typealias UIViewType = BarChartView
+    typealias UIViewType = LineChartView
     
 }

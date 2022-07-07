@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var mainCheck: MainCheck
     @State var indexForLoginPage = 1
     @State var indexForSignUpPage = 0
     
@@ -21,9 +22,11 @@ struct HomeView: View {
                 Spacer()
                 ZStack(alignment: .center) {
                     LoginView(ownIndex: self.$indexForLoginPage, signUpIndex: self.$indexForSignUpPage)
+                        .environmentObject(mainCheck)
                         .zIndex(Double(self.indexForLoginPage))
                     
                     SignUpView(ownIndex: self.$indexForSignUpPage, logInIndex: self.$indexForLoginPage)
+                        .environmentObject(mainCheck)
                         .zIndex(Double(self.indexForSignUpPage))
                 }
                 Spacer()

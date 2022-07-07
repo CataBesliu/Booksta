@@ -65,11 +65,16 @@ struct BookService {
                     return
                 }
                 guard let data = documentSnapshot else { return }
-                var books = data.documents.map ({ BookModel(dictionary: $0.data(), id: $0.documentID) })
+                let books = data.documents.map ({ BookModel(dictionary: $0.data(), id: $0.documentID) })
+                var returnBooks: Set<BookModel> = []
                 if checkForAuthors && !authors.isEmpty {
-                    books = books.filter( { Set(authors).isSubset(of: Set($0.authors))} )
+                    for author in authors {
+                        returnBooks = returnBooks.union(books.filter({$0.authors.contains(author)}))
+                    }
+                    completion(Array(returnBooks), nil)
+                } else {
+                    completion(books, nil)
                 }
-                completion(books, nil)
             }
     }
     

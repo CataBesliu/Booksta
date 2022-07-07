@@ -15,6 +15,8 @@ extension Resolver: ResolverRegistering {
         register{ BookSearchViewModel() }.scope(.application)
         register{ FeedViewModel() }.scope(.application)
         register{ BookRecommenderAPI() }.scope(.application)
-        register{ StatisticsViewModel() }.scope(.application)
+        register{ StatisticsViewModel() }.scope(.cached)
+        register { EditProfileViewModel() }.scope(.unique)
+        register { AddPostViewModel() }.scope(.unique)
     }
 }

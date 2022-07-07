@@ -12,26 +12,29 @@ import Resolver
 @main
 struct NewApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @State var isPresentingEditView = false
+    @State var isPresentingTabView = false
     @ObservedObject var viewModel: MainProfileViewModel = Resolver.resolve()
-    var logoutMainCheck: LogoutMainCheck = LogoutMainCheck()
+    var mainCheck: MainCheck = MainCheck()
     
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .environmentObject(logoutMainCheck)
+                .environmentObject(mainCheck)
                 .onAppear {
                     viewModel.checkIfUserIsLoggedIn()
                 }
-                .fullScreenCover(isPresented: $isPresentingEditView) {
+                .fullScreenCover(isPresented: $isPresentingTabView) {
                     TabBarView()
-                        .environmentObject(logoutMainCheck)
+                        .environmentObject(mainCheck)
                 }
                 .onReceive(viewModel.$isUserLoggedIn) { result in
-                    self.isPresentingEditView = result
+                    self.isPresentingTabView = result
                 }
-                .onReceive(logoutMainCheck.$logout) { result in
-                    self.isPresentingEditView = !result
+                .onReceive(mainCheck.$logout) { result in
+                    self.isPresentingTabView = !result
+                }
+                .onReceive(mainCheck.$login) { result in
+                    self.isPresentingTabView = result
                 }
         }
     }

@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import Resolver
 
 struct AddPostView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: AddPostViewModel
+    @ObservedObject var viewModel: AddPostViewModel = Resolver.resolve()
     
     @State var postDescription: String = ""
     @State private var showingAlert = false
@@ -21,7 +22,6 @@ struct AddPostView: View {
     init() {
         UITextView.appearance().backgroundColor = .clear
         UITextView.appearance().tintColor = UIColor(named: "bookstaPurple800")
-        self.viewModel = AddPostViewModel()
     }
     
     var body: some View {

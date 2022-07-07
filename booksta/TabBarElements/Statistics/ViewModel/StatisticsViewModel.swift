@@ -12,6 +12,7 @@ import Resolver
 class StatisticsViewModel: ObservableObject {
     @Published var stateUserFollowings = DataState<[UserModel]>.idle
     @Published var postsForUsers: [(user: UserModel, posts: [PostModel])] = []
+    @Published var booksRead: [(user: UserModel, books: Int)] = []
     var userID = UserDefaults.standard.string(forKey: "userID")
     
     func resetState() {
@@ -34,6 +35,9 @@ class StatisticsViewModel: ObservableObject {
                 self.stateUserFollowings = .error("Could not fetch users being followed")
             } else if let users = users {
                 self.stateUserFollowings = .loaded(users)
+                self.booksRead = users.map({ user in
+                    return (user: user, books: user.booksRead.count)
+                })
                 for user in users {
                     PostService.getUserPosts(uid: user.uid) { posts, error in
                         if error != nil {
