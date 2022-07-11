@@ -13,7 +13,6 @@ class StatisticsViewModel: ObservableObject {
     @Published var stateUserFollowings = DataState<[UserModel]>.idle
     @Published var postsForUsers: [(user: UserModel, posts: [PostModel])] = []
     @Published var booksRead: [(user: UserModel, books: Int)] = []
-    var userID = UserDefaults.standard.string(forKey: "userID")
     
     func resetState() {
         stateUserFollowings = .idle
@@ -24,6 +23,8 @@ class StatisticsViewModel: ObservableObject {
         guard stateUserFollowings == .idle else { return }
         
         stateUserFollowings = .loading
+        
+        let userID = UserDefaults.standard.string(forKey: "userID")
         
         guard let userID = userID else {
             return

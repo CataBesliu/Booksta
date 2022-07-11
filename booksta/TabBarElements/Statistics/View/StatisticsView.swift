@@ -17,7 +17,9 @@ struct StatisticsView: View {
     private let calendar = Calendar.current
     
     var body: some View {
+        NavigationView {
         VStack {
+            Spacer()
             dropDownView
             switch viewModel.stateUserFollowings {
             case .idle, .loading:
@@ -42,10 +44,14 @@ struct StatisticsView: View {
                     .foregroundColor(.bookstaPurple800)
                     .centerStyle()
             }
+            Spacer()
         }
         .onAppear {
             viewModel.resetState()
             viewModel.fetchData()
+        }
+        .padding()
+        .bookstaNavigationBar(showBackBtn: false, onBackButton: {})
         }
     }
     
@@ -67,7 +73,7 @@ struct StatisticsView: View {
             }
         } label: {
             HStack {
-                Text("Show data from:")
+                Text("Show posts written from:")
                     .foregroundColor(.bookstaPurple800)
                     .font(.system(size: 16, weight: .bold))
                 Text("\(selectedOption)")
