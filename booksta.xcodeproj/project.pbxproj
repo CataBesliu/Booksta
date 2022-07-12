@@ -52,7 +52,6 @@
 		728928362872F95900487722 /* RefreshViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728928352872F95900487722 /* RefreshViewModifier.swift */; };
 		7289283B2873617600487722 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7289283A2873617600487722 /* StatisticsView.swift */; };
 		7289283D28736B4B00487722 /* BarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7289283C28736B4B00487722 /* BarChart.swift */; };
-		7289284028737E3700487722 /* FollowersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7289283F28737E3700487722 /* FollowersModel.swift */; };
 		728928422873802500487722 /* StatisticsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728928412873802500487722 /* StatisticsViewModel.swift */; };
 		728A70EC2844111D00E95B0D /* AddBookReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 728A70EB2844111D00E95B0D /* AddBookReviewViewModel.swift */; };
 		728A7101284414D000E95B0D /* Poppins-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 728A70EE284414D000E95B0D /* Poppins-ExtraLight.ttf */; };
@@ -181,7 +180,6 @@
 		728928352872F95900487722 /* RefreshViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshViewModifier.swift; sourceTree = "<group>"; };
 		7289283A2873617600487722 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		7289283C28736B4B00487722 /* BarChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChart.swift; sourceTree = "<group>"; };
-		7289283F28737E3700487722 /* FollowersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowersModel.swift; sourceTree = "<group>"; };
 		728928412873802500487722 /* StatisticsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewModel.swift; sourceTree = "<group>"; };
 		728A70EB2844111D00E95B0D /* AddBookReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBookReviewViewModel.swift; sourceTree = "<group>"; };
 		728A70EE284414D000E95B0D /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
@@ -517,7 +515,6 @@
 		728928372873615400487722 /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
-				7289283E28737E0C00487722 /* Model */,
 				728928392873616300487722 /* ViewModel */,
 				728928382873615C00487722 /* View */,
 			);
@@ -540,14 +537,6 @@
 				728928412873802500487722 /* StatisticsViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		7289283E28737E0C00487722 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				7289283F28737E3700487722 /* FollowersModel.swift */,
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		728A70ED284414D000E95B0D /* Poppins */ = {
@@ -1145,7 +1134,6 @@
 				722452D727D92EC7008B215B /* Buttons.swift in Sources */,
 				725D89CC286DE8ED002E05FB /* GeneralSearchViewModel.swift in Sources */,
 				723D40C228747FB0009DD540 /* LineChart.swift in Sources */,
-				7289284028737E3700487722 /* FollowersModel.swift in Sources */,
 				72ED9C7D27C03E3B00EEC6CB /* CustomDivider.swift in Sources */,
 				72667F6727D168E700EAB2D4 /* SecondAttempt.swift in Sources */,
 				728A70EC2844111D00E95B0D /* AddBookReviewViewModel.swift in Sources */,

@@ -45,7 +45,7 @@ class SignUpViewModel: ObservableObject {
     }
     
     func checkPassword(password: String) {
-        if password.count < 6 {
+        if password.count < 8 {
             isPasswordShort = true
         } else {
             isPasswordShort = false
