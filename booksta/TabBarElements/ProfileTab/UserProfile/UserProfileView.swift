@@ -53,7 +53,11 @@ struct UserProfileView: View {
             }
             .onAppear(perform: {
                 viewModel.fetchUserData()
+                viewModel.createListener()
             })
+            .onDisappear {
+                viewModel.removeListener()
+            }
             .bookstaNavigationBar(showBackBtn: true,
                                   onBackButton: {self.presentationMode.wrappedValue.dismiss()})
         }

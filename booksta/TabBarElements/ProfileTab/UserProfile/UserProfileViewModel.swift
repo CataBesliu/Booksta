@@ -12,6 +12,7 @@ import Firebase
 class UserProfileViewModel: ProfileViewModel {
     @Published var isFollowedState: Bool = false
     @Published var user: UserModel
+    var listener: ListenerRegistration?
     
     init(user: UserModel) {
         self.user = user
@@ -53,6 +54,28 @@ class UserProfileViewModel: ProfileViewModel {
     func fetchUserData() {
         getIsUserFollowed()
         getProfileInformation(user: user)
+    }
+    
+    func createListener() {
+        listener = USERS_COLLECTION
+            .document(user.uid)
+            .addSnapshotListener { documentSnapshot, error in
+            // documentSnapshot data returns a nsdictionary
+            if let error = error {
+                print("DEBUG: Error retrieving document - \(error.localizedDescription)")
+                return
+            }
+            guard let data = documentSnapshot?.data() else { return }
+            print("DEBUG: User information succesfully retrieved")
+            
+            let user = UserModel(dictionary: data)
+                self.user = user
+        }
+            
+    }
+    
+    func removeListener() {
+        listener?.remove()
     }
 }
 

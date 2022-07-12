@@ -134,14 +134,3 @@ class AddBookReviewViewModel: ObservableObject {
         reviewsListener?.remove()
     }
 }
-
-//var tempListener = POSTS_COLLECTION.document(user.uid).collection(USER_POSTS_COLLECTION).addSnapshotListener { documentSnapshot, error in
-//                if let error = error {
-//                    print("DEBUG: Error retrieving posts - \(error.localizedDescription)")
-//                    return
-//                }
-//
-//                guard let data = documentSnapshot else { return }
-//                let posts = data.documents.map ({ PostModel(dictionary: $0.data(), uid: uid, bookID: $0.documentID) })
-//                completion(posts, nil)
-//            }
