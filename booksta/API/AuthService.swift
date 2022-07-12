@@ -37,12 +37,17 @@ struct AuthService {
                                        "username": credentials.username,
                                        "categories": categories]
             
+            let publicData: [String: Any] = ["email": credentials.email,
+                                             "username": credentials.username]
+            
             USERS_COLLECTION.document(uid).setData(data, completion: completion)
+            let randomId = Firebase.UUID().uuidString
+            PUBLIC_COllECTION.document(randomId).setData(publicData, completion: completion)
         }
     }
     
     static func checkIfEmailIsTaken(email: String, completion: @escaping(Bool?, String?) -> Void) {
-        USERS_COLLECTION
+        PUBLIC_COllECTION
             .whereField("email", isEqualTo: email)
             .getDocuments { snapshot, error in
                 if let err = error {
@@ -59,7 +64,7 @@ struct AuthService {
     }
     
     static func checkIfUsernameIsTaken(username: String, completion: @escaping(Bool?, String?) -> Void) {
-        USERS_COLLECTION
+        PUBLIC_COllECTION
             .whereField("username", isEqualTo: username)
             .getDocuments { snapshot, error in
                 if let err = error {

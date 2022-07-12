@@ -23,7 +23,7 @@ class AddBookReviewViewModel: ObservableObject {
             }
         }
     }
-    
+    var reviewsListener: ListenerRegistration?
     var book: BookModel
     
     init(book: BookModel) {
@@ -94,4 +94,54 @@ class AddBookReviewViewModel: ObservableObject {
         return reviewGrade.isEmpty == false
     }
     
+    func createListener() {
+        reviewsListener = REVIEWS_COLLECTION
+            .document(book.id)
+            .collection(USER_REVIEWS_COLLECTION)
+            .addSnapshotListener { documentSnapshot, error in
+                if let error = error {
+                    print("DEBUG: Error retrieving reviews - \(error.localizedDescription)")
+                    self.state = .error(error.localizedDescription)
+                    return
+                }
+                guard let data = documentSnapshot else { return }
+                let reviews = data.documents.map ({ ReviewModel(dictionary: $0.data(), id: $0.documentID, bookID: self.book.id) })
+                
+                var returnList: [ReviewerModel] = []
+                var count = 0
+                for review in reviews {
+                    UserService.getUserInfo(uid: review.id) { user, error in
+                        if let error = error {
+                            print("DEBUG: Error retrieving reviewers - \(error)")
+                            self.state = .error(error)
+                            return
+                        }
+                        guard let user = user else {
+                            return
+                        }
+                        count += 1
+                        returnList.append(ReviewerModel(user: user, review: review))
+                        
+                        if count == reviews.count {
+                            self.state = .loaded(returnList)
+                        }
+                    }
+                }
+            }
+    }
+    
+    func removeListener() {
+        reviewsListener?.remove()
+    }
 }
+
+//var tempListener = POSTS_COLLECTION.document(user.uid).collection(USER_POSTS_COLLECTION).addSnapshotListener { documentSnapshot, error in
+//                if let error = error {
+//                    print("DEBUG: Error retrieving posts - \(error.localizedDescription)")
+//                    return
+//                }
+//
+//                guard let data = documentSnapshot else { return }
+//                let posts = data.documents.map ({ PostModel(dictionary: $0.data(), uid: uid, bookID: $0.documentID) })
+//                completion(posts, nil)
+//            }

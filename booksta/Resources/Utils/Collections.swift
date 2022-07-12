@@ -15,6 +15,8 @@ let FOLLOWING_COLLECTION = Firestore.firestore().collection("following")
 let BOOKS_READ_COLLECTION = Firestore.firestore().collection("books-read")
 let REVIEWS_COLLECTION = Firestore.firestore().collection("reviews")
 let POSTS_COLLECTION = Firestore.firestore().collection("posts")
+let PUBLIC_COllECTION = Firestore.firestore().collection("public")
+
 
 
 let USER_FOLLOWING_COLLECTION = "following-list"

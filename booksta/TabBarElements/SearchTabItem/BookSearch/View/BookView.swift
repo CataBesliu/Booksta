@@ -54,6 +54,10 @@ struct BookView: View {
             reviewViewModel.hasUserSentReviewFunction()
             reviewViewModel.getReviews()
             reviewViewModel.hasUserReadBook()
+            reviewViewModel.createListener()
+        }
+        .onDisappear {
+            reviewViewModel.removeListener()
         }
     }
     
