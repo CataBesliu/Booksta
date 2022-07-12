@@ -282,11 +282,11 @@ struct MainProfileView: View {
         return VStack {
             switch viewModel.imageState {
             case .idle,.loading:
-                Text("Loading...")
-                    .foregroundColor(.bookstaPurple800)
-                    .frame(width: 60, height: 60, alignment: .center)
-                    .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.bookstaPurple800, lineWidth: 2))
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .bookstaPurple))
+                    .scaleEffect(2)
+                    .foregroundColor(.bookstaPurple)
+                    .font(.system(size: 2, weight: .semibold))
             case let .loaded(imageURL):
                 BookstaImage(url: imageURL,
                              height: 60,

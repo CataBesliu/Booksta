@@ -18,5 +18,7 @@ extension Resolver: ResolverRegistering {
         register{ StatisticsViewModel() }.scope(.cached)
         register { EditProfileViewModel() }.scope(.unique)
         register { AddPostViewModel() }.scope(.unique)
+        register { SignUpViewModel() }.scope(.unique)
+        register { LoginViewModel() }.scope(.unique)
     }
 }
