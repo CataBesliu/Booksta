@@ -305,9 +305,9 @@
 		72040382285C50ED0022F6E1 /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				72040384285C510E0022F6E1 /* PostView.swift */,
-				72040386285C51200022F6E1 /* PostModel.swift */,
-				7257A28F285F2F970032A3EF /* PostViewModel.swift */,
+				724A7F39287DAC4B000594B9 /* View */,
+				724A7F3A287DAC51000594B9 /* Model */,
+				724A7F3B287DAC5A000594B9 /* ViewModel */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -388,6 +388,56 @@
 			isa = PBXGroup;
 			children = (
 				725D89CB286DE8ED002E05FB /* GeneralSearchViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		724A7F36287DAC11000594B9 /* Book */ = {
+			isa = PBXGroup;
+			children = (
+				72E5DE5F27F393A300818DC0 /* Model */,
+				726D708F27D636D5001EE64F /* ViewModel */,
+				726D708E27D636D1001EE64F /* View */,
+			);
+			path = Book;
+			sourceTree = "<group>";
+		};
+		724A7F37287DAC28000594B9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				72BCE28A284F6E4500434F9F /* AddReviewView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		724A7F38287DAC32000594B9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				72BCE291284FC03F00434F9F /* ReviewModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		724A7F39287DAC4B000594B9 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				72040384285C510E0022F6E1 /* PostView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		724A7F3A287DAC51000594B9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				72040386285C51200022F6E1 /* PostModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		724A7F3B287DAC5A000594B9 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				7257A28F285F2F970032A3EF /* PostViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -486,9 +536,7 @@
 			isa = PBXGroup;
 			children = (
 				72BCE290284FC01D00434F9F /* Review */,
-				72E5DE5F27F393A300818DC0 /* Model */,
-				726D708F27D636D5001EE64F /* ViewModel */,
-				726D708E27D636D1001EE64F /* View */,
+				724A7F36287DAC11000594B9 /* Book */,
 			);
 			path = BookSearch;
 			sourceTree = "<group>";
@@ -685,8 +733,8 @@
 		72BCE290284FC01D00434F9F /* Review */ = {
 			isa = PBXGroup;
 			children = (
-				72BCE28A284F6E4500434F9F /* AddReviewView.swift */,
-				72BCE291284FC03F00434F9F /* ReviewModel.swift */,
+				724A7F37287DAC28000594B9 /* View */,
+				724A7F38287DAC32000594B9 /* Model */,
 			);
 			path = Review;
 			sourceTree = "<group>";
